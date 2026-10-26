@@ -31,7 +31,7 @@ namespace Assets.Scripts.Gameplay.Ship
         {
             _weapon1?.Update(isAttack1);
             _weapon2?.Update(isAttack2);
-            _physicsBody.SetForce(moveAxis, _shipData.Speed);
+            _physicsBody.Direction = moveAxis;
         }
 
         public Vector2 GetPosition()

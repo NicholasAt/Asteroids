@@ -14,25 +14,19 @@ namespace Assets.Scripts.Gameplay.Physics
         public bool IsInvulnerable;
         public float DeltaTime;
 
-        private Vector2 _direction;
-        private float _force;
+        public Vector2 Direction;
+        public float Force;
 
         public void Simulate()
         {
-            AddForce();
+            ApplyForce();
             ApplyDrag();
             Integrate();
         }
 
-        public void SetForce(Vector2 direction, float force)
+        private void ApplyForce()
         {
-            _direction = direction;
-            _force = force;
-        }
-
-        private void AddForce()
-        {
-            Velocity += DeltaTime * _force * _direction;
+            Velocity += DeltaTime * Force * Direction;
         }
         private void ApplyDrag()
         {

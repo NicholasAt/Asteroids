@@ -26,6 +26,7 @@ namespace Assets.Scripts.Gameplay.Services.Factories
             {
                 Drag = _shipData.Drag,
                 Mass = _shipData.Mass,
+                Force=_shipData.Speed,
             };
 
             IPhysicsWorld physicsWorld = _diContainer.Resolve<IPhysicsWorld>();
