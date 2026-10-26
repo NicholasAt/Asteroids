@@ -1,4 +1,6 @@
 using Assets.Scripts.Data.Ship;
+using Assets.Scripts.Gameplay.Extensions;
+using UnityEngine;
 using Zenject;
 
 namespace Assets.Scripts.Gameplay.Services.Factories
@@ -13,10 +15,12 @@ namespace Assets.Scripts.Gameplay.Services.Factories
             _diContainer = diContainer;
             _shipData = shipData;
         }
-       
-        public void Create()
+
+        public GameObject Create()
         {
-            _diContainer.InstantiatePrefab(_shipData.ShipPrefab);
+            GameObject instance = _diContainer.InstantiatePrefab(_shipData.ShipPrefab);
+            instance.ToMoveToActiveScene();
+            return instance;
         }
     }
 }

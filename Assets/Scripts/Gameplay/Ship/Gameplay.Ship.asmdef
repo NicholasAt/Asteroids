@@ -1,9 +1,9 @@
 {
-    "name": "Gameplay",
+    "name": "Gameplay.Ship",
     "rootNamespace": "",
     "references": [
-        "GUID:0d8beb7f090555447a6cf5ce9e54dbb4",
-        "GUID:4e1b9b489c73840408a7c544beabee7a"
+        "GUID:4e1b9b489c73840408a7c544beabee7a",
+        "GUID:f090df3376c49d54b8ed8cbe4d72b6d7"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
