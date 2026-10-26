@@ -1,5 +1,6 @@
 using Assets.Scripts.Data.Ship;
 using Assets.Scripts.Gameplay.Extensions;
+using Assets.Scripts.Gameplay.Physics;
 using UnityEngine;
 using Zenject;
 
@@ -16,12 +17,26 @@ namespace Assets.Scripts.Gameplay.Services.Factories
             _shipData = shipData;
         }
 
-        public Ship.Ship Create()
+        public (Ship.ShipView, Ship.Ship) Create()
         {
             GameObject instance = _diContainer.InstantiatePrefab(_shipData.ShipPrefab);
             instance.ToMoveToActiveScene();
-            
-            return instance.GetComponent<Ship.Ship>();
+
+            PhysicsBody physicsBody = new PhysicsBody()
+            {
+                Drag = _shipData.Drag,
+                Mass = _shipData.Mass,
+            };
+
+            IPhysicsWorld physicsWorld = _diContainer.Resolve<IPhysicsWorld>();
+            physicsWorld.Add(physicsBody);
+
+            Ship.ShipView view = instance.GetComponent<Ship.ShipView>();
+            Ship.Ship ship = new(physicsWorld, _shipData, physicsBody);
+
+            view.Init(ship);
+
+            return (view, ship);
         }
     }
 }

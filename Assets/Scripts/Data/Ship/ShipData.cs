@@ -7,5 +7,7 @@ namespace Assets.Scripts.Data.Ship
     {
         [field: SerializeField] public GameObject ShipPrefab { get; private set; }
         [field: SerializeField] public float Speed { get; private set; } = 5;
+        [field: SerializeField] public float Mass { get; private set; }
+        [field: SerializeField] public float Drag { get; private set; }
     }
 }

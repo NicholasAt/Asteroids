@@ -3,6 +3,7 @@ using Assets.Scripts.Core.Services;
 using Assets.Scripts.Data.AllData;
 using Assets.Scripts.Data.Ship;
 using Assets.Scripts.Data.Weapon;
+using Assets.Scripts.Gameplay.Physics;
 using Assets.Scripts.Gameplay.Services.Factories;
 using Assets.Scripts.Gameplay.Services.InputService;
 using UnityEngine;
@@ -19,8 +20,9 @@ namespace Assets.Scripts.Core
             BindStates();
             BindFactories();
 
-            Container.Bind<SceneLoader>().AsSingle();
+            Container.BindInterfacesAndSelfTo<PhysicsWorld>().FromNewComponentOn(gameObject).AsSingle();
             Container.BindInterfacesAndSelfTo<PCInputService>().AsSingle();
+            Container.Bind<SceneLoader>().AsSingle();
 
         }
         private void BindFactories()

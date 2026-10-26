@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6790563138730053785}
-  - component: {fileID: 3607434158484067395}
+  - component: {fileID: 3020012608709147446}
   - component: {fileID: 3975244496174214441}
   m_Layer: 0
   m_Name: BaseShip
@@ -33,7 +33,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3607434158484067395
+--- !u!114 &3020012608709147446
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,7 +42,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1558175567280988896}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d550af18c298b84a8885986fa0faf12, type: 3}
+  m_Script: {fileID: 11500000, guid: 742f0b4689819ae44a315d39dbac5c87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!212 &3975244496174214441
