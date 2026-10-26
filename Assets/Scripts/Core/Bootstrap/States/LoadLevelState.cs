@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Core.Services;
+using Assets.Scripts.Data.Weapon;
 using Assets.Scripts.Gameplay.Services.Factories;
 using Cysharp.Threading.Tasks;
 
@@ -7,12 +8,12 @@ namespace Assets.Scripts.Core.Bootstrap.States
     public class LoadLevelState : IPayloadedState<string>
     {
         private readonly SceneLoader _sceneLoader;
-        private readonly ShipFactory _shipFactory;
+        private readonly ShipBuilder _shipBuilder;
 
-        public LoadLevelState(SceneLoader sceneLoader, ShipFactory shipFactory)
+        public LoadLevelState(SceneLoader sceneLoader, ShipBuilder shipBuilder)
         {
             _sceneLoader = sceneLoader;
-            _shipFactory = shipFactory;
+            _shipBuilder = shipBuilder;
         }
 
         public void Enter(string payload)
@@ -22,7 +23,7 @@ namespace Assets.Scripts.Core.Bootstrap.States
 
         private void OnLoaded()
         {
-            _shipFactory.Create();
+            _shipBuilder.CreateShip(weaponId1: WeaponId.Laser, weaponId2: WeaponId.Gun);
         }
     }
 }

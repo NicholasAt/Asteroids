@@ -16,11 +16,12 @@ namespace Assets.Scripts.Gameplay.Services.Factories
             _shipData = shipData;
         }
 
-        public GameObject Create()
+        public Ship.Ship Create()
         {
             GameObject instance = _diContainer.InstantiatePrefab(_shipData.ShipPrefab);
             instance.ToMoveToActiveScene();
-            return instance;
+            
+            return instance.GetComponent<Ship.Ship>();
         }
     }
 }
