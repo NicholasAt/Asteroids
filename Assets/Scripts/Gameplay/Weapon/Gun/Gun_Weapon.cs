@@ -1,6 +1,8 @@
 using Assets.Scripts.Data.Weapon.Configs;
+using Assets.Scripts.Gameplay.Extensions;
 using Assets.Scripts.Gameplay.Interfaces.Services;
 using Assets.Scripts.Gameplay.Physics;
+using UnityEngine;
 
 namespace Assets.Scripts.Gameplay.Weapon.Gun
 {
@@ -28,10 +30,8 @@ namespace Assets.Scripts.Gameplay.Weapon.Gun
             else if (isPress)
             {
                 _current -= CD;
-                PhysicsBody bullet = _bulletFactory.CreateBullet();
-                bullet.Position = _physicsBody.Position;
-                bullet.Rotation = _physicsBody.Rotation;
-                bullet.Velocity = _physicsBody.Direction;
+                Vector2 from = _physicsBody.Position + (_physicsBody.Rotation.ToRotateToDirection() * _config.ForwardSpawnPointOffset);
+                _bulletFactory.CreateBullet(from, _physicsBody.Rotation, _config.BulletSpeedLimit);
             }
         }
     }

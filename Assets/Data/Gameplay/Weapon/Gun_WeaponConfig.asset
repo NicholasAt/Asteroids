@@ -14,4 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <WeaponId>k__BackingField: 2
   <Damage>k__BackingField: 0
-  <BulletPrefab>k__BackingField: {fileID: 0}
+  <BulletSpeedLimit>k__BackingField: 15
+  <ForwardSpawnPointOffset>k__BackingField: 1.5
+  <BulletPrefab>k__BackingField: {fileID: 4799827719133445383, guid: 4644ab799f196594bb9a59a7eb7d107d, type: 3}

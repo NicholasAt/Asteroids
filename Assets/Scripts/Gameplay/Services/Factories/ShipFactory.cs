@@ -35,7 +35,7 @@ namespace Assets.Scripts.Gameplay.Services.Factories
             physicsWorld.Add(physicsBody);
 
             Ship.ShipView view = instance.GetComponent<Ship.ShipView>();
-            Ship.Ship ship = new(physicsWorld, _shipData, physicsBody);
+            Ship.Ship ship = new Ship.Ship(physicsWorld, _shipData, new Move.Move(physicsBody, _shipData.SpeedRotate, _shipData.Force), physicsBody);
 
             instance.GetComponent<TransformView>().Init(physicsBody);
 

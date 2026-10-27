@@ -1,4 +1,5 @@
 using Assets.Scripts.Data.Weapon.Configs;
+using Assets.Scripts.Gameplay.Extensions;
 using Assets.Scripts.Gameplay.Physics;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,13 +26,15 @@ namespace Assets.Scripts.Gameplay.Weapon.Constant
         {
             if (isPress)
             {
-                _weaponEffect.Update();
-                FireLaser(_body, 100, 1);
+                Vector2 direction = _body.Rotation.ToRotateToDirection();
+                Fire(_body, direction, 100, _config.RayWidth);
+                _weaponEffect.Update(_body.Position, direction * 100);
             }
 
             if (_attackToggle == false && isPress)
             {
                 _attackToggle = true;
+                _weaponEffect.Start(_config.RayWidth);
             }
             else if (_attackToggle && isPress == false)
             {
@@ -40,11 +43,9 @@ namespace Assets.Scripts.Gameplay.Weapon.Constant
             }
         }
 
-        public void FireLaser(PhysicsBody ship, float length, float width)
+        private void Fire(PhysicsBody ship, Vector2 direction, float length, float width)
         {
             Vector2 origin = ship.Position;
-            Vector2 direction = Vector2.up;
-            //Vector2 direction = new Vector2(Mathf.Cos(ship.Rotation), Mathf.Sin(ship.Rotation));
             Vector2 end = origin + direction * length;
 
             PhysicsWorld.RaycastAll(origin, end, ref _currentTargets, width);

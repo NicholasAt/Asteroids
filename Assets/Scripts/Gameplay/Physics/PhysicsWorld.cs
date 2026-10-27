@@ -11,7 +11,7 @@ namespace Assets.Scripts.Gameplay.Physics
         {
             foreach (PhysicsBody target in _physics)
             {
-                target.Simulate();
+                target.Simulate(Time.deltaTime);
             }
 
             for (int i = 0; i < _physics.Count; i++)
@@ -29,7 +29,6 @@ namespace Assets.Scripts.Gameplay.Physics
 
         public void Add(PhysicsBody physicsBody)
         {
-            physicsBody.DeltaTime = Time.deltaTime;
             _physics.Add(physicsBody);
         }
         public void Remove(PhysicsBody physicsBody)

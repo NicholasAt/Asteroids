@@ -16,6 +16,7 @@ namespace Assets.Scripts.Core.Infrastructure.Bootstrap
         }
         private void Start()
         {
+            Application.targetFrameRate = -1;
             _gameStateMachine.Enter<LoadLevelState, string>(SceneConstants.LevelSceneKey);
         }
     }

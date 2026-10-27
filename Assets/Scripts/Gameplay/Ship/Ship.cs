@@ -11,13 +11,15 @@ namespace Assets.Scripts.Gameplay.Ship
 
         private readonly PhysicsWorld _physicsWorld;
         private readonly ShipData _shipData;
+        private readonly Move.Move _move;
         private IWeapon _weapon1;
         private IWeapon _weapon2;
 
-        public Ship(PhysicsWorld physicsWorld, ShipData shipData, PhysicsBody physicsBody)
+        public Ship(PhysicsWorld physicsWorld, ShipData shipData, Move.Move move, PhysicsBody physicsBody)
         {
             _physicsWorld = physicsWorld;
             _shipData = shipData;
+            _move = move;
             PhysicsBody = physicsBody;
         }
 
@@ -31,7 +33,7 @@ namespace Assets.Scripts.Gameplay.Ship
         {
             _weapon1?.Update(isAttack1, deltaTime);
             _weapon2?.Update(isAttack2, deltaTime);
-            PhysicsBody.Direction = moveAxis;
+            _move.Update(moveAxis.y > 0, moveAxis.x);
         }
 
         public void Destroy()

@@ -10,34 +10,40 @@ namespace Assets.Scripts.Gameplay.Physics
         public float Force;
 
         public float Rotation;
+        public float AngularForce;
         public float AngularVelocity;
         public float Radius = 1;
         public float Mass = 1f;
         public float Drag = 1;
-        public bool IsInvulnerable;
-        public float DeltaTime;
-        public float SpeedLimit = 100;
+        public float AngularDrag = 1;
 
-        public void Simulate()
+        public bool IsInvulnerable;
+        public float SpeedLimit = 100;
+        private float _deltaTime;
+        public void Simulate(float deltaTime)
         {
-            ApplyForce();
+            _deltaTime = deltaTime;
+            ApplyThrust();
             ApplyDrag();
             Integrate();
         }
 
-        private void ApplyForce()
+        private void ApplyThrust()
         {
-            Velocity += DeltaTime * Force * Direction;
+            Velocity += _deltaTime * Force * Direction;
             Velocity = Vector2.ClampMagnitude(Velocity, SpeedLimit);
+
+            AngularVelocity += _deltaTime * AngularForce;
         }
         private void ApplyDrag()
         {
-            Velocity -= Velocity * Drag * DeltaTime;
+            Velocity -= _deltaTime * Drag * Velocity;
+            AngularVelocity -= AngularVelocity * AngularDrag * _deltaTime;
         }
         private void Integrate()
         {
-            Position += Velocity * DeltaTime;
-            Rotation += AngularVelocity * DeltaTime;
+            Position += Velocity * _deltaTime;
+            Rotation += AngularVelocity * _deltaTime;
         }
     }
 }
