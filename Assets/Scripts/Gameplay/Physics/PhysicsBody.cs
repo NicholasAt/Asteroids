@@ -6,6 +6,9 @@ namespace Assets.Scripts.Gameplay.Physics
     {
         public Vector2 Position;
         public Vector2 Velocity;
+        public Vector2 Direction;
+        public float Force;
+
         public float Rotation;
         public float AngularVelocity;
         public float Radius = 1;
@@ -13,9 +16,8 @@ namespace Assets.Scripts.Gameplay.Physics
         public float Drag = 1;
         public bool IsInvulnerable;
         public float DeltaTime;
+        public float SpeedLimit = 100;
 
-        public Vector2 Direction;
-        public float Force;
         public void Simulate()
         {
             ApplyForce();
@@ -26,12 +28,12 @@ namespace Assets.Scripts.Gameplay.Physics
         private void ApplyForce()
         {
             Velocity += DeltaTime * Force * Direction;
+            Velocity = Vector2.ClampMagnitude(Velocity, SpeedLimit);
         }
         private void ApplyDrag()
         {
-            Velocity -= DeltaTime * Drag * Velocity;
+            Velocity -= Velocity * Drag * DeltaTime;
         }
-
         private void Integrate()
         {
             Position += Velocity * DeltaTime;

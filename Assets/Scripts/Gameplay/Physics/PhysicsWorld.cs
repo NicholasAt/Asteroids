@@ -65,30 +65,6 @@ namespace Assets.Scripts.Gameplay.Physics
             }
         }
 
-        //public static void Q(Vector2 position, Vector2 direction, float laserRange = 500)
-        //{
-        //    foreach (PhysicsBody target in _physics)
-        //    {
-        //        if (IntersectsLaser(position, direction, laserRange, target))
-        //        {
-        //            Debug.LogError("popados");
-        //        }
-        //    }
-        //}
-
-        //public static bool IntersectsLaser(Vector2 origin, Vector2 direction, float laserRange, PhysicsBody target)
-        //{
-        //    Vector2 end = origin + direction * laserRange;
-        //    Vector2 segment = end - origin;
-
-        //    float t = Vector2.Dot(target.Position - origin, segment) / segment.sqrMagnitude;
-        //    t = Mathf.Clamp01(t);
-
-        //    Vector2 closestPoint = origin + segment * t;
-
-        //    return (target.Position - closestPoint).sqrMagnitude <= target.Radius * target.Radius;
-        //}
-
         private static bool CheckCollision(PhysicsBody a, PhysicsBody b)
         {
             float distanceSquared = (a.Position - b.Position).sqrMagnitude;

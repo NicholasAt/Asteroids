@@ -1,4 +1,5 @@
 using Assets.Scripts.Data.Enemy.Asteroid;
+using Assets.Scripts.Gameplay.Common;
 using Assets.Scripts.Gameplay.Enemy;
 using Assets.Scripts.Gameplay.Extensions;
 using Assets.Scripts.Gameplay.Physics;
@@ -18,7 +19,7 @@ namespace Assets.Scripts.Gameplay.Services.Factories
             _asteroidData = asteroidData;
         }
 
-        public void CreateAsteroid(Vector2 position, Vector2 direction, float force)
+        public void CreateAsteroid(Vector2 position, Vector2 direction, float force, float speedLimit)
         {
             GameObject instance = _diContainer.InstantiatePrefab(_asteroidData.AsteroidPrefab);
             instance.ToMoveToActiveScene();
@@ -28,12 +29,12 @@ namespace Assets.Scripts.Gameplay.Services.Factories
 
             PhysicsBody physicsBody = new PhysicsBody()
             {
+                Velocity = direction*force,
+                SpeedLimit = speedLimit,
+                Direction = direction,
                 Position = position,
                 Drag = 0,
                 Mass = _asteroidData.Mass,
-                Direction = direction,
-                //Velocity = direction*0.1f,
-                //Force = force,
             };
 
             PhysicsWorld physicsWorld = _diContainer.Resolve<PhysicsWorld>();
@@ -41,6 +42,7 @@ namespace Assets.Scripts.Gameplay.Services.Factories
 
             Asteroid asteroid = new Asteroid(physicsWorld, physicsBody);
             instance.GetComponent<AsteroidView>().Init(asteroid);
+            instance.GetComponent<TransformView>().Init(physicsBody);
         }
     }
 }

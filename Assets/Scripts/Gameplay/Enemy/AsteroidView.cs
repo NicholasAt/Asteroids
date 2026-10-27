@@ -11,11 +11,6 @@ namespace Assets.Scripts.Gameplay.Enemy
             _asteroid = asteroid;
         }
 
-        private void LateUpdate()
-        {
-            transform.position = _asteroid.GetPosition();
-        }
-
         private void OnDestroy()
         {
             _asteroid.Destroy();

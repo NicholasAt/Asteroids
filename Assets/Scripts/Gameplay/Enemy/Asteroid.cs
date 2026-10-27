@@ -14,10 +14,6 @@ namespace Assets.Scripts.Gameplay.Enemy
             _physicsBody = physicsBody;
         }
        
-        public Vector2 GetPosition()
-        {
-            return _physicsBody.Position;
-        }
         public void Destroy()
         {
             _physicsWorld.Remove(_physicsBody);

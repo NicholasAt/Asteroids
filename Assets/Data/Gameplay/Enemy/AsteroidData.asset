@@ -14,4 +14,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <AsteroidPrefab>k__BackingField: {fileID: 6318603472790479726, guid: 24af981c3a9ef334ba46812bf8642301, type: 3}
   <Mass>k__BackingField: 1
-  <Drag>k__BackingField: 5

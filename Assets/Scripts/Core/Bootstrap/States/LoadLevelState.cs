@@ -27,7 +27,7 @@ namespace Assets.Scripts.Core.Bootstrap.States
         private void OnLoaded()
         {
             _shipBuilder.CreateShip(weaponId1: WeaponId.Laser, weaponId2: WeaponId.Gun);
-            _enemyFactory.CreateAsteroid(new Vector2(12, 15), Vector2.left + Vector2.down, 3);
+            _enemyFactory.CreateAsteroid(new Vector2(12, 15), Vector2.left + Vector2.down, 0.5f, 0.2f);
         }
     }
 }

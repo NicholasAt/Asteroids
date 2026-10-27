@@ -7,6 +7,5 @@ namespace Assets.Scripts.Data.Enemy.Asteroid
     {
         [field: SerializeField] public GameObject AsteroidPrefab { get; private set; }
         [field: SerializeField] public float Mass { get; private set; }
-        [field: SerializeField] public float Drag { get; private set; }
     }
 }

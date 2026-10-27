@@ -34,11 +34,6 @@ namespace Assets.Scripts.Gameplay.Ship
             PhysicsBody.Direction = moveAxis;
         }
 
-        public Vector2 GetPosition()
-        {
-            return PhysicsBody.Position;
-        }
-
         public void Destroy()
         {
             _physicsWorld.Remove(PhysicsBody);
