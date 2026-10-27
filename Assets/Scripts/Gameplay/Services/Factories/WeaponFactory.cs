@@ -1,5 +1,6 @@
 using Assets.Scripts.Data.Weapon;
 using Assets.Scripts.Data.Weapon.Configs;
+using Assets.Scripts.Gameplay.Interfaces.Services;
 using Assets.Scripts.Gameplay.Physics;
 using Assets.Scripts.Gameplay.Weapon;
 using Assets.Scripts.Gameplay.Weapon.Constant;
@@ -31,7 +32,7 @@ namespace Assets.Scripts.Gameplay.Services.Factories
                     break;
 
                 case WeaponId.Gun:
-                    weapon = CreateGun(baseConfig);
+                    weapon = CreateGun(baseConfig, body);
                     break;
 
                 case WeaponId.None:
@@ -42,19 +43,19 @@ namespace Assets.Scripts.Gameplay.Services.Factories
             return weapon;
         }
 
-        private IWeapon CreateGun(BaseWeaponConfig baseconfig)
+        private IWeapon CreateGun(BaseWeaponConfig baseconfig, PhysicsBody body)
         {
             IWeapon weapon = null;
             if (baseconfig is Gun_WeaponConfig config)
             {
-                Gun_Weapon gun_Weapon = new Gun_Weapon(config);
+                IBulletFactory bulletFactory = Resolve<IBulletFactory>();
+                Gun_Weapon gun_Weapon = new Gun_Weapon(config, body, bulletFactory);
                 weapon = gun_Weapon;
             }
             else
                 CantCast();
             return weapon;
         }
-
         private IWeapon CreateConstant(BaseWeaponConfig baseconfig, Transform parent, PhysicsBody body)
         {
             IWeapon weapon = null;
@@ -71,6 +72,8 @@ namespace Assets.Scripts.Gameplay.Services.Factories
                 CantCast();
             return weapon;
         }
+        private T Resolve<T>() =>
+            _diContainer.Resolve<T>();
         private void CantCast()
         {
             Debug.LogError($"cant cast");

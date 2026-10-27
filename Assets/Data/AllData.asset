@@ -15,3 +15,4 @@ MonoBehaviour:
   <ShipData>k__BackingField: {fileID: 11400000, guid: bfbf7ba4290c5794780df804d83275b9, type: 2}
   <WeaponData>k__BackingField: {fileID: 11400000, guid: 9023619adc2d9244384f6e31a5662db6, type: 2}
   <AsteroidData>k__BackingField: {fileID: 11400000, guid: a8541027d45451f4ca8815b660ff34c9, type: 2}
+  <BulletData>k__BackingField: {fileID: 11400000, guid: 8a129a95e0dc9d14da77128d506c4166, type: 2}

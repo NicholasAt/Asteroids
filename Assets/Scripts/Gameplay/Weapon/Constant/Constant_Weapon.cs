@@ -21,7 +21,7 @@ namespace Assets.Scripts.Gameplay.Weapon.Constant
             _body = body;
         }
 
-        public override void Update(bool isPress)
+        public override void Update(bool isPress, float deltaTime)
         {
             if (isPress)
             {

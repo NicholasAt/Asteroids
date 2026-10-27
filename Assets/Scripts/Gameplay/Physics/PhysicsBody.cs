@@ -16,7 +16,6 @@ namespace Assets.Scripts.Gameplay.Physics
 
         public Vector2 Direction;
         public float Force;
-
         public void Simulate()
         {
             ApplyForce();

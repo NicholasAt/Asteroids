@@ -1,0 +1,16 @@
+{
+    "name": "Gameplay.Common",
+    "rootNamespace": "",
+    "references": [
+        "GUID:9bfc0c0f09a85814e82e15be6cec35f0"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

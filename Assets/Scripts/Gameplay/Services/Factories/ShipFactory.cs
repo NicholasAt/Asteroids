@@ -1,4 +1,5 @@
 using Assets.Scripts.Data.Ship;
+using Assets.Scripts.Gameplay.Common;
 using Assets.Scripts.Gameplay.Extensions;
 using Assets.Scripts.Gameplay.Physics;
 using UnityEngine;
@@ -34,6 +35,8 @@ namespace Assets.Scripts.Gameplay.Services.Factories
 
             Ship.ShipView view = instance.GetComponent<Ship.ShipView>();
             Ship.Ship ship = new(physicsWorld, _shipData, physicsBody);
+
+            instance.GetComponent<TransformView>().Init(physicsBody);
 
             view.Init(ship);
 

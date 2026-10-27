@@ -27,10 +27,10 @@ namespace Assets.Scripts.Gameplay.Ship
             _weapon2 = weapon2;
         }
 
-        public void Update(Vector2 moveAxis, bool isAttack1, bool isAttack2)
+        public void Update(float deltaTime, Vector2 moveAxis, bool isAttack1, bool isAttack2)
         {
-            _weapon1?.Update(isAttack1);
-            _weapon2?.Update(isAttack2);
+            _weapon1?.Update(isAttack1, deltaTime);
+            _weapon2?.Update(isAttack2, deltaTime);
             PhysicsBody.Direction = moveAxis;
         }
 
