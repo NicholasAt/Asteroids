@@ -21,9 +21,9 @@ namespace Assets.Scripts.Core
             BindStates();
             BindFactories();
 
-            Container.BindInterfacesAndSelfTo<PhysicsWorld>().FromNewComponentOn(gameObject).AsSingle();
-            Container.BindInterfacesAndSelfTo<PCInputService>().AsSingle();
             Container.Bind<SceneLoader>().AsSingle();
+            Container.Bind<PhysicsWorld>().FromNewComponentOn(gameObject).AsSingle();
+            Container.BindInterfacesAndSelfTo<PCInputService>().AsSingle();
 
         }
         private void BindFactories()

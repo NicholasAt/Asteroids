@@ -7,18 +7,18 @@ namespace Assets.Scripts.Gameplay.Ship
 {
     public class Ship
     {
-        private readonly IPhysicsWorld _physicsWorld;
-        private readonly ShipData _shipData;
+        public readonly PhysicsBody PhysicsBody;
 
-        private readonly PhysicsBody _physicsBody;
+        private readonly PhysicsWorld _physicsWorld;
+        private readonly ShipData _shipData;
         private IWeapon _weapon1;
         private IWeapon _weapon2;
 
-        public Ship(IPhysicsWorld physicsWorld, ShipData shipData, PhysicsBody physicsBody)
+        public Ship(PhysicsWorld physicsWorld, ShipData shipData, PhysicsBody physicsBody)
         {
             _physicsWorld = physicsWorld;
             _shipData = shipData;
-            _physicsBody = physicsBody;
+            PhysicsBody = physicsBody;
         }
 
         public void SetWeapon(IWeapon weapon1, IWeapon weapon2)
@@ -31,17 +31,17 @@ namespace Assets.Scripts.Gameplay.Ship
         {
             _weapon1?.Update(isAttack1);
             _weapon2?.Update(isAttack2);
-            _physicsBody.Direction = moveAxis;
+            PhysicsBody.Direction = moveAxis;
         }
 
         public Vector2 GetPosition()
         {
-            return _physicsBody.Position;
+            return PhysicsBody.Position;
         }
 
         public void Destroy()
         {
-            _physicsWorld.Remove(_physicsBody);
+            _physicsWorld.Remove(PhysicsBody);
         }
     }
 }

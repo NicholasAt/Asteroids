@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: ShipData
   m_EditorClassIdentifier: 
   <ShipPrefab>k__BackingField: {fileID: 1558175567280988896, guid: 4308801d631e38243986150723f2b8f3, type: 3}
-  <Speed>k__BackingField: 2
+  <Force>k__BackingField: 0.1
   <Mass>k__BackingField: 1
-  <Drag>k__BackingField: 5
+  <Drag>k__BackingField: 0.1

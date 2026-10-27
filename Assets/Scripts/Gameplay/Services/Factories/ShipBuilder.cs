@@ -21,8 +21,8 @@ namespace Assets.Scripts.Gameplay.Services.Factories
         public ShipView CreateShip(WeaponId weaponId1, WeaponId weaponId2)
         {
             (ShipView view, Ship.Ship ship) = _shipFactory.Create();
-            IWeapon weapon1 = _weaponFactory.CreateWeapon(weaponId1, view.transform);
-            IWeapon weapon2 = _weaponFactory.CreateWeapon(weaponId2, view.transform);
+            IWeapon weapon1 = _weaponFactory.CreateWeapon(weaponId1, view.transform, ship.PhysicsBody);
+            IWeapon weapon2 = _weaponFactory.CreateWeapon(weaponId2, view.transform, ship.PhysicsBody);
             ship.SetWeapon(weapon1, weapon2);
 
             return view;

@@ -1,5 +1,6 @@
 using Assets.Scripts.Data.Weapon;
 using Assets.Scripts.Data.Weapon.Configs;
+using Assets.Scripts.Gameplay.Physics;
 using Assets.Scripts.Gameplay.Weapon;
 using Assets.Scripts.Gameplay.Weapon.Constant;
 using Assets.Scripts.Gameplay.Weapon.Gun;
@@ -19,14 +20,14 @@ namespace Assets.Scripts.Gameplay.Services.Factories
             _weaponData = weaponData;
         }
 
-        public IWeapon CreateWeapon(WeaponId weaponId, Transform parent)
+        public IWeapon CreateWeapon(WeaponId weaponId, Transform parent, PhysicsBody body)
         {
             IWeapon weapon = null;
             BaseWeaponConfig baseConfig = _weaponData.GetWeaponConfig(weaponId);
             switch (weaponId)
             {
                 case WeaponId.Laser:
-                    weapon = CreateConstant(baseConfig, parent);
+                    weapon = CreateConstant(baseConfig, parent, body);
                     break;
 
                 case WeaponId.Gun:
@@ -54,7 +55,7 @@ namespace Assets.Scripts.Gameplay.Services.Factories
             return weapon;
         }
 
-        private IWeapon CreateConstant(BaseWeaponConfig baseconfig, Transform parent)
+        private IWeapon CreateConstant(BaseWeaponConfig baseconfig, Transform parent, PhysicsBody body)
         {
             IWeapon weapon = null;
             if (baseconfig is Constant_WeaponConfig constantConfig)
@@ -63,8 +64,8 @@ namespace Assets.Scripts.Gameplay.Services.Factories
                 instance.transform.SetParent(parent);
                 LineRenderer lineRenderer = instance.GetComponent<LineRenderer>();
 
-                Constant_WeaponEffect laserEffect = new Constant_WeaponEffect(lineRenderer);
-                weapon = new Constant_Weapon(constantConfig, laserEffect);
+                Constant_WeaponEffect laserEffect = new Constant_WeaponEffect(body, lineRenderer);
+                weapon = new Constant_Weapon(constantConfig, laserEffect, body);
             }
             else
                 CantCast();

@@ -5,10 +5,10 @@ namespace Assets.Scripts.Gameplay.Enemy
 {
     public class Asteroid
     {
-        private readonly IPhysicsWorld _physicsWorld;
+        private readonly PhysicsWorld _physicsWorld;
         private readonly PhysicsBody _physicsBody;
 
-        public Asteroid(IPhysicsWorld physicsWorld, PhysicsBody physicsBody)
+        public Asteroid(PhysicsWorld physicsWorld, PhysicsBody physicsBody)
         {
             _physicsWorld = physicsWorld;
             _physicsBody = physicsBody;

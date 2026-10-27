@@ -29,13 +29,14 @@ namespace Assets.Scripts.Gameplay.Services.Factories
             PhysicsBody physicsBody = new PhysicsBody()
             {
                 Position = position,
-                Drag = _asteroidData.Drag,
+                Drag = 0,
                 Mass = _asteroidData.Mass,
                 Direction = direction,
-                Force = force,
+                //Velocity = direction*0.1f,
+                //Force = force,
             };
 
-            IPhysicsWorld physicsWorld = _diContainer.Resolve<IPhysicsWorld>();
+            PhysicsWorld physicsWorld = _diContainer.Resolve<PhysicsWorld>();
             physicsWorld.Add(physicsBody);
 
             Asteroid asteroid = new Asteroid(physicsWorld, physicsBody);
