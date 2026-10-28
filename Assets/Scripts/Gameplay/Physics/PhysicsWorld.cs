@@ -22,7 +22,11 @@ namespace Assets.Scripts.Gameplay.Physics
                     PhysicsBody b = _physics[j];
 
                     if (CheckCollision(a, b))
+                    {
+                        a.OnCollision?.Invoke(b.Owner);
+                        b.OnCollision?.Invoke(a.Owner);
                         ResolveCollision(a, b);
+                    }
                 }
             }
         }
@@ -35,10 +39,11 @@ namespace Assets.Scripts.Gameplay.Physics
         {
             _physics.Remove(physicsBody);
         }
-        public static void RaycastAll(Vector2 origin, Vector2 end, ref List<PhysicsBody> bodies, float width)
+
+        public static void RaycastAll(Vector2 from, Vector2 to, ref List<PhysicsBody> bodies, float width)
         {
             bodies.Clear();
-            Vector2 dir = end - origin;
+            Vector2 dir = to - from;
             float length = dir.magnitude;
 
             dir /= length;
@@ -46,24 +51,21 @@ namespace Assets.Scripts.Gameplay.Physics
             foreach (PhysicsBody body in _physics)
             {
                 if (body.IsInvulnerable)
-                    continue;   // на всякий случай
+                    continue;
 
-                // ближайшая точка на отрезке к центру круга
-                Vector2 toCenter = body.Position - origin;
+                Vector2 toCenter = body.Position - from;
                 float projection = Vector2.Dot(toCenter, dir);
                 projection = Mathf.Clamp(projection, 0f, length);
 
-                Vector2 closest = origin + dir * projection;
+                Vector2 closest = from + dir * projection;
                 float dist = Vector2.Distance(closest, body.Position);
 
-                // учитываем толщину луча + радиус объекта
                 if (dist <= body.Radius + width * 0.5f)
                 {
                     bodies.Add(body);
                 }
             }
         }
-
         private static bool CheckCollision(PhysicsBody a, PhysicsBody b)
         {
             float distanceSquared = (a.Position - b.Position).sqrMagnitude;
@@ -71,7 +73,6 @@ namespace Assets.Scripts.Gameplay.Physics
 
             return distanceSquared <= radiusSum * radiusSum;
         }
-
         private void ResolveCollision(PhysicsBody a, PhysicsBody b, float restitution = 0.8f)
         {
             Vector2 difference = b.Position - a.Position;

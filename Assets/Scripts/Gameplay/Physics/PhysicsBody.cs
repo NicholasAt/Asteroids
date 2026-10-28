@@ -1,9 +1,12 @@
+using System;
 using UnityEngine;
 
 namespace Assets.Scripts.Gameplay.Physics
 {
     public class PhysicsBody
     {
+        public Action<object> OnCollision { get; set; }
+        public object Owner;
         public Vector2 Position;
         public Vector2 Velocity;
         public Vector2 Direction;

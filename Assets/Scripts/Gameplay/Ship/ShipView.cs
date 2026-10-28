@@ -21,7 +21,7 @@ namespace Assets.Scripts.Gameplay.Ship
 
         private void Update()
         {
-            _ship.Update(Time.deltaTime,_inputService.MoveAxis, _inputService.IsAttack1, _inputService.IsAttack2);
+            _ship.Update(Time.deltaTime, _inputService.MoveAxis, _inputService.IsAttack1, _inputService.IsAttack2);
         }
 
         private void OnDestroy()

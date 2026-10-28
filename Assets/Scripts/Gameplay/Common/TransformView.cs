@@ -6,7 +6,6 @@ namespace Assets.Scripts.Gameplay.Common
     public class TransformView : MonoBehaviour
     {
         private PhysicsBody _physicsBody;
-        [SerializeField] private bool _q;
 
         public void Init(PhysicsBody physicsBody)
         {
