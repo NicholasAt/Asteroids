@@ -1,4 +1,4 @@
-namespace Assets.Scripts.Gameplay.Weapon
+namespace Assets.Scripts.Gameplay.Interfaces.Common
 {
     public interface IWeapon
     {

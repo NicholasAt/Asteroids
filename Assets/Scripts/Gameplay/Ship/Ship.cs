@@ -1,8 +1,8 @@
 using Assets.Scripts.Data.Ship;
 using Assets.Scripts.Gameplay.Interfaces;
+using Assets.Scripts.Gameplay.Interfaces.Common;
 using Assets.Scripts.Gameplay.Interfaces.Services;
 using Assets.Scripts.Gameplay.Physics;
-using Assets.Scripts.Gameplay.Weapon;
 using UnityEngine;
 
 namespace Assets.Scripts.Gameplay.Ship

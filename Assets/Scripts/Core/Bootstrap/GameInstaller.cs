@@ -7,9 +7,11 @@ using Assets.Scripts.Data.Enemy.Fragments;
 using Assets.Scripts.Data.Enemy.Saucer;
 using Assets.Scripts.Data.Ship;
 using Assets.Scripts.Data.Weapon;
+using Assets.Scripts.Gameplay.Interfaces.Services;
 using Assets.Scripts.Gameplay.Physics;
 using Assets.Scripts.Gameplay.Services.EnemySpawner;
 using Assets.Scripts.Gameplay.Services.Factories;
+using Assets.Scripts.Gameplay.Services.Factories.Weapon;
 using Assets.Scripts.Gameplay.Services.InputService;
 using Assets.Scripts.Gameplay.Services.Register;
 using Assets.Scripts.Gameplay.Signals;
@@ -49,10 +51,13 @@ namespace Assets.Scripts.Core
         private void BindFactories()
         {
             Container.Bind<ShipFactory>().AsSingle();
-            Container.Bind<WeaponFactory>().AsSingle();
             Container.Bind<ShipBuilder>().AsSingle();
             Container.BindInterfacesAndSelfTo<EnemyFactory>().AsSingle();
             Container.BindInterfacesAndSelfTo<BulletFactory>().AsSingle();
+
+            Container.Bind<IWeaponCreator>().To<GunCreator>().AsSingle();
+            Container.Bind<IWeaponCreator>().To<ConstantCreator>().AsSingle();
+            Container.Bind<IWeaponFactory>().To<WeaponFactory>().AsSingle();
         }
         private void BindData()
         {

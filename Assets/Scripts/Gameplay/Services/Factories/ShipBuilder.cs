@@ -1,17 +1,18 @@
 using Assets.Scripts.Data.Ship;
 using Assets.Scripts.Data.Weapon;
+using Assets.Scripts.Gameplay.Interfaces.Common;
+using Assets.Scripts.Gameplay.Interfaces.Services;
 using Assets.Scripts.Gameplay.Ship;
-using Assets.Scripts.Gameplay.Weapon;
 
 namespace Assets.Scripts.Gameplay.Services.Factories
 {
     public class ShipBuilder
     {
         private readonly ShipFactory _shipFactory;
-        private readonly WeaponFactory _weaponFactory;
+        private readonly IWeaponFactory _weaponFactory;
         private readonly ShipData _shipData;
 
-        public ShipBuilder(ShipFactory shipFactory, WeaponFactory weaponFactory, ShipData shipData)
+        public ShipBuilder(ShipFactory shipFactory, IWeaponFactory weaponFactory, ShipData shipData)
         {
             _shipFactory = shipFactory;
             _weaponFactory = weaponFactory;

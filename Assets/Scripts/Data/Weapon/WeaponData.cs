@@ -8,6 +8,13 @@ namespace Assets.Scripts.Data.Weapon
     public class WeaponData : ScriptableObject
     {
         [SerializeField] private List<BaseWeaponConfig> _weaponConfigs;
+        private readonly Dictionary<WeaponId, BaseWeaponConfig> _caheConfigs = new();
+
+        public T GetWeaponConfig<T>(WeaponId id) where T : BaseWeaponConfig
+        {
+            LazyInit();
+            return _caheConfigs[id] as T;
+        }
         public BaseWeaponConfig GetWeaponConfig(WeaponId id)
         {
             foreach (BaseWeaponConfig cfg in _weaponConfigs)
@@ -17,6 +24,16 @@ namespace Assets.Scripts.Data.Weapon
             }
             Debug.LogError($"no cfg [{id}]");
             return null;
+        }
+        private void LazyInit()
+        {
+            if (_caheConfigs.Count != 0)
+                return;
+
+            foreach (BaseWeaponConfig config in _weaponConfigs)
+            {
+                _caheConfigs.Add(config.WeaponId, config);
+            }
         }
     }
 }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b882fe1bcf6dc024a9e5e796b82da2af, type: 3}
   m_Name: Gun_WeaponConfig
   m_EditorClassIdentifier: 
-  <WeaponId>k__BackingField: 2
+  <WeaponId>k__BackingField: 100
   <Damage>k__BackingField: 0
   <BulletSpeedLimit>k__BackingField: 15
   <ForwardSpawnPointOffset>k__BackingField: 1.5

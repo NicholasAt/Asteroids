@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 867311d219cefe04ca528f43ed3744fb, type: 3}
   m_Name: Laser_WeaponConfig
   m_EditorClassIdentifier: 
-  <WeaponId>k__BackingField: 1
+  <WeaponId>k__BackingField: 10
   <Damage>k__BackingField: 0
   <RayWidth>k__BackingField: 0.5
   <VisualPrefab>k__BackingField: {fileID: 2252408688278698569, guid: 0c97079878a9f854a8db2289f69af43c, type: 3}
