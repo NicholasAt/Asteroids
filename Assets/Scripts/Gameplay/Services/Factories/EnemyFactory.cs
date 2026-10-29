@@ -83,6 +83,7 @@ namespace Assets.Scripts.Gameplay.Services.Factories
                 Position = position,
                 Drag = drag,
                 Mass = _asteroidData.Mass,
+                IsInvulnerable=true,
             };
 
             _physicsWorld.Add(physicsBody);

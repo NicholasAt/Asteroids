@@ -29,10 +29,10 @@ namespace Assets.Scripts.Core.Bootstrap.States
 
         private void OnLoaded()
         {
-            _enemySpawner.Preparation();
             _shipBuilder.CreateShip(weaponId1: WeaponId.Constant_Laser, weaponId2: WeaponId.Gun_Gun);
-            _enemyFactory.CreateAsteroid(new Vector2(5, 7), Vector2.left + Vector2.down, 0.0f, 0.2f, 0);
-            _enemyFactory.CreateSaucer(new Vector2(5, 7), 1f, 1f, 0);
+            _enemySpawner.Start();
+            //_enemyFactory.CreateAsteroid(new Vector2(5, 7), Vector2.left + Vector2.down, 0.0f, 0.2f, 0);
+            //_enemyFactory.CreateSaucer(new Vector2(5, 7), 1f, 1f, 0);
         }
     }
 }
