@@ -34,6 +34,7 @@ namespace Assets.Scripts.Core
 
             Container.Bind<SceneLoader>().AsSingle();
             Container.Bind<PhysicsWorld>().FromNewComponentOn(gameObject).AsSingle();
+            Container.BindInterfacesAndSelfTo<EnemyRegistry>().AsSingle();
             Container.BindInterfacesAndSelfTo<CharacterRegister>().AsSingle();
             Container.BindInterfacesAndSelfTo<EnemySpawner>().AsSingle();
             Container.BindInterfacesAndSelfTo<PCInputService>().AsSingle();

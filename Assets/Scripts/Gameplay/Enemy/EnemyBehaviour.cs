@@ -7,9 +7,9 @@ using Zenject;
 
 namespace Assets.Scripts.Gameplay.Enemy
 {
-    public class Enemy
+    public class EnemyBehaviour : IEnemyBehaviour
     {
-        public readonly PhysicsBody PhysicsBody;
+        protected readonly PhysicsBody PhysicsBody;
 
         private readonly EnemyType _enemyType;
         private readonly PhysicsWorld _physicsWorld;
@@ -17,17 +17,24 @@ namespace Assets.Scripts.Gameplay.Enemy
         public Action OnDestroy { get; set; }
         private bool _destroyed;
 
-        public Enemy(EnemyType enemyType, PhysicsWorld physicsWorld, PhysicsBody physicsBody, SignalBus signalBus)
+        public EnemyBehaviour(EnemyType enemyType, PhysicsWorld physicsWorld, PhysicsBody physicsBody, SignalBus signalBus)
         {
             _enemyType = enemyType;
             _physicsWorld = physicsWorld;
             PhysicsBody = physicsBody;
             _signalBus = signalBus;
+            PhysicsBody.Owner = this;
         }
 
-        public void Init()
+        public virtual void Update(float deltaTime)
         {
-            PhysicsBody.OnCollision += OnCollision;
+
+        }
+
+        public void TakeDamage(float damage)
+        {
+            _signalBus.Fire(new EnemyDeathSignal(_enemyType, PhysicsBody.Position));
+            Destroy();
         }
 
         public void Destroy()
@@ -37,17 +44,7 @@ namespace Assets.Scripts.Gameplay.Enemy
             _destroyed = true;
 
             OnDestroy?.Invoke();
-            PhysicsBody.OnCollision -= OnCollision;
             _physicsWorld.Remove(PhysicsBody);
-        }
-
-        private void OnCollision(object owner)
-        {
-            if (owner is IInflictDamage)
-            {
-                _signalBus.Fire(new EnemyDeathSignal(_enemyType, PhysicsBody.Position));
-                Destroy();
-            }
         }
     }
 }

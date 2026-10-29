@@ -6,6 +6,7 @@ namespace Assets.Scripts.Gameplay.Physics
     public class PhysicsWorld : MonoBehaviour
     {
         private readonly static List<PhysicsBody> _physics = new(1000);
+        private readonly HashSet<PhysicsBody> _candidates = new();
 
         private void Update()
         {
@@ -29,6 +30,7 @@ namespace Assets.Scripts.Gameplay.Physics
                     }
                 }
             }
+            UpdateRemove();
         }
 
         public void Add(PhysicsBody physicsBody)
@@ -37,9 +39,8 @@ namespace Assets.Scripts.Gameplay.Physics
         }
         public void Remove(PhysicsBody physicsBody)
         {
-            _physics.Remove(physicsBody);
+            _candidates.Add(physicsBody);
         }
-
         public static void RaycastAll(Vector2 from, Vector2 to, ref List<PhysicsBody> bodies, float width)
         {
             bodies.Clear();
@@ -64,6 +65,17 @@ namespace Assets.Scripts.Gameplay.Physics
                 {
                     bodies.Add(body);
                 }
+            }
+        }
+        private void UpdateRemove()
+        {
+            if (_candidates.Count > 0)
+            {
+                foreach (PhysicsBody item in _candidates)
+                {
+                    _physics.Remove(item);
+                }
+                _candidates.Clear();
             }
         }
         private static bool CheckCollision(PhysicsBody a, PhysicsBody b)

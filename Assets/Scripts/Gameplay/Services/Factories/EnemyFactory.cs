@@ -5,6 +5,7 @@ using Assets.Scripts.Data.Enemy.Saucer;
 using Assets.Scripts.Gameplay.Common;
 using Assets.Scripts.Gameplay.Enemy;
 using Assets.Scripts.Gameplay.Extensions;
+using Assets.Scripts.Gameplay.Interfaces.Common;
 using Assets.Scripts.Gameplay.Interfaces.Services;
 using Assets.Scripts.Gameplay.Physics;
 using UnityEngine;
@@ -18,13 +19,21 @@ namespace Assets.Scripts.Gameplay.Services.Factories
         private readonly AsteroidData _asteroidData;
         private readonly FragmentsData _fragmentsData;
         private readonly SaucerData _saucerData;
+        private readonly SignalBus _signalBus;
+        private readonly PhysicsWorld _physicsWorld;
+        private readonly ICharacterRegister _characterRegister;
+        private readonly IEnemyRegistry _enemyRegistry;
 
-        public EnemyFactory(DiContainer diContainer, AsteroidData asteroidData, FragmentsData fragmentsData, SaucerData saucerData)
+        public EnemyFactory(DiContainer diContainer, AsteroidData asteroidData, FragmentsData fragmentsData, SaucerData saucerData, SignalBus signalBus, PhysicsWorld physicsWorld, ICharacterRegister characterRegister, IEnemyRegistry enemyRegistry)
         {
             _diContainer = diContainer;
             _asteroidData = asteroidData;
             _fragmentsData = fragmentsData;
             _saucerData = saucerData;
+            _signalBus = signalBus;
+            _physicsWorld = physicsWorld;
+            _characterRegister = characterRegister;
+            _enemyRegistry = enemyRegistry;
         }
 
         public void CreateAsteroid(Vector2 position, Vector2 direction, float force, float speedLimit, float drag)
@@ -41,26 +50,24 @@ namespace Assets.Scripts.Gameplay.Services.Factories
 
         public void CreateSaucer(Vector2 position, float force, float speedLimit, float drag)
         {
-            ICharacterRegister characterRegister = Resolve<ICharacterRegister>();
             GameObject prefab = _saucerData.SaucerPrefab;
-            (GameObject instance, PhysicsWorld physicsWorld, PhysicsBody physicsBody) = Instantiate(prefab, position, Vector2.zero, force, speedLimit, drag);
+            (GameObject instance, PhysicsBody physicsBody) = Instantiate(prefab, position, Vector2.zero, force, speedLimit, drag);
 
-            Saucer enemy = new Saucer(EnemyType.Saucer, characterRegister, physicsWorld, physicsBody, Resolve<SignalBus>());
-
-            enemy.Init();
+            Saucer enemy = new Saucer(EnemyType.Saucer, _characterRegister, _physicsWorld, physicsBody, _signalBus);
+            _enemyRegistry.Add(enemy);
             instance.GetComponent<EnemyView>().Init(enemy);
         }
 
         private void CreateEnemy(EnemyType enemyType, GameObject prefab, Vector2 position, Vector2 direction, float force, float speedLimit, float drag)
         {
-            (GameObject instance, PhysicsWorld physicsWorld, PhysicsBody physicsBody) = Instantiate(prefab, position, direction, force, speedLimit, drag);
+            (GameObject instance, PhysicsBody physicsBody) = Instantiate(prefab, position, direction, force, speedLimit, drag);
 
-            Enemy.Enemy enemy = new Enemy.Enemy(enemyType, physicsWorld, physicsBody, Resolve<SignalBus>());
-            enemy.Init();
-
+            IEnemyBehaviour enemy = new EnemyBehaviour(enemyType, _physicsWorld, physicsBody, _signalBus);
+            _enemyRegistry.Add(enemy);
             instance.GetComponent<EnemyView>().Init(enemy);
         }
-        private (GameObject, PhysicsWorld, PhysicsBody) Instantiate(GameObject prefab, Vector2 position, Vector2 direction, float force, float speedLimit, float drag)
+
+        private (GameObject, PhysicsBody) Instantiate(GameObject prefab, Vector2 position, Vector2 direction, float force, float speedLimit, float drag)
         {
             GameObject instance = _diContainer.InstantiatePrefab(prefab);
             instance.ToMoveToActiveScene();
@@ -78,12 +85,9 @@ namespace Assets.Scripts.Gameplay.Services.Factories
                 Mass = _asteroidData.Mass,
             };
 
-            PhysicsWorld physicsWorld = Resolve<PhysicsWorld>();
-            physicsWorld.Add(physicsBody);
+            _physicsWorld.Add(physicsBody);
             instance.GetComponent<TransformView>().Init(physicsBody);
-            return (instance, physicsWorld, physicsBody);
+            return (instance, physicsBody);
         }
-        private T Resolve<T>() =>
-            _diContainer.Resolve<T>();
     }
 }

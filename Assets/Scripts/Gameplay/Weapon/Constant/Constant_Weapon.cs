@@ -1,5 +1,6 @@
 using Assets.Scripts.Data.Weapon.Configs;
 using Assets.Scripts.Gameplay.Extensions;
+using Assets.Scripts.Gameplay.Interfaces.Common;
 using Assets.Scripts.Gameplay.Physics;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,13 +25,6 @@ namespace Assets.Scripts.Gameplay.Weapon.Constant
 
         public override void Update(bool isPress, float deltaTime)
         {
-            if (isPress)
-            {
-                Vector2 direction = _body.Rotation.ToRotateToDirection();
-                Fire(_body, direction, 100, _config.RayWidth);
-                _weaponEffect.Update(_body.Position, direction * 100);
-            }
-
             if (_attackToggle == false && isPress)
             {
                 _attackToggle = true;
@@ -40,6 +34,13 @@ namespace Assets.Scripts.Gameplay.Weapon.Constant
             {
                 _attackToggle = false;
                 _weaponEffect.Stop();
+            }
+
+            if (isPress)
+            {
+                Vector2 direction = _body.Rotation.ToRotateToDirection();
+                Fire(_body, direction, 100, _config.RayWidth);
+                _weaponEffect.Update(_body.Position, direction * 100);
             }
         }
 
@@ -55,7 +56,8 @@ namespace Assets.Scripts.Gameplay.Weapon.Constant
                 if (body == ship)
                     continue;
 
-                Debug.LogError("contact");
+                if (body.Owner != null && body.Owner is IApplyDamage applyDamage)
+                    applyDamage.TakeDamage(_config.Damage);
             }
         }
     }

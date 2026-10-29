@@ -5,6 +5,6 @@ namespace Assets.Scripts.Gameplay.Interfaces.Services
 {
     public interface IBulletFactory
     {
-        PhysicsBody CreateBullet(Vector2 position,float rotate, float speedLimit);
+        PhysicsBody CreateBullet(Vector2 position, float rotate, float speedLimit);
     }
 }

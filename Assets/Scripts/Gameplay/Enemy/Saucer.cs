@@ -6,7 +6,7 @@ using Zenject;
 
 namespace Assets.Scripts.Gameplay.Enemy
 {
-    public class Saucer : Enemy
+    public class Saucer : EnemyBehaviour
     {
         private readonly ICharacterRegister _characterRegister;
 
@@ -15,7 +15,7 @@ namespace Assets.Scripts.Gameplay.Enemy
             _characterRegister = characterRegister;
         }
 
-        public void Update()
+        public override void Update(float _)
         {
             Vector2 direction = (_characterRegister.PlayerPosition - PhysicsBody.Position).normalized;
             PhysicsBody.Velocity = direction;

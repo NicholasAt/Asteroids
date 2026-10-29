@@ -8,7 +8,6 @@ namespace Assets.Scripts.Gameplay.Weapon.Gun
 {
     public class Gun_Weapon : BaseWeapon
     {
-        private const float CD = 1;
         private readonly Gun_WeaponConfig _config;
         private readonly PhysicsBody _physicsBody;
         private readonly IBulletFactory _bulletFactory;
@@ -23,13 +22,13 @@ namespace Assets.Scripts.Gameplay.Weapon.Gun
 
         public override void Update(bool isPress, float deltaTime)
         {
-            if (_current < CD)
+            if (_current < _config.CD)
             {
                 _current += deltaTime;
             }
             else if (isPress)
             {
-                _current -= CD;
+                _current -= _config.CD;
                 Vector2 from = _physicsBody.Position + (_physicsBody.Rotation.ToRotateToDirection() * _config.ForwardSpawnPointOffset);
                 _bulletFactory.CreateBullet(from, _physicsBody.Rotation, _config.BulletSpeedLimit);
             }

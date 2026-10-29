@@ -5,7 +5,7 @@ using Zenject;
 
 namespace Assets.Scripts.Gameplay.Bullet
 {
-    public class BulletView : MonoBehaviour, IInflictDamage
+    public class BulletView : MonoBehaviour
     {
         private const int Damage = 0;
 
@@ -25,19 +25,16 @@ namespace Assets.Scripts.Gameplay.Bullet
             _physicsBody.OnCollision += OnCollistion;
         }
 
-        public float GetDamage()
-        {
-            return Damage;
-        }
-
         private void OnDestroy()
         {
             _physicsBody.OnCollision -= OnCollistion;
             _physicsWorld.Remove(_physicsBody);
         }
 
-        private void OnCollistion(object obj)
+        private void OnCollistion(object owner)
         {
+            if (owner != null && owner is IApplyDamage applyDamage)
+                applyDamage.TakeDamage(Damage);
             Destroy(gameObject);
         }
     }
