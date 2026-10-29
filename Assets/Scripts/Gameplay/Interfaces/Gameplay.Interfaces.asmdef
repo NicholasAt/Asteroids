@@ -2,7 +2,8 @@
     "name": "Gameplay.Interfaces",
     "rootNamespace": "",
     "references": [
-        "GUID:9bfc0c0f09a85814e82e15be6cec35f0"
+        "GUID:9bfc0c0f09a85814e82e15be6cec35f0",
+        "GUID:4e1b9b489c73840408a7c544beabee7a"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

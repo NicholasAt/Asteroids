@@ -1,4 +1,6 @@
 using Assets.Scripts.Data.Ship;
+using Assets.Scripts.Gameplay.Interfaces;
+using Assets.Scripts.Gameplay.Interfaces.Services;
 using Assets.Scripts.Gameplay.Physics;
 using Assets.Scripts.Gameplay.Weapon;
 using UnityEngine;
@@ -7,20 +9,21 @@ namespace Assets.Scripts.Gameplay.Ship
 {
     public class Ship
     {
+        private readonly ICharacterRegister _characterRegister;
         public readonly PhysicsBody PhysicsBody;
-
         private readonly PhysicsWorld _physicsWorld;
         private readonly ShipData _shipData;
         private readonly Move.Move _move;
         private IWeapon _weapon1;
         private IWeapon _weapon2;
 
-        public Ship(PhysicsWorld physicsWorld, ShipData shipData, Move.Move move, PhysicsBody physicsBody)
+        public Ship(PhysicsWorld physicsWorld, ShipData shipData, Move.Move move, PhysicsBody physicsBody, ICharacterRegister characterRegister)
         {
             _physicsWorld = physicsWorld;
             _shipData = shipData;
             _move = move;
             PhysicsBody = physicsBody;
+            _characterRegister = characterRegister;
         }
 
         public void SetWeapon(IWeapon weapon1, IWeapon weapon2)
@@ -34,6 +37,7 @@ namespace Assets.Scripts.Gameplay.Ship
             _weapon1?.Update(isAttack1, deltaTime);
             _weapon2?.Update(isAttack2, deltaTime);
             _move.Update(moveAxis.y > 0, moveAxis.x);
+            _characterRegister.SetPosition(PhysicsBody.Position);
         }
 
         public void Destroy()

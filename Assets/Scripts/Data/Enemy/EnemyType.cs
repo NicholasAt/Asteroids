@@ -4,5 +4,7 @@ namespace Assets.Scripts.Data.Enemy
     {
         None,
         Asteroid,
+        Fragment,
+        Saucer,
     }
 }

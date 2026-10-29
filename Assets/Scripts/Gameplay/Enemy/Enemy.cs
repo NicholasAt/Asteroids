@@ -7,24 +7,27 @@ using Zenject;
 
 namespace Assets.Scripts.Gameplay.Enemy
 {
-    public class Asteroid
+    public class Enemy
     {
+        public readonly PhysicsBody PhysicsBody;
+
+        private readonly EnemyType _enemyType;
         private readonly PhysicsWorld _physicsWorld;
-        private readonly PhysicsBody _physicsBody;
         private readonly SignalBus _signalBus;
         public Action OnDestroy { get; set; }
         private bool _destroyed;
 
-        public Asteroid(PhysicsWorld physicsWorld, PhysicsBody physicsBody, SignalBus signalBus)
+        public Enemy(EnemyType enemyType, PhysicsWorld physicsWorld, PhysicsBody physicsBody, SignalBus signalBus)
         {
+            _enemyType = enemyType;
             _physicsWorld = physicsWorld;
-            _physicsBody = physicsBody;
+            PhysicsBody = physicsBody;
             _signalBus = signalBus;
         }
 
         public void Init()
         {
-            _physicsBody.OnCollision += OnCollision;
+            PhysicsBody.OnCollision += OnCollision;
         }
 
         public void Destroy()
@@ -34,15 +37,15 @@ namespace Assets.Scripts.Gameplay.Enemy
             _destroyed = true;
 
             OnDestroy?.Invoke();
-            _physicsBody.OnCollision -= OnCollision;
-            _physicsWorld.Remove(_physicsBody);
+            PhysicsBody.OnCollision -= OnCollision;
+            _physicsWorld.Remove(PhysicsBody);
         }
 
         private void OnCollision(object owner)
         {
             if (owner is IInflictDamage)
             {
-                _signalBus.Fire(new EnemyDeathSignal(EnemyType.Asteroid, _physicsBody.Position));
+                _signalBus.Fire(new EnemyDeathSignal(_enemyType, PhysicsBody.Position));
                 Destroy();
             }
         }

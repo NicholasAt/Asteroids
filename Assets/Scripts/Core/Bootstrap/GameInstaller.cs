@@ -4,12 +4,14 @@ using Assets.Scripts.Data;
 using Assets.Scripts.Data.Bullet;
 using Assets.Scripts.Data.Enemy.Asteroid;
 using Assets.Scripts.Data.Enemy.Fragments;
+using Assets.Scripts.Data.Enemy.Saucer;
 using Assets.Scripts.Data.Ship;
 using Assets.Scripts.Data.Weapon;
 using Assets.Scripts.Gameplay.Physics;
 using Assets.Scripts.Gameplay.Services.EnemySpawner;
 using Assets.Scripts.Gameplay.Services.Factories;
 using Assets.Scripts.Gameplay.Services.InputService;
+using Assets.Scripts.Gameplay.Services.Register;
 using Assets.Scripts.Gameplay.Signals;
 using UnityEngine;
 using Zenject;
@@ -30,6 +32,7 @@ namespace Assets.Scripts.Core
 
             Container.Bind<SceneLoader>().AsSingle();
             Container.Bind<PhysicsWorld>().FromNewComponentOn(gameObject).AsSingle();
+            Container.BindInterfacesAndSelfTo<CharacterRegister>().AsSingle();
             Container.BindInterfacesAndSelfTo<EnemySpawner>().AsSingle();
             Container.BindInterfacesAndSelfTo<PCInputService>().AsSingle();
 
@@ -58,6 +61,7 @@ namespace Assets.Scripts.Core
             Container.Bind<AsteroidData>().FromInstance(_allData.AsteroidData).AsSingle();
             Container.Bind<BulletData>().FromInstance(_allData.BulletData).AsSingle();
             Container.Bind<FragmentsData>().FromInstance(_allData.FragmentsData).AsSingle();
+            Container.Bind<SaucerData>().FromInstance(_allData.SaucerData).AsSingle();
         }
         private void BindStates()
         {

@@ -1,6 +1,7 @@
 using Assets.Scripts.Data.Ship;
 using Assets.Scripts.Gameplay.Common;
 using Assets.Scripts.Gameplay.Extensions;
+using Assets.Scripts.Gameplay.Interfaces.Services;
 using Assets.Scripts.Gameplay.Physics;
 using UnityEngine;
 using Zenject;
@@ -32,10 +33,12 @@ namespace Assets.Scripts.Gameplay.Services.Factories
             };
 
             PhysicsWorld physicsWorld = _diContainer.Resolve<PhysicsWorld>();
+            ICharacterRegister register = _diContainer.Resolve<ICharacterRegister>();
             physicsWorld.Add(physicsBody);
 
             Ship.ShipView view = instance.GetComponent<Ship.ShipView>();
-            Ship.Ship ship = new Ship.Ship(physicsWorld, _shipData, new Move.Move(physicsBody, _shipData.SpeedRotate, _shipData.Force), physicsBody);
+            Move.Move move = new Move.Move(physicsBody, _shipData.SpeedRotate, _shipData.Force);
+            Ship.Ship ship = new Ship.Ship(physicsWorld, _shipData, move, physicsBody, register);
 
             instance.GetComponent<TransformView>().Init(physicsBody);
 

@@ -1,0 +1,17 @@
+{
+    "name": "Gameplay.Services.Register",
+    "rootNamespace": "",
+    "references": [
+        "GUID:790b788b312e43f4697044b749be548a",
+        "GUID:65c7a0073f1783943923ce184c43c289"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
