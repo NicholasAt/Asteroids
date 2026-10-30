@@ -4,6 +4,7 @@ using Assets.Scripts.Gameplay.Interfaces.Services;
 using Assets.Scripts.Gameplay.Physics;
 using Assets.Scripts.Gameplay.Signals;
 using System;
+using UnityEngine;
 using Zenject;
 
 namespace Assets.Scripts.Gameplay.Enemy
@@ -16,29 +17,37 @@ namespace Assets.Scripts.Gameplay.Enemy
         private readonly PhysicsWorld _physicsWorld;
         private readonly SignalBus _signalBus;
         private readonly IEnemyRegistry _enemyRegistry;
+        private readonly IWorldBounds _worldBounds;
 
         public Action OnDestroy { get; set; }
+
+        public Vector2 Position => PhysicsBody.Position;
+
         private bool _destroyed;
 
-        public EnemyBehaviour(EnemyType enemyId, PhysicsWorld physicsWorld, PhysicsBody physicsBody, SignalBus signalBus, IEnemyRegistry enemyRegistry)
+        public EnemyBehaviour(EnemyType enemyId, PhysicsWorld physicsWorld, PhysicsBody physicsBody, SignalBus signalBus, IEnemyRegistry enemyRegistry, IWorldBounds worldBounds)
         {
             _enemyId = enemyId;
             _physicsWorld = physicsWorld;
             PhysicsBody = physicsBody;
             _signalBus = signalBus;
             _enemyRegistry = enemyRegistry;
+            _worldBounds = worldBounds;
             PhysicsBody.Owner = this;
-        }
-
-        public virtual void Update(float deltaTime)
-        {
-
         }
 
         public void TakeDamage(float damage)
         {
             _signalBus.Fire(new EnemyDeathSignal(_enemyId, PhysicsBody.Position));
             Destroy();
+        }
+
+        public virtual void Update(float deltaTime)
+        { }
+
+        public virtual void Wrap(Vector2 newPosition)
+        {
+            PhysicsBody.Position = newPosition;
         }
 
         public void Destroy()
@@ -49,6 +58,7 @@ namespace Assets.Scripts.Gameplay.Enemy
 
             _enemyRegistry.Remove(this);
             _physicsWorld.Remove(PhysicsBody);
+            _worldBounds.Remove(this);
             OnDestroy?.Invoke();
         }
     }

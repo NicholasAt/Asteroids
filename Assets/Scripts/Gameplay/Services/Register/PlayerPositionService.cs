@@ -1,9 +1,9 @@
-using Assets.Scripts.Gameplay.Interfaces.Services;
+using Assets.Scripts.Gameplay.Interfaces.Common;
 using UnityEngine;
 
 namespace Assets.Scripts.Gameplay.Services.Register
 {
-    public class CharacterRegister : ICharacterRegister
+    public class PlayerPositionService : IPlayerPosition
     {      
         public Vector2 PlayerPosition { get; private set; }
 

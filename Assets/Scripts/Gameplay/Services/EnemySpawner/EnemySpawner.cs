@@ -1,4 +1,5 @@
 using Assets.Scripts.Data.Enemy;
+using Assets.Scripts.Data.WorldBounds;
 using Assets.Scripts.Gameplay.Interfaces.Services;
 using Assets.Scripts.Gameplay.Signals;
 using System;
@@ -10,12 +11,14 @@ namespace Assets.Scripts.Gameplay.Services.EnemySpawner
     public class EnemySpawner : IEnemySpawner, IDisposable
     {
         private readonly SignalBus _signalBus;
+        private readonly WorldBoundsData _worldBoundsData;
         private readonly IEnemyFactory _enemyFactory;
         private readonly IEnemyRegistry _enemyRegistry;
 
-        public EnemySpawner(SignalBus signalBus, IEnemyFactory enemyFactory, IEnemyRegistry enemyRegistry)
+        public EnemySpawner(SignalBus signalBus, WorldBoundsData worldBoundsData, IEnemyFactory enemyFactory, IEnemyRegistry enemyRegistry)
         {
             _signalBus = signalBus;
+            _worldBoundsData = worldBoundsData;
             _enemyFactory = enemyFactory;
             _enemyRegistry = enemyRegistry;
         }
@@ -38,10 +41,9 @@ namespace Assets.Scripts.Gameplay.Services.EnemySpawner
         private void CalculatePosition(int count, Action<Vector2, Vector2> onCalculate)
         {
             int randomAngle = 150;
-            Vector2 mapSize = new Vector2(50, 30);
 
             int halfRandomAngle = randomAngle / 2;
-            Vector2 halfMap = mapSize / 2;
+            Vector2 halfMap = _worldBoundsData.OutMapSize / 2;
 
             for (int i = 0; i < count; i++)
             {

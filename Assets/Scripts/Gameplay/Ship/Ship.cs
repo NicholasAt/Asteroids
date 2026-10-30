@@ -1,5 +1,4 @@
 using Assets.Scripts.Data.Ship;
-using Assets.Scripts.Gameplay.Interfaces;
 using Assets.Scripts.Gameplay.Interfaces.Common;
 using Assets.Scripts.Gameplay.Interfaces.Services;
 using Assets.Scripts.Gameplay.Physics;
@@ -7,9 +6,10 @@ using UnityEngine;
 
 namespace Assets.Scripts.Gameplay.Ship
 {
-    public class Ship
+    public class Ship : IWrapped
     {
-        private readonly ICharacterRegister _characterRegister;
+        private readonly IPlayerPosition _playerPosition;
+        private readonly IWorldBounds _worldBounds;
         public readonly PhysicsBody PhysicsBody;
         private readonly PhysicsWorld _physicsWorld;
         private readonly ShipData _shipData;
@@ -17,13 +17,16 @@ namespace Assets.Scripts.Gameplay.Ship
         private IWeapon _weapon1;
         private IWeapon _weapon2;
 
-        public Ship(PhysicsWorld physicsWorld, ShipData shipData, Move.Move move, PhysicsBody physicsBody, ICharacterRegister characterRegister)
+        public Vector2 Position => PhysicsBody.Position;
+
+        public Ship(PhysicsWorld physicsWorld, ShipData shipData, Move.Move move, PhysicsBody physicsBody, IPlayerPosition playerPosition, IWorldBounds worldBounds)
         {
             _physicsWorld = physicsWorld;
             _shipData = shipData;
             _move = move;
             PhysicsBody = physicsBody;
-            _characterRegister = characterRegister;
+            _playerPosition = playerPosition;
+            _worldBounds = worldBounds;
         }
 
         public void SetWeapon(IWeapon weapon1, IWeapon weapon2)
@@ -37,12 +40,18 @@ namespace Assets.Scripts.Gameplay.Ship
             _weapon1?.Update(isAttack1, deltaTime);
             _weapon2?.Update(isAttack2, deltaTime);
             _move.Update(moveAxis.y > 0, moveAxis.x);
-            _characterRegister.SetPosition(PhysicsBody.Position);
+            _playerPosition.SetPosition(Position);
+        }
+
+        public void Wrap(Vector2 newPosition)
+        {
+            PhysicsBody.Position = newPosition;
         }
 
         public void Destroy()
         {
             _physicsWorld.Remove(PhysicsBody);
+            _worldBounds.Remove(this);
         }
     }
 }

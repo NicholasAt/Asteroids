@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace Assets.Scripts.Gameplay.Interfaces.Services
+namespace Assets.Scripts.Gameplay.Interfaces.Common
 {
-    public interface ICharacterRegister
+    public interface IPlayerPosition
     {
         Vector2 PlayerPosition { get; }
         void SetPosition(Vector2 position);

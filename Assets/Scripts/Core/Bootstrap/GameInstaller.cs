@@ -7,6 +7,7 @@ using Assets.Scripts.Data.Enemy.Fragments;
 using Assets.Scripts.Data.Enemy.Saucer;
 using Assets.Scripts.Data.Ship;
 using Assets.Scripts.Data.Weapon;
+using Assets.Scripts.Data.WorldBounds;
 using Assets.Scripts.Gameplay.Interfaces.Services;
 using Assets.Scripts.Gameplay.Physics;
 using Assets.Scripts.Gameplay.Services.EnemySpawner;
@@ -14,6 +15,7 @@ using Assets.Scripts.Gameplay.Services.Factories;
 using Assets.Scripts.Gameplay.Services.Factories.Weapon;
 using Assets.Scripts.Gameplay.Services.InputService;
 using Assets.Scripts.Gameplay.Services.Register;
+using Assets.Scripts.Gameplay.Services.WorldBounds;
 using Assets.Scripts.Gameplay.Signals;
 using UnityEngine;
 using Zenject;
@@ -35,9 +37,10 @@ namespace Assets.Scripts.Core
             Container.Bind<SceneLoader>().AsSingle();
             Container.Bind<PhysicsWorld>().FromNewComponentOn(gameObject).AsSingle();
             Container.BindInterfacesAndSelfTo<EnemyRegistry>().AsSingle();
-            Container.BindInterfacesAndSelfTo<CharacterRegister>().AsSingle();
+            Container.BindInterfacesAndSelfTo<PlayerPositionService>().AsSingle();
             Container.BindInterfacesAndSelfTo<EnemySpawner>().AsSingle();
             Container.BindInterfacesAndSelfTo<PCInputService>().AsSingle();
+            Container.BindInterfacesAndSelfTo<WorldBounds>().AsSingle();
 
         }
         private void BindSignals()
@@ -68,6 +71,7 @@ namespace Assets.Scripts.Core
             Container.Bind<BulletData>().FromInstance(_allData.BulletData).AsSingle();
             Container.Bind<FragmentsData>().FromInstance(_allData.FragmentsData).AsSingle();
             Container.Bind<SaucerData>().FromInstance(_allData.SaucerData).AsSingle();
+            Container.Bind<WorldBoundsData>().FromInstance(_allData.WorldBoundsData).AsSingle();
         }
         private void BindStates()
         {

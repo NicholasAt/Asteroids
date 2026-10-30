@@ -4,6 +4,7 @@ using Assets.Scripts.Data.Enemy.Fragments;
 using Assets.Scripts.Data.Enemy.Saucer;
 using Assets.Scripts.Data.Ship;
 using Assets.Scripts.Data.Weapon;
+using Assets.Scripts.Data.WorldBounds;
 using UnityEngine;
 
 namespace Assets.Scripts.Data
@@ -17,5 +18,6 @@ namespace Assets.Scripts.Data
         [field: SerializeField] public SaucerData SaucerData { get; private set; }
         [field: SerializeField] public WeaponData WeaponData { get; private set; }
         [field: SerializeField] public BulletData BulletData { get; private set; }
+        [field: SerializeField] public WorldBoundsData WorldBoundsData { get; private set; }
     }
 }
