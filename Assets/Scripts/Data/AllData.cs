@@ -12,10 +12,10 @@ namespace Assets.Scripts.Data
     public class AllData : ScriptableObject
     {
         [field: SerializeField] public ShipData ShipData { get; private set; }
-        [field: SerializeField] public WeaponData WeaponData { get; private set; }
         [field: SerializeField] public AsteroidData AsteroidData { get; private set; }
-        [field: SerializeField] public BulletData BulletData { get; private set; }
         [field: SerializeField] public FragmentsData FragmentsData { get; private set; }
         [field: SerializeField] public SaucerData SaucerData { get; private set; }
+        [field: SerializeField] public WeaponData WeaponData { get; private set; }
+        [field: SerializeField] public BulletData BulletData { get; private set; }
     }
 }

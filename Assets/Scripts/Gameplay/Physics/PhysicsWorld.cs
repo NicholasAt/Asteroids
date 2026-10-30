@@ -51,9 +51,6 @@ namespace Assets.Scripts.Gameplay.Physics
 
             foreach (PhysicsBody body in _physics)
             {
-                if (body.IsInvulnerable)
-                    continue;
-
                 Vector2 toCenter = body.Position - from;
                 float projection = Vector2.Dot(toCenter, dir);
                 projection = Mathf.Clamp(projection, 0f, length);

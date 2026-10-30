@@ -1,3 +1,4 @@
+using Assets.Scripts.Core.Common;
 using Assets.Scripts.Gameplay.Interfaces.Common;
 using Assets.Scripts.Gameplay.Interfaces.Services;
 using System.Collections.Generic;
@@ -7,24 +8,43 @@ namespace Assets.Scripts.Gameplay.Services.Register
 {
     public class EnemyRegistry : IEnemyRegistry
     {
-        private readonly List<IEnemyBehaviour> _enemies = new();
+        private readonly List<IEnemyBehaviour> _pursuing = new();
+        private readonly List<IEnemyBehaviour> _notPursuing = new();
 
-        public void Add(IEnemyBehaviour enemy)
+        public bool TryGetPursuing(out IReadOnlyList<IEnemyBehaviour> enemies)
         {
-            _enemies.Add(enemy);
+            enemies = _pursuing;
+            return _pursuing.Count > 0;
+        }
+
+        public bool TryGetNotPursuing(out IReadOnlyList<IEnemyBehaviour> enemies)
+        {
+            enemies = _notPursuing;
+            return _notPursuing.Count > 0;
+        }
+
+        public void Add(bool isPursuing, IEnemyBehaviour enemy)
+        {
+            (isPursuing ? _pursuing : _notPursuing).Add(enemy);
         }
 
         public void Remove(IEnemyBehaviour enemy)
         {
-            _enemies.Remove(enemy);
+            if (CollectionExtension.RemoveFrom(_pursuing, enemy))
+                return;
+            CollectionExtension.RemoveFrom(_notPursuing, enemy);
         }
 
         public void Tick()
         {
-            for (int i = _enemies.Count - 1; i >= 0; i--)
-            {
-                _enemies[i].Update(Time.deltaTime);
-            }
+            UpdateTick(_pursuing);
+            UpdateTick(_notPursuing);
+        }
+
+        private void UpdateTick(List<IEnemyBehaviour> list)
+        {
+            for (int i = list.Count - 1; i >= 0; i--)
+                list[i].Update(Time.deltaTime);
         }
     }
 }

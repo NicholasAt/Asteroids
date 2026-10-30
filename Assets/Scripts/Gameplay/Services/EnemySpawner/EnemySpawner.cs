@@ -19,7 +19,7 @@ namespace Assets.Scripts.Gameplay.Services.EnemySpawner
 
         public void Start()
         {
-            _signalBus.Unsubscribe<EnemyDeathSignal>(OnEnemyDeath);
+            _signalBus.TryUnsubscribe<EnemyDeathSignal>(OnEnemyDeath);
             _signalBus.Subscribe<EnemyDeathSignal>(OnEnemyDeath);
             Spawn();
         }
@@ -90,12 +90,19 @@ namespace Assets.Scripts.Gameplay.Services.EnemySpawner
         {
             switch (signal.EnemyType)
             {
-                case EnemyType.Asteroid:
+                case EnemyType.Fragment:
+                    //recalculate asteroids
+                    break;
 
+                case EnemyType.Asteroid:
                     for (int i = 0; i < 3; i++)
                     {
                         _enemyFactory.CreateFragment(signal.Position, new Vector2(0, i * 2), 1, 1, 0.5f);
                     }
+                    break;
+
+                case EnemyType.Saucer:
+                    //recalculate Saucer
                     break;
 
                 case EnemyType.None:

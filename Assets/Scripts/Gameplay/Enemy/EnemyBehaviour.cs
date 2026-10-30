@@ -11,15 +11,15 @@ namespace Assets.Scripts.Gameplay.Enemy
     {
         protected readonly PhysicsBody PhysicsBody;
 
-        private readonly EnemyType _enemyType;
+        private readonly EnemyType _enemyId;
         private readonly PhysicsWorld _physicsWorld;
         private readonly SignalBus _signalBus;
         public Action OnDestroy { get; set; }
         private bool _destroyed;
 
-        public EnemyBehaviour(EnemyType enemyType, PhysicsWorld physicsWorld, PhysicsBody physicsBody, SignalBus signalBus)
+        public EnemyBehaviour(EnemyType enemyId, PhysicsWorld physicsWorld, PhysicsBody physicsBody, SignalBus signalBus)
         {
-            _enemyType = enemyType;
+            _enemyId = enemyId;
             _physicsWorld = physicsWorld;
             PhysicsBody = physicsBody;
             _signalBus = signalBus;
@@ -33,7 +33,7 @@ namespace Assets.Scripts.Gameplay.Enemy
 
         public void TakeDamage(float damage)
         {
-            _signalBus.Fire(new EnemyDeathSignal(_enemyType, PhysicsBody.Position));
+            _signalBus.Fire(new EnemyDeathSignal(_enemyId, PhysicsBody.Position));
             Destroy();
         }
 

@@ -16,6 +16,9 @@ namespace Assets.Scripts.Gameplay.Weapon.Constant
         private bool _attackToggle;
         private List<PhysicsBody> _currentTargets = new();
 
+        private bool CDDamage => _currentCDDamage > 0;
+        private float _currentCDDamage;
+
         public Constant_Weapon(Constant_WeaponConfig config, Constant_WeaponEffect weaponEffect, PhysicsBody body)
         {
             _config = config;
@@ -25,6 +28,9 @@ namespace Assets.Scripts.Gameplay.Weapon.Constant
 
         public override void Update(bool isPress, float deltaTime)
         {
+            if (CDDamage)
+                _currentCDDamage -= deltaTime;
+
             if (_attackToggle == false && isPress)
             {
                 _attackToggle = true;
@@ -39,26 +45,35 @@ namespace Assets.Scripts.Gameplay.Weapon.Constant
             if (isPress)
             {
                 Vector2 direction = _body.Rotation.ToRotateToDirection();
-                Fire(_body, direction, 100, _config.RayWidth);
-                _weaponEffect.Update(_body.Position, direction * 100);
+
+                if (CDDamage == false)
+                    Fire(_body, direction, _config.RayLength, _config.RayWidth);
+                _weaponEffect.Update(_body.Position, _body.Position + (direction * _config.RayLength));
             }
         }
 
-        private void Fire(PhysicsBody ship, Vector2 direction, float length, float width)
+        private void Fire(PhysicsBody root, Vector2 direction, float length, float width)
         {
-            Vector2 origin = ship.Position;
+            Vector2 origin = root.Position;
             Vector2 end = origin + direction * length;
 
             PhysicsWorld.RaycastAll(origin, end, ref _currentTargets, width);
 
+            bool isHit = false;
             foreach (PhysicsBody body in _currentTargets)
             {
-                if (body == ship)
+                if (body == root)
                     continue;
 
                 if (body.Owner != null && body.Owner is IApplyDamage applyDamage)
+                {
+                    isHit = true;
                     applyDamage.TakeDamage(_config.Damage);
+                }
             }
+
+            if (isHit)
+                _currentCDDamage += _config.DamageDelay;
         }
     }
 }
