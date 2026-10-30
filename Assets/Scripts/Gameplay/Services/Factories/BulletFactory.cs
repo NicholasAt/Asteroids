@@ -27,6 +27,9 @@ namespace Assets.Scripts.Gameplay.Services.Factories
             Vector2 direction = rotate.ToRotateToDirection();
             PhysicsBody body = new PhysicsBody()
             {
+                Layer = CollisionLayer.Bullet,
+                CollidesWith = CollisionLayer.Enemy,
+
                 Mass = _bulletData.BulletMass,
                 Radius = _bulletData.BulleRadius,
                 Drag = 0,

@@ -74,13 +74,15 @@ namespace Assets.Scripts.Gameplay.Services.Factories
 
             PhysicsBody physicsBody = new PhysicsBody()
             {
+                Layer = CollisionLayer.Enemy,
+                CollidesWith = CollisionLayer.Player | CollisionLayer.Bullet,
+
                 Velocity = direction * force,
                 SpeedLimit = speedLimit,
                 Direction = direction,
                 Position = position,
                 Drag = drag,
                 Mass = _asteroidData.Mass,
-                IsInvulnerable = true,
             };
 
             _physicsWorld.Add(physicsBody);

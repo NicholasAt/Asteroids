@@ -12,6 +12,9 @@ namespace Assets.Scripts.Gameplay.Physics
         public Vector2 Direction;
         public float Force;
 
+        public CollisionLayer Layer;
+        public CollisionLayer CollidesWith;
+
         public float Rotation;
         public float AngularForce;
         public float AngularVelocity;

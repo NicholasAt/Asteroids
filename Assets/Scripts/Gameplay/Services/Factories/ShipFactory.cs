@@ -26,6 +26,9 @@ namespace Assets.Scripts.Gameplay.Services.Factories
 
             PhysicsBody physicsBody = new PhysicsBody()
             {
+                Layer = CollisionLayer.Player,
+                CollidesWith = CollisionLayer.Enemy,
+
                 Drag = _shipData.Drag,
                 Mass = _shipData.Mass,
                 Force = _shipData.Force,

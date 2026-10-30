@@ -77,6 +77,9 @@ namespace Assets.Scripts.Gameplay.Physics
         }
         private static bool CheckCollision(PhysicsBody a, PhysicsBody b)
         {
+            if ((a.CollidesWith & b.Layer) == 0 || (b.CollidesWith & a.Layer) == 0)
+                return false;
+
             if (a.IsInvulnerable || b.IsInvulnerable)
                 return false;
 
