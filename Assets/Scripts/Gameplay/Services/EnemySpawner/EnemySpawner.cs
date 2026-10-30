@@ -11,10 +11,13 @@ namespace Assets.Scripts.Gameplay.Services.EnemySpawner
     {
         private readonly SignalBus _signalBus;
         private readonly IEnemyFactory _enemyFactory;
-        public EnemySpawner(SignalBus signalBus, IEnemyFactory enemyFactory)
+        private readonly IEnemyRegistry _enemyRegistry;
+
+        public EnemySpawner(SignalBus signalBus, IEnemyFactory enemyFactory, IEnemyRegistry enemyRegistry)
         {
             _signalBus = signalBus;
             _enemyFactory = enemyFactory;
+            _enemyRegistry = enemyRegistry;
         }
 
         public void Start()
@@ -25,16 +28,22 @@ namespace Assets.Scripts.Gameplay.Services.EnemySpawner
         }
         #region Spawn
 
+        private int asteroids = 10;
+        private int saucers = 2;
         private void Spawn()
         {
+            CalculatePosition(asteroids, CreateAster);
+            CalculatePosition(saucers, CreateSaucer);
+        }
+        private void CalculatePosition(int count, Action<Vector2, Vector2> onCalculate)
+        {
             int randomAngle = 150;
-            int asteroids = 50;
             Vector2 mapSize = new Vector2(50, 30);
 
             int halfRandomAngle = randomAngle / 2;
             Vector2 halfMap = mapSize / 2;
 
-            for (int i = 0; i < asteroids; i++)
+            for (int i = 0; i < count; i++)
             {
                 bool upDown = UnityEngine.Random.Range(0, 2) == 1;
                 bool forward = UnityEngine.Random.Range(0, 2) == 1;
@@ -77,8 +86,29 @@ namespace Assets.Scripts.Gameplay.Services.EnemySpawner
                 randomRad += offset;
 
                 Vector2 direction = new(Mathf.Cos(randomRad), Mathf.Sin(randomRad));
-                _enemyFactory.CreateAsteroid(pos, direction, 1, 1, 0.0f);
+                onCalculate?.Invoke(pos, direction);
             }
+        }
+        private void CalculateAndSpawnAsteroinds()
+        {
+            int difference = asteroids - _enemyRegistry.NotPursuing.Count;
+            if (difference > 0)
+                CalculatePosition(difference, CreateAster);
+        }
+        private void CreateFragment(int count, Vector2 pos)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                _enemyFactory.CreateFragment(pos, new Vector2(0, i * 2), 1, 1, 0.5f);
+            }
+        }
+        private void CreateSaucer(Vector2 pos, Vector2 _)
+        {
+            _enemyFactory.CreateSaucer(pos, 1, 1, 0.0f);
+        }
+        private void CreateAster(Vector2 pos, Vector2 direction)
+        {
+            _enemyFactory.CreateAsteroid(pos, direction, 1, 1, 0.0f);
         }
         #endregion
         public void Dispose()
@@ -91,18 +121,15 @@ namespace Assets.Scripts.Gameplay.Services.EnemySpawner
             switch (signal.EnemyType)
             {
                 case EnemyType.Fragment:
-                    //recalculate asteroids
+                    CalculateAndSpawnAsteroinds();
                     break;
 
                 case EnemyType.Asteroid:
-                    for (int i = 0; i < 3; i++)
-                    {
-                        _enemyFactory.CreateFragment(signal.Position, new Vector2(0, i * 2), 1, 1, 0.5f);
-                    }
+                    CreateFragment(3, signal.Position);
                     break;
 
                 case EnemyType.Saucer:
-                    //recalculate Saucer
+                    CalculatePosition(1, CreateSaucer);
                     break;
 
                 case EnemyType.None:

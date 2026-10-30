@@ -77,6 +77,9 @@ namespace Assets.Scripts.Gameplay.Physics
         }
         private static bool CheckCollision(PhysicsBody a, PhysicsBody b)
         {
+            if (a.IsInvulnerable || b.IsInvulnerable)
+                return false;
+
             float distanceSquared = (a.Position - b.Position).sqrMagnitude;
             float radiusSum = a.Radius + b.Radius;
 

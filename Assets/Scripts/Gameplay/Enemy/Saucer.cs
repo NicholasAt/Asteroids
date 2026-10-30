@@ -10,7 +10,7 @@ namespace Assets.Scripts.Gameplay.Enemy
     {
         private readonly ICharacterRegister _characterRegister;
 
-        public Saucer(EnemyType enemyType, ICharacterRegister characterRegister, PhysicsWorld physicsWorld, PhysicsBody physicsBody, SignalBus signalBus) : base(enemyType, physicsWorld, physicsBody, signalBus)
+        public Saucer( EnemyType enemyId, ICharacterRegister characterRegister, PhysicsWorld physicsWorld, PhysicsBody physicsBody, SignalBus signalBus, IEnemyRegistry enemyRegistry) : base(enemyId, physicsWorld, physicsBody, signalBus, enemyRegistry)
         {
             _characterRegister = characterRegister;
         }

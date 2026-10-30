@@ -34,7 +34,11 @@ namespace Assets.Scripts.Gameplay.Bullet
         private void OnCollistion(object owner)
         {
             if (owner != null && owner is IApplyDamage applyDamage)
+            {
+                _physicsBody.IsInvulnerable = true;
                 applyDamage.TakeDamage(Damage);
+            }
+
             Destroy(gameObject);
         }
     }

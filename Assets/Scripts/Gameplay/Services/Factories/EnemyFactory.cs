@@ -53,7 +53,7 @@ namespace Assets.Scripts.Gameplay.Services.Factories
             GameObject prefab = _saucerData.SaucerPrefab;
             (GameObject instance, PhysicsBody physicsBody) = Instantiate(prefab, position, Vector2.zero, force, speedLimit, drag);
 
-            Saucer enemy = new Saucer(EnemyType.Saucer, _characterRegister, _physicsWorld, physicsBody, _signalBus);
+            Saucer enemy = new Saucer(EnemyType.Saucer, _characterRegister, _physicsWorld, physicsBody, _signalBus, _enemyRegistry);
             InitAndRegister(true, enemy, instance);
         }
 
@@ -61,7 +61,7 @@ namespace Assets.Scripts.Gameplay.Services.Factories
         {
             (GameObject instance, PhysicsBody physicsBody) = Instantiate(prefab, position, direction, force, speedLimit, drag);
 
-            IEnemyBehaviour enemy = new EnemyBehaviour(enemyId, _physicsWorld, physicsBody, _signalBus);
+            IEnemyBehaviour enemy = new EnemyBehaviour(enemyId, _physicsWorld, physicsBody, _signalBus, _enemyRegistry);
             InitAndRegister(isPursuing, enemy, instance);
         }
         private (GameObject, PhysicsBody) Instantiate(GameObject prefab, Vector2 position, Vector2 direction, float force, float speedLimit, float drag)

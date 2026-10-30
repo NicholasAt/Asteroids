@@ -10,18 +10,7 @@ namespace Assets.Scripts.Gameplay.Services.Register
     {
         private readonly List<IEnemyBehaviour> _pursuing = new();
         private readonly List<IEnemyBehaviour> _notPursuing = new();
-
-        public bool TryGetPursuing(out IReadOnlyList<IEnemyBehaviour> enemies)
-        {
-            enemies = _pursuing;
-            return _pursuing.Count > 0;
-        }
-
-        public bool TryGetNotPursuing(out IReadOnlyList<IEnemyBehaviour> enemies)
-        {
-            enemies = _notPursuing;
-            return _notPursuing.Count > 0;
-        }
+        public IReadOnlyList<IEnemyBehaviour> NotPursuing => _notPursuing;
 
         public void Add(bool isPursuing, IEnemyBehaviour enemy)
         {
