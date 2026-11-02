@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: AllData
   m_EditorClassIdentifier: 
   <ShipData>k__BackingField: {fileID: 11400000, guid: bfbf7ba4290c5794780df804d83275b9, type: 2}
+  <PlayerData>k__BackingField: {fileID: 11400000, guid: 14b9b1f05e9e9654d9f4ba263c1d8b40, type: 2}
   <AsteroidData>k__BackingField: {fileID: 11400000, guid: a8541027d45451f4ca8815b660ff34c9, type: 2}
   <FragmentsData>k__BackingField: {fileID: 11400000, guid: 7114cabf2f3906b4285213fa9c5eddf8, type: 2}
   <SaucerData>k__BackingField: {fileID: 11400000, guid: 60966155e72dc7c4b9a31f76733061a1, type: 2}

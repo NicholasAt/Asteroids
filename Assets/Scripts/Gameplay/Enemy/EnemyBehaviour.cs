@@ -9,7 +9,7 @@ using Zenject;
 
 namespace Assets.Scripts.Gameplay.Enemy
 {
-    public class EnemyBehaviour : IEnemyBehaviour
+    public class EnemyBehaviour : IEnemyBehaviour, IDisposable
     {
         protected readonly PhysicsBody PhysicsBody;
 
@@ -34,6 +34,12 @@ namespace Assets.Scripts.Gameplay.Enemy
             _enemyRegistry = enemyRegistry;
             _worldBounds = worldBounds;
             PhysicsBody.Owner = this;
+            PhysicsBody.OnCollision += OnCollision;
+        }
+
+        public void Dispose()
+        {
+            PhysicsBody.OnCollision -= OnCollision;
         }
 
         public void TakeDamage(float damage)
@@ -60,6 +66,11 @@ namespace Assets.Scripts.Gameplay.Enemy
             _physicsWorld.Remove(PhysicsBody);
             _worldBounds.Remove(this);
             OnDestroy?.Invoke();
+        }
+        private void OnCollision(object obj)
+        {
+            if (obj != null && obj is IApplyDamage damage)
+                damage.TakeDamage(1);
         }
     }
 }

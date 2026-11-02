@@ -10,12 +10,14 @@ namespace Assets.Scripts.Gameplay.Services.Factories
     {
         private readonly ShipFactory _shipFactory;
         private readonly IWeaponFactory _weaponFactory;
+        private readonly IProgressService _progressService;
         private readonly ShipData _shipData;
 
-        public ShipBuilder(ShipFactory shipFactory, IWeaponFactory weaponFactory, ShipData shipData)
+        public ShipBuilder(ShipFactory shipFactory, IWeaponFactory weaponFactory, IProgressService progressService, ShipData shipData)
         {
             _shipFactory = shipFactory;
             _weaponFactory = weaponFactory;
+            _progressService = progressService;
             _shipData = shipData;
         }
 

@@ -5,6 +5,8 @@ namespace Assets.Scripts.Gameplay.Physics
 {
     public class PhysicsWorld : MonoBehaviour
     {
+        private const float MinImpulseMagnitude = 15;
+
         private readonly static List<PhysicsBody> _physics = new(1000);
         private readonly HashSet<PhysicsBody> _candidates = new();
 
@@ -64,6 +66,7 @@ namespace Assets.Scripts.Gameplay.Physics
                 }
             }
         }
+
         private void UpdateRemove()
         {
             if (_candidates.Count > 0)
@@ -75,6 +78,7 @@ namespace Assets.Scripts.Gameplay.Physics
                 _candidates.Clear();
             }
         }
+
         private static bool CheckCollision(PhysicsBody a, PhysicsBody b)
         {
             if ((a.CollidesWith & b.Layer) == 0 || (b.CollidesWith & a.Layer) == 0)
@@ -88,6 +92,7 @@ namespace Assets.Scripts.Gameplay.Physics
 
             return distanceSquared <= radiusSum * radiusSum;
         }
+
         private void ResolveCollision(PhysicsBody a, PhysicsBody b, float restitution = 0.8f)
         {
             Vector2 difference = b.Position - a.Position;
@@ -108,7 +113,7 @@ namespace Assets.Scripts.Gameplay.Physics
                 float inverseMassB = 1f / b.Mass;
 
                 float impulseMagnitude = -(1f + restitution) * velocityAlongNormal / (inverseMassA + inverseMassB);
-
+                impulseMagnitude = Mathf.Max(impulseMagnitude, MinImpulseMagnitude);
                 Vector2 impulse = impulseMagnitude * normal;
 
                 a.Velocity -= impulse * inverseMassA;

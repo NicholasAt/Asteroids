@@ -23,7 +23,6 @@ namespace Assets.Scripts.Gameplay.Services.Register
                 return;
             CollectionExtension.RemoveFrom(_notPursuing, enemy);
         }
-
         public void Tick()
         {
             UpdateTick(_pursuing);

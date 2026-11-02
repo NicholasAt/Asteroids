@@ -21,11 +21,11 @@ namespace Assets.Scripts.Gameplay.Services.Factories
         private readonly SaucerData _saucerData;
         private readonly SignalBus _signalBus;
         private readonly PhysicsWorld _physicsWorld;
-        private readonly IPlayerPosition _playerPositionService;
+        private readonly IProgressService _progressService;
         private readonly IEnemyRegistry _enemyRegistry;
         private readonly IWorldBounds _worldBounds;
 
-        public EnemyFactory(DiContainer diContainer, AsteroidData asteroidData, FragmentsData fragmentsData, SaucerData saucerData, SignalBus signalBus, PhysicsWorld physicsWorld, IPlayerPosition playerPositionService, IEnemyRegistry enemyRegistry, IWorldBounds worldBounds)
+        public EnemyFactory(DiContainer diContainer, AsteroidData asteroidData, FragmentsData fragmentsData, SaucerData saucerData, SignalBus signalBus, PhysicsWorld physicsWorld, IProgressService progressService, IEnemyRegistry enemyRegistry, IWorldBounds worldBounds)
         {
             _diContainer = diContainer;
             _asteroidData = asteroidData;
@@ -33,7 +33,7 @@ namespace Assets.Scripts.Gameplay.Services.Factories
             _saucerData = saucerData;
             _signalBus = signalBus;
             _physicsWorld = physicsWorld;
-            _playerPositionService = playerPositionService;
+            _progressService = progressService;
             _enemyRegistry = enemyRegistry;
             _worldBounds = worldBounds;
         }
@@ -55,7 +55,7 @@ namespace Assets.Scripts.Gameplay.Services.Factories
             GameObject prefab = _saucerData.SaucerPrefab;
             (GameObject instance, PhysicsBody physicsBody) = Instantiate(prefab, position, Vector2.zero, force, speedLimit, drag);
 
-            Saucer enemy = new Saucer(EnemyType.Saucer, _playerPositionService, _physicsWorld, physicsBody, _signalBus, _enemyRegistry, _worldBounds);
+            Saucer enemy = new Saucer(EnemyType.Saucer, _progressService, _physicsWorld, physicsBody, _signalBus, _enemyRegistry, _worldBounds);
             InitAndRegister(true, enemy, instance);
         }
 

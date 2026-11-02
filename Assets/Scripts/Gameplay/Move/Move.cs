@@ -19,10 +19,10 @@ namespace Assets.Scripts.Gameplay.Move
             _forwardForce = forwardForce;
         }
 
-        public void Update()
+        public void Update(bool canMove)
         {
-            bool isThrust = _input.MoveAxis.y > 0;
-            float horizontalAxis = _input.MoveAxis.x;
+            bool isThrust = _input.MoveAxis.y > 0 && canMove;
+            float horizontalAxis = canMove ? _input.MoveAxis.x : 0;
             _physicsBody.AngularForce = -horizontalAxis * _speedRotate;
 
             _physicsBody.Direction = _physicsBody.Rotation.ToRotateToDirection();
