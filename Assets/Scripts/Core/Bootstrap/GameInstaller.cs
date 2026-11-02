@@ -47,6 +47,7 @@ namespace Assets.Scripts.Core
         {
             SignalBusInstaller.Install(Container);
             Container.DeclareSignal<EnemyDeathSignal>();
+            Container.DeclareSignal<ShipChangeHealthSignal>();
         }
         private void BindPools()
         {
@@ -73,6 +74,7 @@ namespace Assets.Scripts.Core
             Container.Bind<SaucerData>().FromInstance(_allData.SaucerData).AsSingle();
             Container.Bind<WorldBoundsData>().FromInstance(_allData.WorldBoundsData).AsSingle();
         }
+        
         private void BindStates()
         {
             Container.Bind<LoadLevelState>().AsSingle();

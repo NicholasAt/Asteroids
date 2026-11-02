@@ -6,6 +6,7 @@ namespace Assets.Scripts.Data.Ship
     public class ShipData : ScriptableObject
     {
         [field: SerializeField] public GameObject ShipPrefab { get; private set; }
+        [field: SerializeField] public int StartHealth { get; private set; }
         [field: SerializeField] public float Force { get; private set; } = 1;
         [field: SerializeField] public float SpeedRotate { get; private set; }
         [field: SerializeField] public float SpeedLimit { get; private set; } = 5;

@@ -1,30 +1,37 @@
+using Assets.Scripts.Data.Models;
 using Assets.Scripts.Data.Ship;
 using Assets.Scripts.Gameplay.Interfaces.Common;
 using Assets.Scripts.Gameplay.Interfaces.Services;
 using Assets.Scripts.Gameplay.Physics;
+using Assets.Scripts.Gameplay.Signals;
 using UnityEngine;
+using Zenject;
 
 namespace Assets.Scripts.Gameplay.Ship
 {
-    public class Ship : IWrapped
+    public class Ship : IWrapped, IApplyDamage
     {
+        public readonly PhysicsBody PhysicsBody;
         private readonly IPlayerPosition _playerPosition;
         private readonly IWorldBounds _worldBounds;
-        public readonly PhysicsBody PhysicsBody;
         private readonly PhysicsWorld _physicsWorld;
         private readonly ShipData _shipData;
+        private readonly SignalBus _signalBus;
+        private readonly Health _health;
         private readonly Move.Move _move;
         private IWeapon _weapon1;
         private IWeapon _weapon2;
 
         public Vector2 Position => PhysicsBody.Position;
 
-        public Ship(PhysicsWorld physicsWorld, ShipData shipData, Move.Move move, PhysicsBody physicsBody, IPlayerPosition playerPosition, IWorldBounds worldBounds)
+        public Ship(PhysicsWorld physicsWorld, SignalBus signalBus, ShipData shipData, Health health, Move.Move move, PhysicsBody physicsBody, IPlayerPosition playerPosition, IWorldBounds worldBounds)
         {
-            _physicsWorld = physicsWorld;
-            _shipData = shipData;
-            _move = move;
             PhysicsBody = physicsBody;
+            _physicsWorld = physicsWorld;
+            _signalBus = signalBus;
+            _shipData = shipData;
+            _health = health;
+            _move = move;
             _playerPosition = playerPosition;
             _worldBounds = worldBounds;
         }
@@ -35,17 +42,24 @@ namespace Assets.Scripts.Gameplay.Ship
             _weapon2 = weapon2;
         }
 
-        public void Update(float deltaTime, Vector2 moveAxis, bool isAttack1, bool isAttack2)
+        public void Update(float deltaTime, bool isAttack1, bool isAttack2)
         {
             _weapon1?.Update(isAttack1, deltaTime);
             _weapon2?.Update(isAttack2, deltaTime);
-            _move.Update(moveAxis.y > 0, moveAxis.x);
+            _move.Update();
             _playerPosition.SetPosition(Position);
+        }
+
+        public void TakeDamage(float _)
+        {
+            _health.ChangeHealth(_health.CurrentHealth - 1);
+            _signalBus.Fire(new ShipChangeHealthSignal(_health.CurrentHealth));
         }
 
         public void Wrap(Vector2 newPosition)
         {
             PhysicsBody.Position = newPosition;
+            _playerPosition.SetPosition(Position);
         }
 
         public void Destroy()

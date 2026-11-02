@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace Assets.Scripts.Gameplay.Services.InputService
+namespace Assets.Scripts.Gameplay.Interfaces.Services
 {
-    public interface IInputService
+    public interface IInput
     {
         Vector2 MoveAxis { get; }
         bool IsAttack1 {  get; }

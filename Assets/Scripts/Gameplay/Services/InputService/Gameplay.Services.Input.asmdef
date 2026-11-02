@@ -1,3 +1,16 @@
 {
-	"name": "Gameplay.Services.Input"
+    "name": "Gameplay.Services.Input",
+    "rootNamespace": "",
+    "references": [
+        "GUID:790b788b312e43f4697044b749be548a"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

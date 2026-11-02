@@ -1,4 +1,4 @@
-using Assets.Scripts.Gameplay.Services.InputService;
+using Assets.Scripts.Gameplay.Interfaces.Services;
 using UnityEngine;
 using Zenject;
 
@@ -6,11 +6,11 @@ namespace Assets.Scripts.Gameplay.Ship
 {
     public class ShipView : MonoBehaviour
     {
-        private IInputService _inputService;
+        private IInput _inputService;
         private Ship _ship;
 
         [Inject]
-        private void Construct(IInputService inputService)
+        private void Construct(IInput inputService)
         {
             _inputService = inputService;
         }
@@ -21,7 +21,7 @@ namespace Assets.Scripts.Gameplay.Ship
 
         private void Update()
         {
-            _ship.Update(Time.deltaTime, _inputService.MoveAxis, _inputService.IsAttack1, _inputService.IsAttack2);
+            _ship.Update(Time.deltaTime, _inputService.IsAttack1, _inputService.IsAttack2);
         }
         private void OnDestroy()
         {

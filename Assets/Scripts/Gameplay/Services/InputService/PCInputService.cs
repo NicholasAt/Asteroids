@@ -1,8 +1,9 @@
+using Assets.Scripts.Gameplay.Interfaces.Services;
 using UnityEngine;
 
 namespace Assets.Scripts.Gameplay.Services.InputService
 {
-    public class PCInputService : IInputService
+    public class PCInputService : IInput
     {
         public Vector2 MoveAxis => GetMoveAxis();
 
