@@ -20,3 +20,4 @@ MonoBehaviour:
   <WeaponData>k__BackingField: {fileID: 11400000, guid: 9023619adc2d9244384f6e31a5662db6, type: 2}
   <BulletData>k__BackingField: {fileID: 11400000, guid: 8a129a95e0dc9d14da77128d506c4166, type: 2}
   <WorldBoundsData>k__BackingField: {fileID: 11400000, guid: bd0ca38c643b18f4f8bec56e2a4a17a6, type: 2}
+  <WindowsData>k__BackingField: {fileID: 11400000, guid: acb73754ad5b95d438f70ed95ee4abfd, type: 2}

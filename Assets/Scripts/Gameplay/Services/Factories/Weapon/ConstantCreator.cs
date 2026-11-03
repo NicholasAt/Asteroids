@@ -1,5 +1,5 @@
-using Assets.Scripts.Data.Weapon;
-using Assets.Scripts.Data.Weapon.Configs;
+using Assets.Scripts.Data.Configs.Weapon;
+using Assets.Scripts.Data.Configs.Weapon.Configs;
 using Assets.Scripts.Gameplay.Interfaces.Common;
 using Assets.Scripts.Gameplay.Physics;
 using Assets.Scripts.Gameplay.Weapon.Constant;

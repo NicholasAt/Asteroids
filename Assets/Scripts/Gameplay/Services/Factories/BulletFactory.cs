@@ -1,4 +1,4 @@
-using Assets.Scripts.Data.Bullet;
+using Assets.Scripts.Data.Configs.Bullet;
 using Assets.Scripts.Gameplay.Bullet;
 using Assets.Scripts.Gameplay.Common;
 using Assets.Scripts.Gameplay.Extensions;

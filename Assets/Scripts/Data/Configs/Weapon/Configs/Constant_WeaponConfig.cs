@@ -1,0 +1,14 @@
+using UnityEngine;
+
+namespace Assets.Scripts.Data.Configs.Weapon.Configs
+{
+    [CreateAssetMenu(menuName = MenuName + "Constant")]
+    public class Constant_WeaponConfig : BaseWeaponConfig
+    {
+        [field: SerializeField] public int Damage { get; private set; }
+        [field: SerializeField] public float DamageDelay { get; private set; }
+        [field: SerializeField] public float RayWidth { get; private set; }
+        [field: SerializeField] public float RayLength { get; private set; }
+        [field: SerializeField] public GameObject VisualPrefab { get; private set; }
+    }
+}

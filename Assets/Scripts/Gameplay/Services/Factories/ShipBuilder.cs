@@ -1,5 +1,5 @@
-using Assets.Scripts.Data.Ship;
-using Assets.Scripts.Data.Weapon;
+using Assets.Scripts.Data.Configs.Ship;
+using Assets.Scripts.Data.Configs.Weapon;
 using Assets.Scripts.Gameplay.Interfaces.Common;
 using Assets.Scripts.Gameplay.Interfaces.Services;
 using Assets.Scripts.Gameplay.Ship;

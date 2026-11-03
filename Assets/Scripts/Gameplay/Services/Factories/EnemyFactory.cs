@@ -1,7 +1,7 @@
-using Assets.Scripts.Data.Enemy;
-using Assets.Scripts.Data.Enemy.Asteroid;
-using Assets.Scripts.Data.Enemy.Fragments;
-using Assets.Scripts.Data.Enemy.Saucer;
+using Assets.Scripts.Data.Configs.Enemy;
+using Assets.Scripts.Data.Configs.Enemy.Asteroid;
+using Assets.Scripts.Data.Configs.Enemy.Fragments;
+using Assets.Scripts.Data.Configs.Enemy.Saucer;
 using Assets.Scripts.Gameplay.Common;
 using Assets.Scripts.Gameplay.Enemy;
 using Assets.Scripts.Gameplay.Extensions;

@@ -1,4 +1,4 @@
-using Assets.Scripts.Data.Enemy;
+using Assets.Scripts.Data.Configs.Enemy;
 using UnityEngine;
 
 namespace Assets.Scripts.Gameplay.Signals

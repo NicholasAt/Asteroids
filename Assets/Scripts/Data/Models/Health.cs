@@ -2,10 +2,10 @@ using System;
 
 namespace Assets.Scripts.Data.Models
 {
-    public class Health
+    public class Health : IDisposable
     {
         public int CurrentHealth { get; private set; }
-        public Action OnHealthChange { get; set; }
+        public event Action OnHealthChange;
 
         public Health(int maxHealth)
         {
@@ -16,6 +16,11 @@ namespace Assets.Scripts.Data.Models
         {
             CurrentHealth = health;
             OnHealthChange?.Invoke();
+        }
+
+        public void Dispose()
+        {
+            OnHealthChange = null;
         }
     }
 }

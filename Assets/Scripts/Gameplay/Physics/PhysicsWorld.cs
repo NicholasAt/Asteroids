@@ -3,18 +3,18 @@ using UnityEngine;
 
 namespace Assets.Scripts.Gameplay.Physics
 {
-    public class PhysicsWorld : MonoBehaviour
+    public class PhysicsWorld
     {
         private const float MinImpulseMagnitude = 15;
 
         private readonly static List<PhysicsBody> _physics = new(1000);
         private readonly HashSet<PhysicsBody> _candidates = new();
 
-        private void Update()
+        public void Update(float deltaTime)
         {
             foreach (PhysicsBody target in _physics)
             {
-                target.Simulate(Time.deltaTime);
+                target.Simulate(deltaTime);
             }
 
             for (int i = 0; i < _physics.Count; i++)

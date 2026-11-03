@@ -1,13 +1,13 @@
-using Assets.Scripts.Data.WorldBounds;
+using Assets.Scripts.Data.Configs.WorldBounds;
 using Assets.Scripts.Gameplay.Interfaces.Common;
 using Assets.Scripts.Gameplay.Interfaces.Services;
+using Assets.Scripts.Gameplay.Interfaces.Services.Tick;
 using System.Collections.Generic;
 using UnityEngine;
-using Zenject;
 
 namespace Assets.Scripts.Gameplay.Services.WorldBounds
 {
-    public class WorldBounds : IWorldBounds, ITickable
+    public class WorldBounds : IWorldBounds, ICustomTick
     {
         private readonly List<IWrapped> _outMap = new();
         private readonly List<IWrapped> _inMap = new();
@@ -35,7 +35,7 @@ namespace Assets.Scripts.Gameplay.Services.WorldBounds
                 _inMap.Remove(wrapped);
         }
 
-        public void Tick()
+        public void Tick(float _)
         {
             for (int i = _inMap.Count - 1; i >= 0; i--)
             {

@@ -1,5 +1,5 @@
-using Assets.Scripts.Data.Enemy;
-using Assets.Scripts.Data.WorldBounds;
+using Assets.Scripts.Data.Configs.Enemy;
+using Assets.Scripts.Data.Configs.WorldBounds;
 using Assets.Scripts.Gameplay.Interfaces.Services;
 using Assets.Scripts.Gameplay.Signals;
 using System;

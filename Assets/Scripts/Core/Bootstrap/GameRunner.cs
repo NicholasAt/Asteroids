@@ -1,5 +1,5 @@
 using Assets.Scripts.Core.Bootstrap.States;
-using Assets.Scripts.Data.Constants;
+using Assets.Scripts.Data.Configs.Constants;
 using UnityEngine;
 using Zenject;
 

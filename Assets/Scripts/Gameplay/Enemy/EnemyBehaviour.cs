@@ -1,4 +1,4 @@
-using Assets.Scripts.Data.Enemy;
+using Assets.Scripts.Data.Configs.Enemy;
 using Assets.Scripts.Gameplay.Interfaces.Common;
 using Assets.Scripts.Gameplay.Interfaces.Services;
 using Assets.Scripts.Gameplay.Physics;
