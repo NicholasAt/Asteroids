@@ -50,7 +50,7 @@ namespace Assets.Scripts.Gameplay.Services.Factories
             };
 
             Move.Move move = new Move.Move(physicsBody, _inputService, _shipData.SpeedRotate, _shipData.Force);
-            Ship.Ship ship = new Ship.Ship(_physicsWorld, _playerData, _shipData, move, physicsBody, _progressService.ShipProgress, _worldBounds, _inputService, _tickService);
+            Ship.Ship ship = new Ship.Ship(_physicsWorld, _playerData.InvulnerabilitySeconds, _shipData, move, physicsBody, _progressService.ShipProgress, _worldBounds, _inputService, _tickService);
             physicsBody.Owner = ship;
 
             _physicsWorld.Add(physicsBody);

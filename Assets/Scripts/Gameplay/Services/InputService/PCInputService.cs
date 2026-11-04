@@ -7,8 +7,8 @@ namespace Assets.Scripts.Gameplay.Services.InputService
     {
         public Vector2 MoveAxis => GetMoveAxis();
 
-        public bool IsAttack1 => Input.GetKey(KeyCode.Space);
-        public bool IsAttack2 => Input.GetKey(KeyCode.LeftControl);
+        public bool IsAttack1 => Input.GetKey(KeyCode.Mouse0);
+        public bool IsAttack2 => Input.GetKey(KeyCode.Mouse1);
 
         private Vector2 GetMoveAxis()
         {

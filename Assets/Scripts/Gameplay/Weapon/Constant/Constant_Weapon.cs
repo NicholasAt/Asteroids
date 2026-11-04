@@ -1,4 +1,5 @@
 using Assets.Scripts.Data.Configs.Weapon.Configs;
+using Assets.Scripts.Data.Models.Weapon;
 using Assets.Scripts.Gameplay.Extensions;
 using Assets.Scripts.Gameplay.Interfaces.Common;
 using Assets.Scripts.Gameplay.Physics;
@@ -10,6 +11,7 @@ namespace Assets.Scripts.Gameplay.Weapon.Constant
     public class Constant_Weapon : BaseWeapon
     {
         private readonly Constant_WeaponConfig _config;
+        private readonly Constant_WeaponModel _model;
         private readonly Constant_WeaponEffect _weaponEffect;
         private readonly PhysicsBody _body;
 
@@ -19,9 +21,10 @@ namespace Assets.Scripts.Gameplay.Weapon.Constant
         private bool CDDamage => _currentCDDamage > 0;
         private float _currentCDDamage;
 
-        public Constant_Weapon(Constant_WeaponConfig config, Constant_WeaponEffect weaponEffect, PhysicsBody body)
+        public Constant_Weapon(Constant_WeaponConfig config, Constant_WeaponModel model, Constant_WeaponEffect weaponEffect, PhysicsBody body)
         {
             _config = config;
+            _model = model;
             _weaponEffect = weaponEffect;
             _body = body;
         }
@@ -47,7 +50,10 @@ namespace Assets.Scripts.Gameplay.Weapon.Constant
                 Vector2 direction = _body.Rotation.ToRotateToDirection();
 
                 if (CDDamage == false)
+                {
                     Fire(_body, direction, _config.RayLength, _config.RayWidth);
+                    _currentCDDamage += _config.DamageDelay;
+                }
                 _weaponEffect.Update(_body.Position, _body.Position + (direction * _config.RayLength));
             }
         }
@@ -59,7 +65,6 @@ namespace Assets.Scripts.Gameplay.Weapon.Constant
 
             PhysicsWorld.RaycastAll(origin, end, ref _currentTargets, width);
 
-            bool isHit = false;
             foreach (PhysicsBody body in _currentTargets)
             {
                 if (body == root)
@@ -67,13 +72,9 @@ namespace Assets.Scripts.Gameplay.Weapon.Constant
 
                 if (body.Owner != null && body.Owner is IApplyDamage applyDamage)
                 {
-                    isHit = true;
                     applyDamage.TakeDamage(_config.Damage);
                 }
             }
-
-            if (isHit)
-                _currentCDDamage += _config.DamageDelay;
         }
     }
 }

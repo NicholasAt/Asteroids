@@ -1,4 +1,3 @@
-using Assets.Scripts.Data.Configs.Player;
 using Assets.Scripts.Data.Configs.Ship;
 using Assets.Scripts.Data.Models.ShipProgress;
 using Assets.Scripts.Gameplay.Interfaces.Common;
@@ -6,6 +5,7 @@ using Assets.Scripts.Gameplay.Interfaces.Services;
 using Assets.Scripts.Gameplay.Interfaces.Services.Tick;
 using Assets.Scripts.Gameplay.Physics;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Scripts.Gameplay.Ship
@@ -19,20 +19,20 @@ namespace Assets.Scripts.Gameplay.Ship
         private readonly ITickService _tickService;
         private readonly PhysicsWorld _physicsWorld;
         private readonly ShipData _shipData;
-        private readonly PlayerData _playerData;
         private readonly Move.Move _move;
+        private readonly float _invulnerabilitySeconds;
 
         private IWeapon _weapon1;
         private IWeapon _weapon2;
         public Vector2 Position => PhysicsBody.Position;
         private bool _invulnerableToggle;
 
-        public Ship(PhysicsWorld physicsWorld, PlayerData playerData, ShipData shipData, Move.Move move, PhysicsBody physicsBody, ShipProgress shipProgress, IWorldBounds worldBounds, IInput input, ITickService tickService)
+        public Ship(PhysicsWorld physicsWorld, float invulnerabilitySeconds, ShipData shipData, Move.Move move, PhysicsBody physicsBody, ShipProgress shipProgress, IWorldBounds worldBounds, IInput input, ITickService tickService)
         {
             PhysicsBody = physicsBody;
             _shipProgress = shipProgress;
             _physicsWorld = physicsWorld;
-            _playerData = playerData;
+            _invulnerabilitySeconds = invulnerabilitySeconds;
             _shipData = shipData;
             _move = move;
             _worldBounds = worldBounds;
@@ -40,10 +40,18 @@ namespace Assets.Scripts.Gameplay.Ship
             _tickService = tickService;
         }
 
-        public void SetWeapon(IWeapon weapon1, IWeapon weapon2)
+        public void SetWeapon(IReadOnlyList<IWeapon> weapons)
         {
-            _weapon1 = weapon1;
-            _weapon2 = weapon2;
+            for (int i = 0; i < weapons.Count; i++)
+            {
+                IWeapon weapon = weapons[i];
+                if (i == 0)
+                    _weapon1 = weapon;
+                else if (i == 1)
+                    _weapon2 = weapon;
+                else
+                    Debug.LogError("too weapons");
+            }
         }
 
         public void Tick(float deltaTime)
@@ -70,7 +78,7 @@ namespace Assets.Scripts.Gameplay.Ship
                 Dispose();
             }
             else
-                _shipProgress.SetInvulnerableLeft(_playerData.InvulnerabilitySeconds);
+                _shipProgress.SetInvulnerableLeft(_invulnerabilitySeconds);
         }
 
         public void Wrap(Vector2 newPosition)

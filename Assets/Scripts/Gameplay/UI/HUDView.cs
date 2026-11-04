@@ -1,3 +1,6 @@
+using Assets.Scripts.Core.Common;
+using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using Zenject;
@@ -7,7 +10,10 @@ namespace Assets.Scripts.Gameplay.UI
     public class HUDView : MonoBehaviour
     {
         [SerializeField] private TMP_Text _positionText, _rotationText;
+        [SerializeField] private TMP_Text _laserCooldownText, _laserChargesText;
         [SerializeField] private TMP_Text _healthText;
+
+        private readonly List<Action> _unsubscribe = new List<Action>();
         private HUDViewModel _vm;
 
         [Inject]
@@ -17,28 +23,33 @@ namespace Assets.Scripts.Gameplay.UI
         }
         private void Start()
         {
-            _vm.OnHealthChange += RefreshHealth;
-            RefreshHealth();
+            Bind(_vm.MaxHealth, v => RefreshHealth(_vm.CurrentHealth.Value, _vm.MaxHealth.Value));
+            Bind(_vm.CurrentHealth, v => RefreshHealth(_vm.CurrentHealth.Value, _vm.MaxHealth.Value));
+
+            Bind(_vm.LaserCharges, v => _laserChargesText.text = v.ToString());
+            Bind(_vm.LaserCooldown, v => _laserCooldownText.text = v.ToString());
+
+            Bind(_vm.Position, v => _positionText.text = $"X: {v.x:F1} Y: {v.y:F1}");
+            Bind(_vm.Rotate, v => _rotationText.text = $"Angle: {v:F0}");
         }
 
         private void OnDestroy()
         {
-            _vm.OnHealthChange -= RefreshHealth;
+            foreach (Action u in _unsubscribe)
+                u();
+            _unsubscribe.Clear();
         }
 
-        private void LateUpdate()
+        private void Bind<T>(ReactiveProperty<T> property, Action<T> apply)
         {
-            RefreshPosition();
+            apply(property.Value);
+            property.Changed += apply;
+            _unsubscribe.Add(() => property.Changed -= apply);
         }
 
-        private void RefreshPosition()
+        private void RefreshHealth(int current, int max)
         {
-            _positionText.text = _vm.PositionText;
-            _rotationText.text = _vm.RotateText;
-        }
-        private void RefreshHealth()
-        {
-            _healthText.text = $"Health: {_vm.CurrentHealth}/{_vm.MaxHealth}";
+            _healthText.text = $"Health: {current}/{max}";
         }
     }
 }

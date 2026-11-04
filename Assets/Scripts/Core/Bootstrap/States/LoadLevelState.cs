@@ -7,6 +7,7 @@ using Assets.Scripts.Gameplay.Interfaces.Services;
 using Assets.Scripts.Gameplay.Interfaces.UI.Services;
 using Assets.Scripts.Gameplay.Services.Factories;
 using Cysharp.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Assets.Scripts.Core.Bootstrap.States
 {
@@ -39,11 +40,14 @@ namespace Assets.Scripts.Core.Bootstrap.States
         private void OnLoaded()
         {
             _progressService.SetShip(CreateProgress());
-            _shipBuilder.CreateShip(weaponId1: WeaponId.Constant_Laser, weaponId2: WeaponId.Gun_Gun);
+            _shipBuilder.CreateShip(GetWeaponInds());
             _enemySpawner.Start();
             _uIFactory.CreateHUD();
         }
-
+        private List<WeaponId> GetWeaponInds()
+        {
+            return new List<WeaponId>() { WeaponId.Constant_Laser, WeaponId.Gun_Gun };
+        }
         private ShipProgress CreateProgress()
         {
             _progressService.ShipProgress?.Dispose();

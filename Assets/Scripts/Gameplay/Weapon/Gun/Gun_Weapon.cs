@@ -1,4 +1,5 @@
 using Assets.Scripts.Data.Configs.Weapon.Configs;
+using Assets.Scripts.Data.Models.Weapon;
 using Assets.Scripts.Gameplay.Extensions;
 using Assets.Scripts.Gameplay.Interfaces.Services;
 using Assets.Scripts.Gameplay.Physics;

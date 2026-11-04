@@ -1,4 +1,5 @@
 using Assets.Scripts.Data.Configs.Weapon;
+using Assets.Scripts.Data.Models.Weapon;
 using Assets.Scripts.Gameplay.Interfaces.Common;
 using Assets.Scripts.Gameplay.Interfaces.Services;
 using Assets.Scripts.Gameplay.Physics;
@@ -11,7 +12,7 @@ namespace Assets.Scripts.Gameplay.Services.Factories.Weapon
     public interface IWeaponCreator
     {
         WeaponId[] WeaponIds { get; }
-        IWeapon Create(WeaponId weaponId, Transform parent, PhysicsBody physicsBody);
+        (IWeapon, IWeaponModel) Create(WeaponId weaponId, Transform parent, PhysicsBody physicsBody);
     }
 
     public class WeaponFactory : IWeaponFactory
@@ -30,15 +31,15 @@ namespace Assets.Scripts.Gameplay.Services.Factories.Weapon
             }
         }
 
-        public IWeapon CreateWeapon(WeaponId weaponId, Transform parent, PhysicsBody physicsBody)
+        public (IWeapon, IWeaponModel) CreateWeapon(WeaponId weaponId, Transform parent, PhysicsBody physicsBody)
         {
             return _creators.TryGetValue(weaponId, out IWeaponCreator factory) ? factory.Create(weaponId, parent, physicsBody) : LogError(weaponId);
         }
 
-        private IWeapon LogError(WeaponId weaponId)
+        private (IWeapon, IWeaponModel) LogError(WeaponId weaponId)
         {
             Debug.LogError($"cant create [{weaponId}]");
-            return null;
+            return (null, null);
         }
     }
 }

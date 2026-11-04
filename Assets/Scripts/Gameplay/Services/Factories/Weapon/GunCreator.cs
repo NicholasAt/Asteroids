@@ -1,5 +1,6 @@
 using Assets.Scripts.Data.Configs.Weapon;
 using Assets.Scripts.Data.Configs.Weapon.Configs;
+using Assets.Scripts.Data.Models.Weapon;
 using Assets.Scripts.Gameplay.Interfaces.Common;
 using Assets.Scripts.Gameplay.Interfaces.Services;
 using Assets.Scripts.Gameplay.Physics;
@@ -20,8 +21,12 @@ namespace Assets.Scripts.Gameplay.Services.Factories.Weapon
             _bulletFactory = bulletFactory;
         }
 
-        public IWeapon Create(WeaponId weaponId, Transform _, PhysicsBody physicsBody) =>
-            new Gun_Weapon(_weaponData.GetWeaponConfig<Gun_WeaponConfig>(weaponId), physicsBody, _bulletFactory);
+        (IWeapon, IWeaponModel) IWeaponCreator.Create(WeaponId weaponId, Transform parent, PhysicsBody physicsBody)
+        {
+            Gun_WeaponConfig config = _weaponData.GetWeaponConfig<Gun_WeaponConfig>(weaponId);
+            Gun_Weapon weapon = new Gun_Weapon(config, physicsBody, _bulletFactory);
 
+            return (weapon, null);
+        }
     }
 }
