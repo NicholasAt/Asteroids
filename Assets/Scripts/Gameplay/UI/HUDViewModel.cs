@@ -19,6 +19,7 @@ namespace Assets.Scripts.Gameplay.UI
 
         public readonly ReactiveProperty<Vector2> Position = new ReactiveProperty<Vector2>();
         public readonly ReactiveProperty<float> Rotate = new ReactiveProperty<float>();
+        public readonly ReactiveProperty<float> Speed = new ReactiveProperty<float>();
 
         public readonly ReactiveProperty<int> LaserCharges = new ReactiveProperty<int>();
         public readonly ReactiveProperty<float> LaserCooldown = new ReactiveProperty<float>();
@@ -61,6 +62,7 @@ namespace Assets.Scripts.Gameplay.UI
             {
                 Position.Value = _shipProgress.Position;
                 Rotate.Value = Mathf.Repeat(_shipProgress.Rotate * Mathf.Rad2Deg, 360f);
+                Speed.Value = _shipProgress.CurrentSpeed;
 
                 CurrentHealth.Value = _shipProgress.Health.CurrentHealth;
             }

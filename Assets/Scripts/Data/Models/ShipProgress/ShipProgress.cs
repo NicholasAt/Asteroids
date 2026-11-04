@@ -12,6 +12,8 @@ namespace Assets.Scripts.Data.Models.ShipProgress
         public float InvulnerableLeft { get; private set; }
         public Vector2 Position { get; private set; }
         public float Rotate { get; private set; }
+        public float CurrentSpeed {  get; private set; }
+
         public IReadOnlyList<IWeaponModel> Weapons { get; private set; }
         public event Action OnWeaponChanged;
 
@@ -24,12 +26,16 @@ namespace Assets.Scripts.Data.Models.ShipProgress
             Weapons = baseWeapons;
             OnWeaponChanged?.Invoke();
         }
+
         public void SetPositionAndRotate(Vector2 position, float rotate)
         {
             Position = position;
             Rotate = rotate;
         }
-
+        public void SetSpeed(float speed)
+        {
+            CurrentSpeed = speed;
+        }
         public void SetInvulnerableLeft(float invulnerableLeft)
         {
             InvulnerableLeft = invulnerableLeft;

@@ -13,6 +13,7 @@ namespace Assets.Scripts.Gameplay.UI
         [SerializeField] private TMP_Text _laserCooldownText, _laserChargesText;
         [SerializeField] private TMP_Text _healthText;
         [SerializeField] private TMP_Text _scoreText;
+        [SerializeField] private TMP_Text _currentSpeed;
 
         private readonly List<Action> _unsubscribe = new List<Action>();
         private HUDViewModel _vm;
@@ -35,6 +36,7 @@ namespace Assets.Scripts.Gameplay.UI
 
             Bind(_vm.Position, v => _positionText.text = $"X: {v.x:F1} Y: {v.y:F1}");
             Bind(_vm.Rotate, v => _rotationText.text = $"Angle: {v:F0}");
+            Bind(_vm.Speed, v => _currentSpeed.text = $"Speed: {v:F1}");
         }
 
         private void OnDestroy()

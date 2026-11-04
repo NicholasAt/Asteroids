@@ -64,6 +64,7 @@ namespace Assets.Scripts.Gameplay.Ship
 
             _shipProgress.SetPositionAndRotate(Position, PhysicsBody.Rotation);
             UpdateInvulnerability(deltaTime);
+            _shipProgress.SetSpeed(PhysicsBody.Velocity.magnitude);
         }
 
         public void TakeDamage(float _, bool __)
@@ -74,7 +75,7 @@ namespace Assets.Scripts.Gameplay.Ship
             _shipProgress.Health.ChangeHealth(_shipProgress.Health.CurrentHealth - 1);
             if (_shipProgress.Health.CurrentHealth < 1)
             {
-                Debug.LogError("sdoh");
+                _shipProgress.SetSpeed(0);
                 Dispose();
             }
             else
