@@ -21,13 +21,14 @@ namespace Assets.Scripts.Gameplay.UI
         {
             _vm = hUDViewModel;
         }
+
         private void Start()
         {
             Bind(_vm.MaxHealth, v => RefreshHealth(_vm.CurrentHealth.Value, _vm.MaxHealth.Value));
             Bind(_vm.CurrentHealth, v => RefreshHealth(_vm.CurrentHealth.Value, _vm.MaxHealth.Value));
 
             Bind(_vm.LaserCharges, v => _laserChargesText.text = v.ToString());
-            Bind(_vm.LaserCooldown, v => _laserCooldownText.text = v.ToString());
+            Bind(_vm.LaserCooldown, v => _laserCooldownText.text = $"{v:F1}");
 
             Bind(_vm.Position, v => _positionText.text = $"X: {v.x:F1} Y: {v.y:F1}");
             Bind(_vm.Rotate, v => _rotationText.text = $"Angle: {v:F0}");

@@ -127,7 +127,12 @@ namespace Assets.Scripts.Gameplay.Services.EnemySpawner
                     break;
 
                 case EnemyType.Asteroid:
-                    CreateFragment(3, signal.Position);
+
+                    if (signal.IsSplit)
+                        CreateFragment(3, signal.Position);
+                    else
+                        CalculateAndSpawnAsteroinds();
+
                     break;
 
                 case EnemyType.Saucer:

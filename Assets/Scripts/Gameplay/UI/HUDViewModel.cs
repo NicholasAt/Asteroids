@@ -11,10 +11,6 @@ namespace Assets.Scripts.Gameplay.UI
 {
     public class HUDViewModel : IDisposable, ICustomTick
     {
-        private readonly IProgressService _progressService;
-        private readonly PlayerData _playerData;
-        private ShipProgress _shipProgress;
-
         public readonly ReactiveProperty<int> MaxHealth = new ReactiveProperty<int>();
         public readonly ReactiveProperty<int> CurrentHealth = new ReactiveProperty<int>();
 
@@ -23,6 +19,12 @@ namespace Assets.Scripts.Gameplay.UI
 
         public readonly ReactiveProperty<int> LaserCharges = new ReactiveProperty<int>();
         public readonly ReactiveProperty<float> LaserCooldown = new ReactiveProperty<float>();
+
+        private readonly IProgressService _progressService;
+        private readonly PlayerData _playerData;
+        private ShipProgress _shipProgress;
+
+        private Constant_WeaponModel _constantModel;
 
         public HUDViewModel(IProgressService progressService, PlayerData playerData)
         {
@@ -48,6 +50,12 @@ namespace Assets.Scripts.Gameplay.UI
 
                 CurrentHealth.Value = _shipProgress.Health.CurrentHealth;
             }
+
+            if (_constantModel != null)
+            {
+                LaserCooldown.Value = _constantModel.CurrentCD;
+                LaserCharges.Value = _constantModel.CurrentCharges;
+            }
         }
 
         private void OnShipProgressCreated(ShipProgress progress)
@@ -55,20 +63,25 @@ namespace Assets.Scripts.Gameplay.UI
             _shipProgress = progress;
             MaxHealth.Value = _playerData.StartHealth;
             _shipProgress.OnWeaponChanged += RefreshWeapons;
+            RefreshWeapons();
         }
 
         private void RefreshWeapons()
         {
-            foreach (IWeaponModel weaponModel in _shipProgress.Weapons)
+            if (_shipProgress?.Weapons != null)
             {
-                switch (weaponModel)
+                foreach (IWeaponModel weaponModel in _shipProgress.Weapons)
                 {
-                    case Constant_WeaponModel constantModel:
-                        break;
+                    switch (weaponModel)
+                    {
+                        case Constant_WeaponModel constantModel:
+                            _constantModel = constantModel;
+                            break;
 
-                    default:
-                        Debug.LogError("zero logic");
-                        break;
+                        default:
+                            Debug.LogError("zero logic");
+                            break;
+                    }
                 }
             }
         }

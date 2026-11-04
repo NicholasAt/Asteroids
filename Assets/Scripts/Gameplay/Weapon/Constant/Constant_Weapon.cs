@@ -18,44 +18,38 @@ namespace Assets.Scripts.Gameplay.Weapon.Constant
         private bool _attackToggle;
         private List<PhysicsBody> _currentTargets = new();
 
-        private bool CDDamage => _currentCDDamage > 0;
-        private float _currentCDDamage;
-
         public Constant_Weapon(Constant_WeaponConfig config, Constant_WeaponModel model, Constant_WeaponEffect weaponEffect, PhysicsBody body)
         {
             _config = config;
             _model = model;
             _weaponEffect = weaponEffect;
             _body = body;
+            model.SetCharges(config.MaxCharges);
         }
 
         public override void Update(bool isPress, float deltaTime)
         {
-            if (CDDamage)
-                _currentCDDamage -= deltaTime;
+            UpdateColldown(deltaTime);
 
-            if (_attackToggle == false && isPress)
+            Vector2 direction = _body.Rotation.ToRotateToDirection();
+
+            if (isPress && _attackToggle == false)
             {
                 _attackToggle = true;
-                _weaponEffect.Start(_config.RayWidth);
+
+                if (_model.CurrentCharges > 0)
+                {
+                    _model.SetCharges(_model.CurrentCharges - 1);
+                    _weaponEffect.Start(_config.RayWidth, _config.EffectDuration);
+                    Fire(_body, direction, _config.RayLength, _config.RayWidth);
+                }
             }
-            else if (_attackToggle && isPress == false)
+            else if (isPress == false && _attackToggle)
             {
                 _attackToggle = false;
-                _weaponEffect.Stop();
             }
 
-            if (isPress)
-            {
-                Vector2 direction = _body.Rotation.ToRotateToDirection();
-
-                if (CDDamage == false)
-                {
-                    Fire(_body, direction, _config.RayLength, _config.RayWidth);
-                    _currentCDDamage += _config.DamageDelay;
-                }
-                _weaponEffect.Update(_body.Position, _body.Position + (direction * _config.RayLength));
-            }
+            _weaponEffect.Update(_body.Position, _body.Position + (direction * _config.RayLength), deltaTime);
         }
 
         private void Fire(PhysicsBody root, Vector2 direction, float length, float width)
@@ -72,7 +66,19 @@ namespace Assets.Scripts.Gameplay.Weapon.Constant
 
                 if (body.Owner != null && body.Owner is IApplyDamage applyDamage)
                 {
-                    applyDamage.TakeDamage(_config.Damage);
+                    applyDamage.TakeDamage(_config.Damage, _config.IsSplit);
+                }
+            }
+        }
+        private void UpdateColldown(float deltaTime)
+        {
+            if (_model.CurrentCharges < _config.MaxCharges)
+            {
+                _model.SetCD(_model.CurrentCD + deltaTime);
+                if (_model.CurrentCD >= _config.CDCharge)
+                {
+                    _model.SetCharges(_model.CurrentCharges + 1);
+                    _model.SetCD(_model.CurrentCD - _config.CDCharge);
                 }
             }
         }

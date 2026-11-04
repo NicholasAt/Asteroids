@@ -42,9 +42,9 @@ namespace Assets.Scripts.Gameplay.Enemy
             PhysicsBody.OnCollision -= OnCollision;
         }
 
-        public void TakeDamage(float damage)
+        public void TakeDamage(float damage, bool isSplit)
         {
-            _signalBus.Fire(new EnemyDeathSignal(_enemyId, PhysicsBody.Position));
+            _signalBus.Fire(new EnemyDeathSignal(_enemyId, PhysicsBody.Position, isSplit));
             Destroy();
         }
 
@@ -70,7 +70,7 @@ namespace Assets.Scripts.Gameplay.Enemy
         private void OnCollision(object obj)
         {
             if (obj != null && obj is IApplyDamage damage)
-                damage.TakeDamage(1);
+                damage.TakeDamage(1, false);//default values
         }
     }
 }

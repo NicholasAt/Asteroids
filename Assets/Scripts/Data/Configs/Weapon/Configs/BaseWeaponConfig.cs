@@ -7,5 +7,6 @@ namespace Assets.Scripts.Data.Configs.Weapon.Configs
     {
         public const string MenuName = "Data/Gameplay/Weapon data/Configs/";
         [field: SerializeField] public WeaponId WeaponId { get; private set; }
+        [field: SerializeField] public bool IsSplit { get; private set; }
     }
 }

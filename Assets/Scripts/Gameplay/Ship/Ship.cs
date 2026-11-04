@@ -66,7 +66,7 @@ namespace Assets.Scripts.Gameplay.Ship
             UpdateInvulnerability(deltaTime);
         }
 
-        public void TakeDamage(float _)
+        public void TakeDamage(float _, bool __)
         {
             if (_shipProgress.IsInvulnerable)
                 return;

@@ -14,6 +14,7 @@ namespace Assets.Scripts.Data.Models.ShipProgress
         public float Rotate { get; private set; }
         public IReadOnlyList<IWeaponModel> Weapons { get; private set; }
         public event Action OnWeaponChanged;
+
         public ShipProgress(Health health)
         {
             Health = health;
@@ -21,6 +22,7 @@ namespace Assets.Scripts.Data.Models.ShipProgress
         public void SetWeapons(IReadOnlyList<IWeaponModel> baseWeapons)
         {
             Weapons = baseWeapons;
+            OnWeaponChanged?.Invoke();
         }
         public void SetPositionAndRotate(Vector2 position, float rotate)
         {

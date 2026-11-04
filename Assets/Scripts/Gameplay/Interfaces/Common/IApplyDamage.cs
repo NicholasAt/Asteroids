@@ -2,6 +2,6 @@ namespace Assets.Scripts.Gameplay.Interfaces.Common
 {
     public interface IApplyDamage
     {
-        void TakeDamage(float damage);
+        void TakeDamage(float damage,bool isSplit);
     }
 }

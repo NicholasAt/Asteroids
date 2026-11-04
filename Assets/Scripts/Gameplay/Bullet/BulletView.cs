@@ -36,7 +36,7 @@ namespace Assets.Scripts.Gameplay.Bullet
             if (owner != null && owner is IApplyDamage applyDamage)
             {
                 _physicsBody.IsInvulnerable = true;
-                applyDamage.TakeDamage(Damage);
+                applyDamage.TakeDamage(Damage, true);
             }
 
             Destroy(gameObject);

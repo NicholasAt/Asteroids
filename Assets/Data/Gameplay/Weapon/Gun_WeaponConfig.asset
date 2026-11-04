@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Gun_WeaponConfig
   m_EditorClassIdentifier: 
   <WeaponId>k__BackingField: 100
+  <IsSplit>k__BackingField: 1
   <Damage>k__BackingField: 0
   <CD>k__BackingField: 1
   <BulletSpeedLimit>k__BackingField: 15

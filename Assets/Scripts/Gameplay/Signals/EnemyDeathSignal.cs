@@ -7,10 +7,12 @@ namespace Assets.Scripts.Gameplay.Signals
     {
         public readonly EnemyType EnemyType;
         public readonly Vector2 Position;
-        public EnemyDeathSignal(EnemyType enemyType, Vector2 position)
+        public readonly bool IsSplit;
+        public EnemyDeathSignal(EnemyType enemyType, Vector2 position, bool isSplit)
         {
             EnemyType = enemyType;
             Position = position;
+            IsSplit = isSplit;
         }
     }
 }
