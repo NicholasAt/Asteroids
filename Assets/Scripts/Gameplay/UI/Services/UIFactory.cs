@@ -15,9 +15,16 @@ namespace Assets.Scripts.Gameplay.UI.Services
             _diContainer = diContainer;
             _windowsData = windowsData;
         }
+
         public void CreateHUD()
         {
             UnityEngine.GameObject instance = _diContainer.InstantiatePrefab(_windowsData.HUDPrefab);
+            instance.ToMoveToActiveScene();
+        }
+
+        public void CreateMobileInput()
+        {
+            UnityEngine.GameObject instance = _diContainer.InstantiatePrefab(_windowsData.MobileInputPrefab);
             instance.ToMoveToActiveScene();
         }
     }

@@ -1,11 +1,12 @@
 using Assets.Scripts.Core.Common;
+using Assets.Scripts.Gameplay.UI.ViewModels;
 using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using Zenject;
 
-namespace Assets.Scripts.Gameplay.UI
+namespace Assets.Scripts.Gameplay.UI.Views
 {
     public class HUDView : MonoBehaviour
     {

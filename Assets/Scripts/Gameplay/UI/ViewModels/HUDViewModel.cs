@@ -8,7 +8,7 @@ using Assets.Scripts.Gameplay.Interfaces.Services.Tick;
 using System;
 using UnityEngine;
 
-namespace Assets.Scripts.Gameplay.UI
+namespace Assets.Scripts.Gameplay.UI.ViewModels
 {
     public class HUDViewModel : IDisposable, ICustomTick
     {

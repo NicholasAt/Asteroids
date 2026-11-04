@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Core.Services;
+using Assets.Scripts.Data.Configs.Game;
 using Assets.Scripts.Data.Configs.Player;
 using Assets.Scripts.Data.Configs.Weapon;
 using Assets.Scripts.Data.Models;
@@ -6,7 +7,7 @@ using Assets.Scripts.Data.Models.ShipProgress;
 using Assets.Scripts.Gameplay.Interfaces.Services;
 using Assets.Scripts.Gameplay.Interfaces.UI.Services;
 using Assets.Scripts.Gameplay.Services.Factories;
-using Assets.Scripts.Gameplay.UI;
+using Assets.Scripts.Gameplay.UI.ViewModels;
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 
@@ -17,17 +18,19 @@ namespace Assets.Scripts.Core.Bootstrap.States
         private readonly SceneLoader _sceneLoader;
         private readonly ShipBuilder _shipBuilder;
         private readonly PlayerData _playerData;
+        private readonly GameData _gameData;
         private readonly HUDViewModel _hUDViewModel;
         private readonly IEnemyFactory _enemyFactory;
         private readonly IEnemySpawner _enemySpawner;
         private readonly IProgressService _progressService;
         private readonly IUIFactory _uIFactory;
 
-        public LoadLevelState(SceneLoader sceneLoader, ShipBuilder shipBuilder, PlayerData playerData, HUDViewModel hUDViewModel, IEnemyFactory enemyFactory, IEnemySpawner enemySpawner, IProgressService progressService, IUIFactory uIFactory)
+        public LoadLevelState(SceneLoader sceneLoader, ShipBuilder shipBuilder, PlayerData playerData, GameData gameData, HUDViewModel hUDViewModel, IEnemyFactory enemyFactory, IEnemySpawner enemySpawner, IProgressService progressService, IUIFactory uIFactory)
         {
             _sceneLoader = sceneLoader;
             _shipBuilder = shipBuilder;
             _playerData = playerData;
+            _gameData = gameData;
             _hUDViewModel = hUDViewModel;
             _enemyFactory = enemyFactory;
             _enemySpawner = enemySpawner;
@@ -46,6 +49,9 @@ namespace Assets.Scripts.Core.Bootstrap.States
             _shipBuilder.CreateShip(GetWeaponInds());
             _enemySpawner.Start();
             _uIFactory.CreateHUD();
+
+            if (_gameData.IsMobile)
+                _uIFactory.CreateMobileInput();
         }
 
         private void InitProgress()

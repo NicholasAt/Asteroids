@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <ShipData>k__BackingField: {fileID: 11400000, guid: bfbf7ba4290c5794780df804d83275b9, type: 2}
   <PlayerData>k__BackingField: {fileID: 11400000, guid: 14b9b1f05e9e9654d9f4ba263c1d8b40, type: 2}
+  <GameData>k__BackingField: {fileID: 11400000, guid: e88d9831d0cdf90429e14217c23af53d, type: 2}
   <EnemyData>k__BackingField: {fileID: 11400000, guid: 57b2f4bbf86a0b849af8d7882e55dfec, type: 2}
   <WeaponData>k__BackingField: {fileID: 11400000, guid: 9023619adc2d9244384f6e31a5662db6, type: 2}
   <BulletData>k__BackingField: {fileID: 11400000, guid: 8a129a95e0dc9d14da77128d506c4166, type: 2}

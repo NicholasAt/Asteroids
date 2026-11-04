@@ -6,5 +6,6 @@ namespace Assets.Scripts.Data.Configs.UI
     public class WindowsData : ScriptableObject
     {
         [field: SerializeField] public GameObject HUDPrefab { get; private set; }
+        [field: SerializeField] public GameObject MobileInputPrefab { get; private set; }
     }
 }

@@ -3,6 +3,7 @@ using Assets.Scripts.Core.Services;
 using Assets.Scripts.Data;
 using Assets.Scripts.Data.Configs.Bullet;
 using Assets.Scripts.Data.Configs.Enemy;
+using Assets.Scripts.Data.Configs.Game;
 using Assets.Scripts.Data.Configs.Player;
 using Assets.Scripts.Data.Configs.Ship;
 using Assets.Scripts.Data.Configs.UI;
@@ -20,8 +21,8 @@ using Assets.Scripts.Gameplay.Services.Register;
 using Assets.Scripts.Gameplay.Services.Tick;
 using Assets.Scripts.Gameplay.Services.WorldBounds;
 using Assets.Scripts.Gameplay.Signals;
-using Assets.Scripts.Gameplay.UI;
 using Assets.Scripts.Gameplay.UI.Services;
+using Assets.Scripts.Gameplay.UI.ViewModels;
 using UnityEngine;
 using Zenject;
 
@@ -39,7 +40,9 @@ namespace Assets.Scripts.Core
 
             BindFactories();
             BindPools();
+
             BindUI();
+            BindInput();
 
             Container.Bind<SceneLoader>().AsSingle();
             Container.Bind<PhysicsWorld>().AsSingle();
@@ -48,16 +51,21 @@ namespace Assets.Scripts.Core
             Container.BindInterfacesAndSelfTo<ProgressService>().AsSingle();
             Container.BindInterfacesAndSelfTo<EnemyRegistry>().AsSingle();
             Container.BindInterfacesAndSelfTo<EnemySpawner>().AsSingle();
-            Container.BindInterfacesAndSelfTo<PCInputService>().AsSingle();
             Container.BindInterfacesAndSelfTo<WorldBounds>().AsSingle();
 
             Container.BindInterfacesAndSelfTo<TickService>().FromNewComponentOn(gameObject).AsSingle();
         }
-
         private void BindSignals()
         {
             SignalBusInstaller.Install(Container);
             Container.DeclareSignal<EnemyDeathSignal>();
+        }
+        private void BindInput()
+        {
+            if (_allData.GameData.IsMobile)
+                Container.BindInterfacesAndSelfTo<MobileInputViewModel>().AsSingle();
+            else
+                Container.BindInterfacesAndSelfTo<PCInputService>().AsSingle();
         }
 
         private void BindPools()
@@ -80,6 +88,7 @@ namespace Assets.Scripts.Core
         {
             Container.Bind<ShipData>().FromInstance(_allData.ShipData).AsSingle();
             Container.Bind<PlayerData>().FromInstance(_allData.PlayerData).AsSingle();
+            Container.Bind<GameData>().FromInstance(_allData.GameData).AsSingle();
             Container.Bind<EnemyData>().FromInstance(_allData.EnemyData).AsSingle();
             Container.Bind<WeaponData>().FromInstance(_allData.WeaponData).AsSingle();
             Container.Bind<BulletData>().FromInstance(_allData.BulletData).AsSingle();
@@ -95,7 +104,6 @@ namespace Assets.Scripts.Core
         private void BindUI()
         {
             Container.BindInterfacesAndSelfTo<UIFactory>().AsSingle();
-
             Container.BindInterfacesAndSelfTo<HUDViewModel>().AsSingle();
         }
     }
