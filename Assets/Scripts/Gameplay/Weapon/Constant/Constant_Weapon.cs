@@ -70,6 +70,7 @@ namespace Assets.Scripts.Gameplay.Weapon.Constant
                 }
             }
         }
+
         private void UpdateColldown(float deltaTime)
         {
             if (_model.CurrentCharges < _config.MaxCharges)

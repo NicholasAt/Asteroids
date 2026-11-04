@@ -35,7 +35,7 @@ namespace Assets.Scripts.Gameplay.Services.EnemySpawner
         private int saucers = 2;
         private void Spawn()
         {
-            CalculatePosition(asteroids, CreateAster);
+            CalculatePosition(asteroids, CreateAsteroid);
             CalculatePosition(saucers, CreateSaucer);
         }
         private void CalculatePosition(int count, Action<Vector2, Vector2> onCalculate)
@@ -95,22 +95,22 @@ namespace Assets.Scripts.Gameplay.Services.EnemySpawner
         {
             int difference = asteroids - _enemyRegistry.NotPursuing.Count;
             if (difference > 0)
-                CalculatePosition(difference, CreateAster);
+                CalculatePosition(difference, CreateAsteroid);
         }
         private void CreateFragment(int count, Vector2 pos)
         {
             for (int i = 0; i < count; i++)
             {
-                _enemyFactory.CreateFragment(pos, new Vector2(0, i * 2), 1, 1, 0.5f);
+                _enemyFactory.Create(EnemyType.Fragment, pos, new Vector2(0, i * 2));
             }
         }
         private void CreateSaucer(Vector2 pos, Vector2 _)
         {
-            _enemyFactory.CreateSaucer(pos, 1, 1, 0.0f);
+            _enemyFactory.Create(EnemyType.Saucer, pos, _);
         }
-        private void CreateAster(Vector2 pos, Vector2 direction)
+        private void CreateAsteroid(Vector2 pos, Vector2 direction)
         {
-            _enemyFactory.CreateAsteroid(pos, direction, 1, 1, 0.0f);
+            _enemyFactory.Create(EnemyType.Asteroid, pos, direction);
         }
         #endregion
         public void Dispose()

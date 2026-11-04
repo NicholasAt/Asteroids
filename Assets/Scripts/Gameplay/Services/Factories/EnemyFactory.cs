@@ -1,7 +1,4 @@
 using Assets.Scripts.Data.Configs.Enemy;
-using Assets.Scripts.Data.Configs.Enemy.Asteroid;
-using Assets.Scripts.Data.Configs.Enemy.Fragments;
-using Assets.Scripts.Data.Configs.Enemy.Saucer;
 using Assets.Scripts.Gameplay.Common;
 using Assets.Scripts.Gameplay.Enemy;
 using Assets.Scripts.Gameplay.Extensions;
@@ -16,21 +13,17 @@ namespace Assets.Scripts.Gameplay.Services.Factories
     public class EnemyFactory : IEnemyFactory
     {
         private readonly DiContainer _diContainer;
-        private readonly AsteroidData _asteroidData;
-        private readonly FragmentsData _fragmentsData;
-        private readonly SaucerData _saucerData;
+        private readonly EnemyData _enemyData;
         private readonly SignalBus _signalBus;
         private readonly PhysicsWorld _physicsWorld;
         private readonly IProgressService _progressService;
         private readonly IEnemyRegistry _enemyRegistry;
         private readonly IWorldBounds _worldBounds;
 
-        public EnemyFactory(DiContainer diContainer, AsteroidData asteroidData, FragmentsData fragmentsData, SaucerData saucerData, SignalBus signalBus, PhysicsWorld physicsWorld, IProgressService progressService, IEnemyRegistry enemyRegistry, IWorldBounds worldBounds)
+        public EnemyFactory(DiContainer diContainer, EnemyData enemyData, SignalBus signalBus, PhysicsWorld physicsWorld, IProgressService progressService, IEnemyRegistry enemyRegistry, IWorldBounds worldBounds)
         {
             _diContainer = diContainer;
-            _asteroidData = asteroidData;
-            _fragmentsData = fragmentsData;
-            _saucerData = saucerData;
+            _enemyData = enemyData;
             _signalBus = signalBus;
             _physicsWorld = physicsWorld;
             _progressService = progressService;
@@ -38,36 +31,44 @@ namespace Assets.Scripts.Gameplay.Services.Factories
             _worldBounds = worldBounds;
         }
 
-        public void CreateAsteroid(Vector2 position, Vector2 direction, float force, float speedLimit, float drag)
+        public void Create(EnemyType enemyType, Vector2 position, Vector2 direction)
         {
-            GameObject prefab = _asteroidData.AsteroidPrefab;
-            CreateEnemy(false, EnemyType.Asteroid, prefab, position, direction, force, speedLimit, drag);
+            EnemyConfig config = _enemyData.GetConfig(enemyType);
+            switch (enemyType)
+            {
+                case EnemyType.Asteroid:
+                case EnemyType.Fragment:
+                    CreateEnemy(false, enemyType, config.EnemyPrefab, position, direction, config.Force, config.Mass, config.SpeedLimit, config.Drag);
+                    break;
+
+                case EnemyType.Saucer:
+                    CreateSaucer(enemyType, config.EnemyPrefab, position, config.Force, config.Mass, config.SpeedLimit, config.Drag);
+                    break;
+
+                case EnemyType.None:
+                default:
+                    Debug.LogError($"no type [{enemyType}]");
+                    break;
+            }
         }
 
-        public void CreateFragment(Vector2 position, Vector2 direction, float force, float speedLimit, float drag)
+        private void CreateSaucer(EnemyType enemyType, GameObject prefab, Vector2 position, float force, float mass, float speedLimit, float drag)
         {
-            GameObject prefab = _fragmentsData.FragmentPrefab;
-            CreateEnemy(false, EnemyType.Fragment, prefab, position, direction, force, speedLimit, drag);
-        }
+            (GameObject instance, PhysicsBody physicsBody) = Instantiate(prefab, position, Vector2.zero, force, mass, speedLimit, drag);
 
-        public void CreateSaucer(Vector2 position, float force, float speedLimit, float drag)
-        {
-            GameObject prefab = _saucerData.SaucerPrefab;
-            (GameObject instance, PhysicsBody physicsBody) = Instantiate(prefab, position, Vector2.zero, force, speedLimit, drag);
-
-            Saucer enemy = new Saucer(EnemyType.Saucer, _progressService, _physicsWorld, physicsBody, _signalBus, _enemyRegistry, _worldBounds);
+            Saucer enemy = new Saucer(enemyType, _progressService, _physicsWorld, physicsBody, _signalBus, _enemyRegistry, _worldBounds);
             InitAndRegister(true, enemy, instance);
         }
 
-        private void CreateEnemy(bool isPursuing, EnemyType enemyId, GameObject prefab, Vector2 position, Vector2 direction, float force, float speedLimit, float drag)
+        private void CreateEnemy(bool isPursuing, EnemyType enemyId, GameObject prefab, Vector2 position, Vector2 direction, float force, float mass, float speedLimit, float drag)
         {
-            (GameObject instance, PhysicsBody physicsBody) = Instantiate(prefab, position, direction, force, speedLimit, drag);
+            (GameObject instance, PhysicsBody physicsBody) = Instantiate(prefab, position, direction, force, mass, speedLimit, drag);
 
             IEnemyBehaviour enemy = new EnemyBehaviour(enemyId, _physicsWorld, physicsBody, _signalBus, _enemyRegistry, _worldBounds);
             InitAndRegister(isPursuing, enemy, instance);
         }
 
-        private (GameObject, PhysicsBody) Instantiate(GameObject prefab, Vector2 position, Vector2 direction, float force, float speedLimit, float drag)
+        private (GameObject, PhysicsBody) Instantiate(GameObject prefab, Vector2 position, Vector2 direction, float force, float mass, float speedLimit, float drag)
         {
             GameObject instance = _diContainer.InstantiatePrefab(prefab);
             instance.ToMoveToActiveScene();
@@ -85,7 +86,7 @@ namespace Assets.Scripts.Gameplay.Services.Factories
                 Direction = direction,
                 Position = position,
                 Drag = drag,
-                Mass = _asteroidData.Mass,
+                Mass = mass,
             };
 
             _physicsWorld.Add(physicsBody);

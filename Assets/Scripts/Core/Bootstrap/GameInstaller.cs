@@ -2,9 +2,7 @@ using Assets.Scripts.Core.Bootstrap.States;
 using Assets.Scripts.Core.Services;
 using Assets.Scripts.Data;
 using Assets.Scripts.Data.Configs.Bullet;
-using Assets.Scripts.Data.Configs.Enemy.Asteroid;
-using Assets.Scripts.Data.Configs.Enemy.Fragments;
-using Assets.Scripts.Data.Configs.Enemy.Saucer;
+using Assets.Scripts.Data.Configs.Enemy;
 using Assets.Scripts.Data.Configs.Player;
 using Assets.Scripts.Data.Configs.Ship;
 using Assets.Scripts.Data.Configs.UI;
@@ -12,6 +10,7 @@ using Assets.Scripts.Data.Configs.Weapon;
 using Assets.Scripts.Data.Configs.WorldBounds;
 using Assets.Scripts.Gameplay.Interfaces.Services;
 using Assets.Scripts.Gameplay.Physics;
+using Assets.Scripts.Gameplay.Services;
 using Assets.Scripts.Gameplay.Services.EnemySpawner;
 using Assets.Scripts.Gameplay.Services.Factories;
 using Assets.Scripts.Gameplay.Services.Factories.Weapon;
@@ -45,6 +44,7 @@ namespace Assets.Scripts.Core
             Container.Bind<SceneLoader>().AsSingle();
             Container.Bind<PhysicsWorld>().AsSingle();
 
+            Container.BindInterfacesAndSelfTo<ScoreService>().AsSingle();
             Container.BindInterfacesAndSelfTo<ProgressService>().AsSingle();
             Container.BindInterfacesAndSelfTo<EnemyRegistry>().AsSingle();
             Container.BindInterfacesAndSelfTo<EnemySpawner>().AsSingle();
@@ -80,11 +80,9 @@ namespace Assets.Scripts.Core
         {
             Container.Bind<ShipData>().FromInstance(_allData.ShipData).AsSingle();
             Container.Bind<PlayerData>().FromInstance(_allData.PlayerData).AsSingle();
+            Container.Bind<EnemyData>().FromInstance(_allData.EnemyData).AsSingle();
             Container.Bind<WeaponData>().FromInstance(_allData.WeaponData).AsSingle();
-            Container.Bind<AsteroidData>().FromInstance(_allData.AsteroidData).AsSingle();
             Container.Bind<BulletData>().FromInstance(_allData.BulletData).AsSingle();
-            Container.Bind<FragmentsData>().FromInstance(_allData.FragmentsData).AsSingle();
-            Container.Bind<SaucerData>().FromInstance(_allData.SaucerData).AsSingle();
             Container.Bind<WorldBoundsData>().FromInstance(_allData.WorldBoundsData).AsSingle();
             Container.Bind<WindowsData>().FromInstance(_allData.WindowsData).AsSingle();
         }

@@ -12,6 +12,7 @@ namespace Assets.Scripts.Gameplay.UI
         [SerializeField] private TMP_Text _positionText, _rotationText;
         [SerializeField] private TMP_Text _laserCooldownText, _laserChargesText;
         [SerializeField] private TMP_Text _healthText;
+        [SerializeField] private TMP_Text _scoreText;
 
         private readonly List<Action> _unsubscribe = new List<Action>();
         private HUDViewModel _vm;
@@ -24,6 +25,8 @@ namespace Assets.Scripts.Gameplay.UI
 
         private void Start()
         {
+            Bind(_vm.Score, v => _scoreText.text = $"Score: {v}");
+
             Bind(_vm.MaxHealth, v => RefreshHealth(_vm.CurrentHealth.Value, _vm.MaxHealth.Value));
             Bind(_vm.CurrentHealth, v => RefreshHealth(_vm.CurrentHealth.Value, _vm.MaxHealth.Value));
 
