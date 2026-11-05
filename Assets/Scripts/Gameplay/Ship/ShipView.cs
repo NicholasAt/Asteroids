@@ -1,7 +1,5 @@
 using Assets.Scripts.Data.Models.ShipProgress;
-using Assets.Scripts.Gameplay.Interfaces.Services;
 using UnityEngine;
-using Zenject;
 
 namespace Assets.Scripts.Gameplay.Ship
 {
@@ -9,25 +7,24 @@ namespace Assets.Scripts.Gameplay.Ship
     {
         private float CD = 0.1f;
         [SerializeField] private SpriteRenderer _body;
+        [SerializeField] private ParticleSystem _ps;
 
-        private IInput _inputService;
         private ShipProgress _shipProgress;
         private float _currentCD;
 
-        [Inject]
-        private void Construct(IInput inputService, IProgressService progressService)
+        public void Init(ShipProgress shipProgress)
         {
-            _inputService = inputService;
-            _shipProgress = progressService.ShipProgress;
+            _shipProgress = shipProgress;
         }
-
-        private void Update()
+        private void LateUpdate()
         {
             UpdateEffect();
         }
+
         private void UpdateEffect()
         {
-            if (_shipProgress.IsInvulnerable)
+            bool isPlay = _shipProgress.IsInvulnerable;
+            if (isPlay)
             {
                 _currentCD += Time.deltaTime;
                 if (_currentCD >= CD)
@@ -38,6 +35,11 @@ namespace Assets.Scripts.Gameplay.Ship
             }
             else
                 _body.enabled = true;
+
+            if (isPlay && !_ps.isPlaying)
+                _ps.Play();
+            else if (isPlay == false && _ps.isPlaying)
+                _ps.Stop(true, ParticleSystemStopBehavior.StopEmitting);
         }
     }
 }

@@ -58,8 +58,8 @@ namespace Assets.Scripts.Gameplay.Services.Factories
             _tickService.Add(ship);
 
             Ship.ShipView view = instance.GetComponent<Ship.ShipView>();
+            view.Init(_progressService.ShipProgress);
             instance.GetComponent<TransformView>().Init(physicsBody);
-
             return (view, ship);
         }
     }
