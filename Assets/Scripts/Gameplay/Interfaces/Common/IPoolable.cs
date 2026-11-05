@@ -1,15 +1,12 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace Assets.Scripts.Gameplay.Interfaces.Common
 {
-    public interface IPoolable
+    public interface IPoolable<TContext>
     {
         event Action OnShow;
         event Action OnHide;
-        void Show(Vector2 position,Vector2 direction);
+        void Show(TContext context);
         void Hide();
     }
 }

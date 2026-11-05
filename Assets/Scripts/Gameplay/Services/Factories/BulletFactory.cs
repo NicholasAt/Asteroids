@@ -1,8 +1,10 @@
 using Assets.Scripts.Data.Configs.Bullet;
-using Assets.Scripts.Gameplay.Bullet;
+using Assets.Scripts.Gameplay.Bullets;
 using Assets.Scripts.Gameplay.Common;
 using Assets.Scripts.Gameplay.Extensions;
+using Assets.Scripts.Gameplay.Interfaces.Common;
 using Assets.Scripts.Gameplay.Interfaces.Services;
+using Assets.Scripts.Gameplay.Interfaces.Services.Tick;
 using Assets.Scripts.Gameplay.Physics;
 using UnityEngine;
 using Zenject;
@@ -14,17 +16,18 @@ namespace Assets.Scripts.Gameplay.Services.Factories
         private readonly DiContainer _diContainer;
         private readonly PhysicsWorld _physicsWorld;
         private readonly BulletData _bulletData;
+        private readonly ITickService _tickService;
 
-        public BulletFactory(DiContainer diContainer, PhysicsWorld physicsWorld, BulletData bulletData)
+        public BulletFactory(DiContainer diContainer, PhysicsWorld physicsWorld, BulletData bulletData, ITickService tickService)
         {
             _diContainer = diContainer;
             _physicsWorld = physicsWorld;
             _bulletData = bulletData;
+            _tickService = tickService;
         }
 
-        public PhysicsBody CreateBullet(Vector2 position, bool isSplit, float rotate, float speedLimit)
+        public ILaunched CreateBullet()
         {
-            Vector2 direction = rotate.ToRotateToDirection();
             PhysicsBody body = new PhysicsBody()
             {
                 Layer = CollisionLayer.Bullet,
@@ -33,19 +36,15 @@ namespace Assets.Scripts.Gameplay.Services.Factories
                 Mass = _bulletData.BulletMass,
                 Radius = _bulletData.BulleRadius,
                 Drag = 0,
-                SpeedLimit = speedLimit,
-                Rotation = rotate,
-                Velocity = direction * speedLimit,
             };
             GameObject instance = _diContainer.InstantiatePrefab(_bulletData.BulletPrefab);
             instance.ToMoveToActiveScene();
 
-            Bullet.Bullet bullet = new Bullet.Bullet(_physicsWorld, body, isSplit);
+            Bullet bullet = new Bullet(_physicsWorld, body, _tickService, _bulletData.LifeTime);
 
             instance.GetComponent<BulletView>().Init(body, bullet);
             instance.GetComponent<TransformView>().Init(body);
-            bullet.Show(position, direction);
-            return body;
+            return bullet;
         }
     }
 }

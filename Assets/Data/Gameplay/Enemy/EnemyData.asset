@@ -17,20 +17,20 @@ MonoBehaviour:
     <Reward>k__BackingField: 5
     <Force>k__BackingField: 5
     <Mass>k__BackingField: 2
-    <SpeedLimit>k__BackingField: 5
+    <SpeedLimit>k__BackingField: 1
     <Drag>k__BackingField: 0
     <EnemyPrefab>k__BackingField: {fileID: 6318603472790479726, guid: 24af981c3a9ef334ba46812bf8642301, type: 3}
   - <EnemyType>k__BackingField: 2
     <Reward>k__BackingField: 15
     <Force>k__BackingField: 7
     <Mass>k__BackingField: 1
-    <SpeedLimit>k__BackingField: 7
+    <SpeedLimit>k__BackingField: 1
     <Drag>k__BackingField: 0
     <EnemyPrefab>k__BackingField: {fileID: 8766927174581398304, guid: 747ffc9e5c1b90e4ebeb19ade89026ec, type: 3}
   - <EnemyType>k__BackingField: 3
     <Reward>k__BackingField: 15
-    <Force>k__BackingField: 8
+    <Force>k__BackingField: 2
     <Mass>k__BackingField: 1
-    <SpeedLimit>k__BackingField: 4
-    <Drag>k__BackingField: 2
+    <SpeedLimit>k__BackingField: 1
+    <Drag>k__BackingField: 1
     <EnemyPrefab>k__BackingField: {fileID: 7203655646059897511, guid: 88d2b8f42f294024da65e8edbed1b107, type: 3}

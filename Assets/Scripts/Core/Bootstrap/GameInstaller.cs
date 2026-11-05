@@ -16,6 +16,7 @@ using Assets.Scripts.Gameplay.Services;
 using Assets.Scripts.Gameplay.Services.Factories;
 using Assets.Scripts.Gameplay.Services.Factories.Weapon;
 using Assets.Scripts.Gameplay.Services.InputService;
+using Assets.Scripts.Gameplay.Services.Pools;
 using Assets.Scripts.Gameplay.Services.Register;
 using Assets.Scripts.Gameplay.Signals;
 using Assets.Scripts.Gameplay.UI.Services;
@@ -68,6 +69,8 @@ namespace Assets.Scripts.Core
 
         private void BindPools()
         {
+            Container.BindInterfacesAndSelfTo<BulletPool>().AsSingle();
+            Container.BindInterfacesAndSelfTo<EnemyPool>().AsSingle();
         }
 
         private void BindFactories()

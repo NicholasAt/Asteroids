@@ -10,13 +10,22 @@ namespace Assets.Scripts.Gameplay.Enemy
         public void Init(IEnemyBehaviour enemy)
         {
             _enemy = enemy;
-            _enemy.OnDie += Destroy;
+            _enemy.OnShow += Show;
+            _enemy.OnDie += Hide;
         }
 
-        private void Destroy()
+        private void OnDestroy()
         {
-            _enemy.OnDie -= Destroy;
-            Destroy(gameObject);
+            _enemy.OnShow -= Show;
+            _enemy.OnDie -= Hide;
+        }
+        private void Show()
+        {
+            gameObject.SetActive(true);
+        }
+        private void Hide()
+        {
+            gameObject.SetActive(false);
         }
     }
 }

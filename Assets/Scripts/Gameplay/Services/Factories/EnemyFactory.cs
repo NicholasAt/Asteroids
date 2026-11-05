@@ -31,75 +31,63 @@ namespace Assets.Scripts.Gameplay.Services.Factories
             _worldBounds = worldBounds;
         }
 
-        public void Create(EnemyType enemyType, Vector2 position, Vector2 direction)
+        public IEnemyBehaviour Create(EnemyType enemyType)
         {
             EnemyConfig config = _enemyData.GetConfig(enemyType);
             switch (enemyType)
             {
                 case EnemyType.Asteroid:
                 case EnemyType.Fragment:
-                    CreateEnemy(false, enemyType, config.EnemyPrefab, position, direction, config.Force, config.Mass, config.SpeedLimit, config.Drag);
-                    break;
+                    return CreateEnemy(false, enemyType, config.EnemyPrefab, config.Force, config.Mass, config.SpeedLimit, config.Drag);
+
 
                 case EnemyType.Saucer:
-                    CreateSaucer(enemyType, config.EnemyPrefab, position, config.Force, config.Mass, config.SpeedLimit, config.Drag);
-                    break;
+                    return CreateSaucer(enemyType, config.EnemyPrefab, config.Force, config.Mass, config.SpeedLimit, config.Drag);
 
                 case EnemyType.None:
                 default:
                     Debug.LogError($"no type [{enemyType}]");
-                    break;
+                    return null;
             }
         }
 
-        private void CreateSaucer(EnemyType enemyType, GameObject prefab, Vector2 position, float force, float mass, float speedLimit, float drag)
+        private IEnemyBehaviour CreateSaucer(EnemyType enemyType, GameObject prefab, float force, float mass, float speedLimit, float drag)
         {
-            (GameObject instance, PhysicsBody physicsBody) = Instantiate(prefab, position, Vector2.zero, force, mass, speedLimit, drag);
+            (GameObject instance, PhysicsBody physicsBody) = Instantiate(prefab, force, mass, speedLimit, drag);
 
-            Saucer enemy = new Saucer(enemyType, _progressService, _physicsWorld, physicsBody, _signalBus, _enemyRegistry, _worldBounds);
+            Saucer enemy = new Saucer(_progressService, enemyType, false, _physicsWorld, physicsBody, _signalBus, _enemyRegistry, _worldBounds);
             physicsBody.Force = force;
-            InitAndRegister(true, enemy, instance);
+            instance.GetComponent<EnemyView>().Init(enemy);
+            return enemy;
         }
 
-        private void CreateEnemy(bool isPursuing, EnemyType enemyId, GameObject prefab, Vector2 position, Vector2 direction, float force, float mass, float speedLimit, float drag)
+        private IEnemyBehaviour CreateEnemy(bool isPursuing, EnemyType enemyId, GameObject prefab, float force, float mass, float speedLimit, float drag)
         {
-            (GameObject instance, PhysicsBody physicsBody) = Instantiate(prefab, position, direction, force, mass, speedLimit, drag);
+            (GameObject instance, PhysicsBody physicsBody) = Instantiate(prefab, force, mass, speedLimit, drag);
 
-            IEnemyBehaviour enemy = new EnemyBehaviour(enemyId, _physicsWorld, physicsBody, _signalBus, _enemyRegistry, _worldBounds);
-            InitAndRegister(isPursuing, enemy, instance);
+            IEnemyBehaviour enemy = new EnemyBehaviour(enemyId, isPursuing, _physicsWorld, physicsBody, _signalBus, _enemyRegistry, _worldBounds);
+            instance.GetComponent<EnemyView>().Init(enemy);
+            return enemy;
         }
 
-        private (GameObject, PhysicsBody) Instantiate(GameObject prefab, Vector2 position, Vector2 direction, float force, float mass, float speedLimit, float drag)
+        private (GameObject, PhysicsBody) Instantiate(GameObject prefab, float force, float mass, float speedLimit, float drag)
         {
             GameObject instance = _diContainer.InstantiatePrefab(prefab);
             instance.ToMoveToActiveScene();
-
-            instance.transform.position = position;
-            instance.transform.up = direction;
 
             PhysicsBody physicsBody = new PhysicsBody()
             {
                 Layer = CollisionLayer.Enemy,
                 CollidesWith = CollisionLayer.Player | CollisionLayer.Bullet,
 
-                Velocity = direction * force,
+                Force = force,
                 SpeedLimit = speedLimit,
-                Direction = direction,
-                Position = position,
                 Mass = mass,
                 Drag = drag,
             };
 
-            _physicsWorld.Add(physicsBody);
             instance.GetComponent<TransformView>().Init(physicsBody);
             return (instance, physicsBody);
-        }
-
-        private void InitAndRegister(bool isPursuing, IEnemyBehaviour enemy, GameObject instance)
-        {
-            _enemyRegistry.Add(isPursuing, enemy);
-            _worldBounds.AddOutMap(enemy);
-            instance.GetComponent<EnemyView>().Init(enemy);
         }
     }
 }

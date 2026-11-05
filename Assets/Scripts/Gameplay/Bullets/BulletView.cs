@@ -1,15 +1,14 @@
+using Assets.Scripts.Gameplay.Interfaces.Common;
 using Assets.Scripts.Gameplay.Physics;
 using UnityEngine;
 using Zenject;
-using IPoolable = Assets.Scripts.Gameplay.Interfaces.Common.IPoolable;
 
-namespace Assets.Scripts.Gameplay.Bullet
+namespace Assets.Scripts.Gameplay.Bullets
 {
     public class BulletView : MonoBehaviour
     {
-
+        private ILaunched _bullet;
         private PhysicsBody _physicsBody;
-        private IPoolable _poolable;
         private PhysicsWorld _physicsWorld;
 
         [Inject]
@@ -18,18 +17,18 @@ namespace Assets.Scripts.Gameplay.Bullet
             _physicsWorld = physicsWorld;
         }
 
-        public void Init(PhysicsBody physicsBody, IPoolable poolable)
+        public void Init(PhysicsBody physicsBody, ILaunched bullet)
         {
+            _bullet = bullet;
             _physicsBody = physicsBody;
-            _poolable = poolable;
-            _poolable.OnShow += OnShow;
-            _poolable.OnHide += OnHide;
+            _bullet.OnShow += OnShow;
+            _bullet.OnHide += OnHide;
         }
 
         private void OnDestroy()
         {
-            _poolable.OnShow -= OnShow;
-            _poolable.OnHide -= OnHide;
+            _bullet.OnShow -= OnShow;
+            _bullet.OnHide -= OnHide;
         }
 
         private void OnHide()

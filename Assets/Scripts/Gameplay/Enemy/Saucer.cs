@@ -10,7 +10,7 @@ namespace Assets.Scripts.Gameplay.Enemy
     {
         private readonly IProgressService _progressService;
 
-        public Saucer(EnemyType enemyId, IProgressService progressService, PhysicsWorld physicsWorld, PhysicsBody physicsBody, SignalBus signalBus, IEnemyRegistry enemyRegistry, IWorldBounds worldBounds) : base(enemyId, physicsWorld, physicsBody, signalBus, enemyRegistry, worldBounds)
+        public Saucer(IProgressService progressService, EnemyType enemyId, bool isSplit, PhysicsWorld physicsWorld, PhysicsBody physicsBody, SignalBus signalBus, IEnemyRegistry enemyRegistry, IWorldBounds worldBounds) : base(enemyId, isSplit, physicsWorld, physicsBody, signalBus, enemyRegistry, worldBounds)
         {
             _progressService = progressService;
         }

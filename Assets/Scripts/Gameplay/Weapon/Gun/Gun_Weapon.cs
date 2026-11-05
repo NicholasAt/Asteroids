@@ -1,6 +1,6 @@
 using Assets.Scripts.Data.Configs.Weapon.Configs;
 using Assets.Scripts.Gameplay.Extensions;
-using Assets.Scripts.Gameplay.Interfaces.Services;
+using Assets.Scripts.Gameplay.Interfaces.Services.Pool;
 using Assets.Scripts.Gameplay.Physics;
 using UnityEngine;
 
@@ -10,14 +10,14 @@ namespace Assets.Scripts.Gameplay.Weapon.Gun
     {
         private readonly Gun_WeaponConfig _config;
         private readonly PhysicsBody _physicsBody;
-        private readonly IBulletFactory _bulletFactory;
+        private readonly IBulletPool _bulletPool;
         private float _current;
 
-        public Gun_Weapon(Gun_WeaponConfig config, PhysicsBody physicsBody, IBulletFactory bulletFactory)
+        public Gun_Weapon(Gun_WeaponConfig config, PhysicsBody physicsBody, IBulletPool bulletPool)
         {
             _config = config;
             _physicsBody = physicsBody;
-            _bulletFactory = bulletFactory;
+            _bulletPool = bulletPool;
             _current = _config.CD;
         }
 
@@ -30,8 +30,9 @@ namespace Assets.Scripts.Gameplay.Weapon.Gun
             else if (isPress)
             {
                 _current -= _config.CD;
-                Vector2 from = _physicsBody.Position + (_physicsBody.Rotation.ToRotateToDirection() * _config.ForwardSpawnPointOffset);
-                _bulletFactory.CreateBullet(from, _config.IsSplit, _physicsBody.Rotation, _config.BulletSpeedLimit);
+                Vector2 direction = _physicsBody.Rotation.ToRotateToDirection();
+                Vector2 from = _physicsBody.Position + (direction * _config.ForwardSpawnPointOffset);
+                _bulletPool.Get(from, _physicsBody.Rotation, _config.IsSplit, _config.Force, _config.BulletSpeedLimit);
             }
         }
     }

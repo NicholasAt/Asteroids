@@ -1,6 +1,7 @@
 using Assets.Scripts.Data.Configs.Enemy;
 using Assets.Scripts.Data.Configs.EnemySpawner;
 using Assets.Scripts.Gameplay.Interfaces.Services;
+using Assets.Scripts.Gameplay.Interfaces.Services.Pool;
 using Assets.Scripts.Gameplay.Signals;
 using System;
 using UnityEngine;
@@ -12,16 +13,16 @@ namespace Assets.Scripts.Gameplay.Services
     {
         private readonly SignalBus _signalBus;
         private readonly EnemySpawnerData _spawnerData;
+        private readonly IEnemyPool _enemyPool;
         private readonly IWorldBounds _worldBounds;
-        private readonly IEnemyFactory _enemyFactory;
         private readonly IEnemyRegistry _enemyRegistry;
 
-        public EnemySpawner(SignalBus signalBus, EnemySpawnerData enemySpawnerData, IWorldBounds worldBounds, IEnemyFactory enemyFactory, IEnemyRegistry enemyRegistry)
+        public EnemySpawner(SignalBus signalBus, EnemySpawnerData enemySpawnerData, IEnemyPool enemyPool, IWorldBounds worldBounds, IEnemyRegistry enemyRegistry)
         {
             _signalBus = signalBus;
             _spawnerData = enemySpawnerData;
+            _enemyPool = enemyPool;
             _worldBounds = worldBounds;
-            _enemyFactory = enemyFactory;
             _enemyRegistry = enemyRegistry;
         }
 
@@ -38,11 +39,11 @@ namespace Assets.Scripts.Gameplay.Services
         }
         private void Spawn()
         {
-            _worldBounds.CalculateRandomPositions(_spawnerData.RandomAngle, _spawnerData.Asteroids, CreateAsteroid);
-            _worldBounds.CalculateRandomPositions(_spawnerData.RandomAngle, _spawnerData.Saucers, CreateSaucer);
+            _worldBounds.CalculateRandomPositions(_spawnerData.RandomAngle, _spawnerData.Asteroids, SpawnAsteroid);
+            _worldBounds.CalculateRandomPositions(_spawnerData.RandomAngle, _spawnerData.Saucers, SpawnSaucer);
         }
 
-        private void CreateFragments(Vector2 pos)
+        private void SpawnFragments(Vector2 pos)
         {
             int count = _spawnerData.Fragments;
             for (int i = 0; i < count; i++)
@@ -50,22 +51,22 @@ namespace Assets.Scripts.Gameplay.Services
                 float rad = i * (Mathf.PI * 2) / count;
                 rad += Mathf.PI * 0.5f;
                 Vector2 direction = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
-                _enemyFactory.Create(EnemyType.Fragment, pos, direction);
+                _enemyPool.Get(EnemyType.Fragment, pos, direction);
             }
         }
-        private void CreateSaucer(Vector2 pos, Vector2 _)
+        private void SpawnSaucer(Vector2 pos, Vector2 _)
         {
-            _enemyFactory.Create(EnemyType.Saucer, pos, _);
+            _enemyPool.Get(EnemyType.Saucer, pos, _);
         }
-        private void CreateAsteroid(Vector2 pos, Vector2 direction)
+        private void SpawnAsteroid(Vector2 pos, Vector2 direction)
         {
-            _enemyFactory.Create(EnemyType.Asteroid, pos, direction);
+            _enemyPool.Get(EnemyType.Asteroid, pos, direction);
         }
         private void CalculateAndSpawnAsteroinds()
         {
             int difference = _spawnerData.Asteroids - _enemyRegistry.NotPursuing.Count;
             if (difference > 0)
-                _worldBounds.CalculateRandomPositions(_spawnerData.RandomAngle, difference, CreateAsteroid);
+                _worldBounds.CalculateRandomPositions(_spawnerData.RandomAngle, difference, SpawnAsteroid);
         }
 
         private void OnEnemyDeath(EnemyDeathSignal signal)
@@ -79,14 +80,14 @@ namespace Assets.Scripts.Gameplay.Services
                 case EnemyType.Asteroid:
 
                     if (signal.IsSplit)
-                        CreateFragments(signal.Position);
+                        SpawnFragments(signal.Position);
                     else
                         CalculateAndSpawnAsteroinds();
 
                     break;
 
                 case EnemyType.Saucer:
-                    _worldBounds.CalculateRandomPositions(_spawnerData.RandomAngle, 1, CreateSaucer);
+                    _worldBounds.CalculateRandomPositions(_spawnerData.RandomAngle, 1, SpawnSaucer);
                     break;
 
                 case EnemyType.None:

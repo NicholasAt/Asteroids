@@ -16,5 +16,6 @@ MonoBehaviour:
   <IsSplit>k__BackingField: 1
   <Damage>k__BackingField: 0
   <CD>k__BackingField: 0.4
+  <Force>k__BackingField: 15
   <BulletSpeedLimit>k__BackingField: 15
   <ForwardSpawnPointOffset>k__BackingField: 1.5

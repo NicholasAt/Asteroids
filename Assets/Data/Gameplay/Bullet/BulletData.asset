@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6185e1c4ce81a9b499a3434a818cae0b, type: 3}
   m_Name: BulletData
   m_EditorClassIdentifier: 
-  <IsSplit>k__BackingField: 1
   <BulletMass>k__BackingField: 0.5
   <BulleRadius>k__BackingField: 0.5
+  <LifeTime>k__BackingField: 5
   <BulletPrefab>k__BackingField: {fileID: 4799827719133445383, guid: 4644ab799f196594bb9a59a7eb7d107d, type: 3}

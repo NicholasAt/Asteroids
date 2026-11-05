@@ -1,0 +1,84 @@
+using Assets.Scripts.Gameplay.Extensions;
+using Assets.Scripts.Gameplay.Interfaces.Common;
+using Assets.Scripts.Gameplay.Interfaces.Services.Tick;
+using Assets.Scripts.Gameplay.Physics;
+using System;
+using UnityEngine;
+
+namespace Assets.Scripts.Gameplay.Bullets
+{
+    public class Bullet : ILaunched, ICustomTick
+    {
+        private const int Damage = 1;
+
+        public readonly PhysicsBody PhysicsBody;
+        private readonly ITickService _tickService;
+        private readonly PhysicsWorld _physicsWorld;
+        private readonly float _lifeTime;
+        private bool _isSplit;
+
+        public event Action OnShow;
+        public event Action OnHide;
+        private bool _active;
+        private float _currentLifeTime;
+        public Bullet(PhysicsWorld physicsWorld, PhysicsBody physicsBody, ITickService tickService, float lifeTime)
+        {
+            _physicsWorld = physicsWorld;
+            PhysicsBody = physicsBody;
+            _tickService = tickService;
+            _lifeTime = lifeTime;
+            PhysicsBody.Owner = this;
+        }
+
+        public void Launch(Vector2 position, float rotate, bool isSplit, float force, float speedLimit)
+        {
+            if (_active)
+                return;
+            _active = true;
+
+            _currentLifeTime = _lifeTime;
+            _isSplit = isSplit;
+
+            Vector2 direction = rotate.ToRotateToDirection();
+            PhysicsBody.Rotation = rotate;
+            PhysicsBody.Position = position;
+            PhysicsBody.Direction = direction;
+            PhysicsBody.Velocity = direction * force;
+            PhysicsBody.SpeedLimit = speedLimit;
+            PhysicsBody.Force = force;
+
+            PhysicsBody.IsInvulnerable = false;
+            PhysicsBody.OnCollision += OnCollistion;
+            _physicsWorld.Add(PhysicsBody);
+            _tickService.Add(this);
+            OnShow?.Invoke();
+        }
+        public void Tick(float deltaTime)
+        {
+            _currentLifeTime -= deltaTime;
+            if (_currentLifeTime < 0)
+                Hide();
+        }
+        public void Hide()
+        {
+            if (_active == false)
+                return;
+            _active = false;
+
+            PhysicsBody.OnCollision -= OnCollistion;
+            _physicsWorld.Remove(PhysicsBody);
+            _tickService.Remove(this);
+            OnHide?.Invoke();
+        }
+
+        private void OnCollistion(object owner)
+        {
+            if (owner != null && owner is IApplyDamage applyDamage)
+            {
+                PhysicsBody.IsInvulnerable = true;
+                applyDamage.TakeDamage(Damage, _isSplit);
+            }
+            Hide();
+        }
+    }
+}

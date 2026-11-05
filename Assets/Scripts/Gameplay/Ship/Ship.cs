@@ -78,6 +78,7 @@ namespace Assets.Scripts.Gameplay.Ship
 
         public void Dispose()
         {
+            OnDie?.Invoke();
             _applyDamage.OnDie -= Dispose;
         }
 
