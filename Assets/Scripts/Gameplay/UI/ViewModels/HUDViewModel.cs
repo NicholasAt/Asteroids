@@ -26,6 +26,7 @@ namespace Assets.Scripts.Gameplay.UI.ViewModels
 
         private readonly IProgressService _progressService;
         private readonly PlayerData _playerData;
+
         private ShipProgress _shipProgress;
         private ScoreProgress _scoreProgress;
         private Constant_WeaponModel _constantModel;

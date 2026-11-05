@@ -13,14 +13,10 @@ using Assets.Scripts.Data.Configs.WorldBounds;
 using Assets.Scripts.Gameplay.Interfaces.Services;
 using Assets.Scripts.Gameplay.Physics;
 using Assets.Scripts.Gameplay.Services;
-using Assets.Scripts.Gameplay.Services.EnemySpawner;
 using Assets.Scripts.Gameplay.Services.Factories;
 using Assets.Scripts.Gameplay.Services.Factories.Weapon;
 using Assets.Scripts.Gameplay.Services.InputService;
-using Assets.Scripts.Gameplay.Services.Progress;
 using Assets.Scripts.Gameplay.Services.Register;
-using Assets.Scripts.Gameplay.Services.Tick;
-using Assets.Scripts.Gameplay.Services.WorldBounds;
 using Assets.Scripts.Gameplay.Signals;
 using Assets.Scripts.Gameplay.UI.Services;
 using Assets.Scripts.Gameplay.UI.ViewModels;
@@ -53,6 +49,7 @@ namespace Assets.Scripts.Core
             Container.BindInterfacesAndSelfTo<EnemyRegistry>().AsSingle();
             Container.BindInterfacesAndSelfTo<EnemySpawner>().AsSingle();
             Container.BindInterfacesAndSelfTo<WorldBounds>().AsSingle();
+            Container.BindInterfacesAndSelfTo<WorldFrame>().AsSingle();
 
             Container.BindInterfacesAndSelfTo<TickService>().FromNewComponentOn(gameObject).AsSingle();
         }
@@ -75,8 +72,8 @@ namespace Assets.Scripts.Core
 
         private void BindFactories()
         {
-            Container.Bind<ShipFactory>().AsSingle();
-            Container.Bind<ShipBuilder>().AsSingle();
+            Container.BindInterfacesAndSelfTo<ShipBuilder>().AsSingle();
+            Container.BindInterfacesAndSelfTo<ShipFactory>().AsSingle();
             Container.BindInterfacesAndSelfTo<EnemyFactory>().AsSingle();
             Container.BindInterfacesAndSelfTo<BulletFactory>().AsSingle();
 
@@ -101,7 +98,7 @@ namespace Assets.Scripts.Core
         private void BindStates()
         {
             Container.Bind<LoadLevelState>().AsSingle();
-            Container.Bind<GameStateMachine>().AsSingle();
+            Container.BindInterfacesAndSelfTo<GameStateMachine>().AsSingle();
         }
         private void BindUI()
         {

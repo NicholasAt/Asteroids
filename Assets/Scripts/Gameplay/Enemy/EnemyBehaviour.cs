@@ -19,11 +19,10 @@ namespace Assets.Scripts.Gameplay.Enemy
         private readonly IEnemyRegistry _enemyRegistry;
         private readonly IWorldBounds _worldBounds;
 
-        public Action OnDestroy { get; set; }
-
         public Vector2 Position => PhysicsBody.Position;
 
         private bool _destroyed;
+        public event Action OnDie;
 
         public EnemyBehaviour(EnemyType enemyId, PhysicsWorld physicsWorld, PhysicsBody physicsBody, SignalBus signalBus, IEnemyRegistry enemyRegistry, IWorldBounds worldBounds)
         {
@@ -65,7 +64,7 @@ namespace Assets.Scripts.Gameplay.Enemy
             _enemyRegistry.Remove(this);
             _physicsWorld.Remove(PhysicsBody);
             _worldBounds.Remove(this);
-            OnDestroy?.Invoke();
+            OnDie?.Invoke();
         }
         private void OnCollision(object obj)
         {

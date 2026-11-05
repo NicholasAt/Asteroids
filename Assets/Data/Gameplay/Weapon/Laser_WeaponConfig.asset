@@ -19,5 +19,5 @@ MonoBehaviour:
   <CDCharge>k__BackingField: 5
   <RayWidth>k__BackingField: 0.5
   <RayLength>k__BackingField: 20
-  <EffectDuration>k__BackingField: 0.2
+  <EffectDuration>k__BackingField: 0.1
   <VisualPrefab>k__BackingField: {fileID: 2252408688278698569, guid: 0c97079878a9f854a8db2289f69af43c, type: 3}

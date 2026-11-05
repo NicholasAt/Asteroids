@@ -3,6 +3,7 @@ using Assets.Scripts.Data.Models.ShipProgress;
 using Assets.Scripts.Gameplay.Interfaces.Common;
 using Assets.Scripts.Gameplay.Interfaces.Services;
 using Assets.Scripts.Gameplay.Interfaces.Services.Tick;
+using Assets.Scripts.Gameplay.Move;
 using Assets.Scripts.Gameplay.Physics;
 using System;
 using System.Collections.Generic;
@@ -10,34 +11,31 @@ using UnityEngine;
 
 namespace Assets.Scripts.Gameplay.Ship
 {
-    public class Ship : IWrapped, IApplyDamage, ICustomTick, IDisposable
+    public class Ship : IWrapped, IApplyDamage, ICustomTick, IDisposable, IWeaponKeeper
     {
         public readonly PhysicsBody PhysicsBody;
         private readonly ShipProgress _shipProgress;
-        private readonly IWorldBounds _worldBounds;
+        private readonly IApplyDamage _applyDamage;
         private readonly IInput _input;
-        private readonly ITickService _tickService;
-        private readonly PhysicsWorld _physicsWorld;
         private readonly ShipData _shipData;
-        private readonly Move.Move _move;
-        private readonly float _invulnerabilitySeconds;
+        private readonly ShipMove _move;
 
         private IWeapon _weapon1;
         private IWeapon _weapon2;
         public Vector2 Position => PhysicsBody.Position;
         private bool _invulnerableToggle;
 
-        public Ship(PhysicsWorld physicsWorld, float invulnerabilitySeconds, ShipData shipData, Move.Move move, PhysicsBody physicsBody, ShipProgress shipProgress, IWorldBounds worldBounds, IInput input, ITickService tickService)
+        public event Action OnDie;
+
+        public Ship(ShipData shipData, ShipMove move, PhysicsBody physicsBody, ShipProgress shipProgress, IApplyDamage applyDamage, IInput input)
         {
             PhysicsBody = physicsBody;
             _shipProgress = shipProgress;
-            _physicsWorld = physicsWorld;
-            _invulnerabilitySeconds = invulnerabilitySeconds;
             _shipData = shipData;
             _move = move;
-            _worldBounds = worldBounds;
             _input = input;
-            _tickService = tickService;
+            _applyDamage = applyDamage;
+            _applyDamage.OnDie += Dispose;
         }
 
         public void SetWeapon(IReadOnlyList<IWeapon> weapons)
@@ -67,19 +65,9 @@ namespace Assets.Scripts.Gameplay.Ship
             _shipProgress.SetSpeed(PhysicsBody.Velocity.magnitude);
         }
 
-        public void TakeDamage(float _, bool __)
+        public void TakeDamage(float damage, bool isSplit)
         {
-            if (_shipProgress.IsInvulnerable)
-                return;
-
-            _shipProgress.Health.ChangeHealth(_shipProgress.Health.CurrentHealth - 1);
-            if (_shipProgress.Health.CurrentHealth < 1)
-            {
-                _shipProgress.SetSpeed(0);
-                Dispose();
-            }
-            else
-                _shipProgress.SetInvulnerableLeft(_invulnerabilitySeconds);
+            _applyDamage.TakeDamage(damage, isSplit);
         }
 
         public void Wrap(Vector2 newPosition)
@@ -90,9 +78,7 @@ namespace Assets.Scripts.Gameplay.Ship
 
         public void Dispose()
         {
-            _physicsWorld.Remove(PhysicsBody);
-            _worldBounds.Remove(this);
-            _tickService.Remove(this);
+            _applyDamage.OnDie -= Dispose;
         }
 
         private void UpdateInvulnerability(float deltaTime)
@@ -105,14 +91,13 @@ namespace Assets.Scripts.Gameplay.Ship
 
             if (_shipProgress.IsInvulnerable && _invulnerableToggle == false)
             {
-                PhysicsBody.IsInvulnerable = true;
                 _invulnerableToggle = true;
             }
             else if (_shipProgress.IsInvulnerable == false && _invulnerableToggle)
             {
-                PhysicsBody.IsInvulnerable = false;
                 _invulnerableToggle = false;
             }
+            PhysicsBody.IsInvulnerable = _shipProgress.IsInvulnerable;
         }
     }
 }

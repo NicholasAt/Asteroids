@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Assets.Scripts.Core.Interfaces.States;
+using System;
 using System.Collections.Generic;
 
 namespace Assets.Scripts.Core.Bootstrap.States
 {
-    public class GameStateMachine
+    public class GameStateMachine: IGameStateMachine
     {
         private readonly Dictionary<Type, object> _states;
 

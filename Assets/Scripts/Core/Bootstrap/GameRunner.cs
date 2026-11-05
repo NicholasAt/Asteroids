@@ -1,4 +1,5 @@
 using Assets.Scripts.Core.Bootstrap.States;
+using Assets.Scripts.Core.Interfaces.States;
 using Assets.Scripts.Data.Configs.Constants;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,10 +10,10 @@ namespace Assets.Scripts.Core.Infrastructure.Bootstrap
     public class GameRunner : MonoBehaviour
     {
         [SerializeField] private List<GameObject> _dontDestroyOnLoad;
-        private GameStateMachine _gameStateMachine;
+        private IGameStateMachine _gameStateMachine;
 
         [Inject]
-        private void Construct(GameStateMachine gameStateMachine)
+        private void Construct(IGameStateMachine gameStateMachine)
         {
             _gameStateMachine = gameStateMachine;
         }

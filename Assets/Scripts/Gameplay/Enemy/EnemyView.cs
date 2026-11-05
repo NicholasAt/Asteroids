@@ -10,12 +10,12 @@ namespace Assets.Scripts.Gameplay.Enemy
         public void Init(IEnemyBehaviour enemy)
         {
             _enemy = enemy;
-            _enemy.OnDestroy += Destroy;
+            _enemy.OnDie += Destroy;
         }
 
         private void Destroy()
         {
-            _enemy.OnDestroy -= Destroy;
+            _enemy.OnDie -= Destroy;
             Destroy(gameObject);
         }
     }

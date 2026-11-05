@@ -31,7 +31,7 @@ namespace Assets.Scripts.Gameplay.Weapon.Gun
             {
                 _current -= _config.CD;
                 Vector2 from = _physicsBody.Position + (_physicsBody.Rotation.ToRotateToDirection() * _config.ForwardSpawnPointOffset);
-                _bulletFactory.CreateBullet(from, _physicsBody.Rotation, _config.BulletSpeedLimit);
+                _bulletFactory.CreateBullet(from, _config.IsSplit, _physicsBody.Rotation, _config.BulletSpeedLimit);
             }
         }
     }

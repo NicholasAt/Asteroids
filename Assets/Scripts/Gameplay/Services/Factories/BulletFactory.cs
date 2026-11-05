@@ -22,7 +22,7 @@ namespace Assets.Scripts.Gameplay.Services.Factories
             _bulletData = bulletData;
         }
 
-        public PhysicsBody CreateBullet(Vector2 position, float rotate, float speedLimit)
+        public PhysicsBody CreateBullet(Vector2 position, bool isSplit, float rotate, float speedLimit)
         {
             Vector2 direction = rotate.ToRotateToDirection();
             PhysicsBody body = new PhysicsBody()
@@ -40,7 +40,7 @@ namespace Assets.Scripts.Gameplay.Services.Factories
             GameObject instance = _diContainer.InstantiatePrefab(_bulletData.BulletPrefab);
             instance.ToMoveToActiveScene();
 
-            Bullet.Bullet bullet = new Bullet.Bullet(_physicsWorld, body, _bulletData.IsSplit);
+            Bullet.Bullet bullet = new Bullet.Bullet(_physicsWorld, body, isSplit);
 
             instance.GetComponent<BulletView>().Init(body, bullet);
             instance.GetComponent<TransformView>().Init(body);

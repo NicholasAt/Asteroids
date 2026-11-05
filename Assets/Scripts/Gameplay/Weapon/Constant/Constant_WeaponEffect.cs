@@ -25,8 +25,8 @@ namespace Assets.Scripts.Gameplay.Weapon.Constant
             _width = width;
             _duration = duration;
             _lineRenderer.enabled = true;
-            _lineRenderer.startWidth = _width;
-            _lineRenderer.endWidth = _width / 2;
+            _lineRenderer.startWidth = _width * 0.5f;
+            _lineRenderer.endWidth = _width;
         }
 
         public void Update(Vector2 from, Vector2 to, float deltaTime)

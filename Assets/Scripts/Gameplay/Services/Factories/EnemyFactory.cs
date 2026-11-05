@@ -57,6 +57,7 @@ namespace Assets.Scripts.Gameplay.Services.Factories
             (GameObject instance, PhysicsBody physicsBody) = Instantiate(prefab, position, Vector2.zero, force, mass, speedLimit, drag);
 
             Saucer enemy = new Saucer(enemyType, _progressService, _physicsWorld, physicsBody, _signalBus, _enemyRegistry, _worldBounds);
+            physicsBody.Force = force;
             InitAndRegister(true, enemy, instance);
         }
 
@@ -85,8 +86,8 @@ namespace Assets.Scripts.Gameplay.Services.Factories
                 SpeedLimit = speedLimit,
                 Direction = direction,
                 Position = position,
-                Drag = drag,
                 Mass = mass,
+                Drag = drag,
             };
 
             _physicsWorld.Add(physicsBody);

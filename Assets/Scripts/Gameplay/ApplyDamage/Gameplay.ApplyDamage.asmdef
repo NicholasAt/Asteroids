@@ -1,0 +1,18 @@
+{
+    "name": "Gameplay.ApplyDamage",
+    "rootNamespace": "",
+    "references": [
+        "GUID:790b788b312e43f4697044b749be548a",
+        "GUID:f715dc7cfd79cff4288f00d13e83d560",
+        "GUID:9bfc0c0f09a85814e82e15be6cec35f0"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

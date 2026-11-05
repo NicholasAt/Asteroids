@@ -19,7 +19,6 @@ namespace Assets.Scripts.Gameplay.Enemy
         {
             Vector2 shipPosition = _progressService.ShipProgress.Position;
             Vector2 direction = (shipPosition - PhysicsBody.Position).normalized;
-            PhysicsBody.Force = 2;
             PhysicsBody.Direction = direction;
         }
         public override void Wrap(Vector2 _)
