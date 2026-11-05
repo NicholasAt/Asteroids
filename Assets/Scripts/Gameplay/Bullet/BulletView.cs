@@ -1,15 +1,15 @@
-using Assets.Scripts.Gameplay.Interfaces.Common;
 using Assets.Scripts.Gameplay.Physics;
 using UnityEngine;
 using Zenject;
+using IPoolable = Assets.Scripts.Gameplay.Interfaces.Common.IPoolable;
 
 namespace Assets.Scripts.Gameplay.Bullet
 {
     public class BulletView : MonoBehaviour
     {
-        private const int Damage = 0;
 
         private PhysicsBody _physicsBody;
+        private IPoolable _poolable;
         private PhysicsWorld _physicsWorld;
 
         [Inject]
@@ -18,28 +18,28 @@ namespace Assets.Scripts.Gameplay.Bullet
             _physicsWorld = physicsWorld;
         }
 
-        public void Init(PhysicsBody physicsBody)
+        public void Init(PhysicsBody physicsBody, IPoolable poolable)
         {
             _physicsBody = physicsBody;
-            _physicsBody.Owner = this;
-            _physicsBody.OnCollision += OnCollistion;
+            _poolable = poolable;
+            _poolable.OnShow += OnShow;
+            _poolable.OnHide += OnHide;
         }
 
         private void OnDestroy()
         {
-            _physicsBody.OnCollision -= OnCollistion;
-            _physicsWorld.Remove(_physicsBody);
+            _poolable.OnShow -= OnShow;
+            _poolable.OnHide -= OnHide;
         }
 
-        private void OnCollistion(object owner)
+        private void OnHide()
         {
-            if (owner != null && owner is IApplyDamage applyDamage)
-            {
-                _physicsBody.IsInvulnerable = true;
-                applyDamage.TakeDamage(Damage, true);
-            }
+            gameObject.SetActive(false);
+        }
 
-            Destroy(gameObject);
+        private void OnShow()
+        {
+            gameObject.SetActive(true);
         }
     }
 }

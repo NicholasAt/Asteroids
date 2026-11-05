@@ -1,5 +1,4 @@
 using Assets.Scripts.Data.Configs.Weapon.Configs;
-using Assets.Scripts.Data.Models.Weapon;
 using Assets.Scripts.Gameplay.Extensions;
 using Assets.Scripts.Gameplay.Interfaces.Services;
 using Assets.Scripts.Gameplay.Physics;
@@ -19,6 +18,7 @@ namespace Assets.Scripts.Gameplay.Weapon.Gun
             _config = config;
             _physicsBody = physicsBody;
             _bulletFactory = bulletFactory;
+            _current = _config.CD;
         }
 
         public override void Update(bool isPress, float deltaTime)

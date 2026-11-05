@@ -11,5 +11,6 @@ namespace Assets.Scripts.Data.Configs.Ship
         [field: SerializeField] public float SpeedLimit { get; private set; } = 5;
         [field: SerializeField] public float Mass { get; private set; }
         [field: SerializeField] public float Drag { get; private set; }
+        [field: SerializeField] public float AngularDrag { get; private set; }
     }
 }

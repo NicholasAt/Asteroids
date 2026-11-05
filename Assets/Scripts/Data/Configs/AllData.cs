@@ -1,5 +1,6 @@
 using Assets.Scripts.Data.Configs.Bullet;
 using Assets.Scripts.Data.Configs.Enemy;
+using Assets.Scripts.Data.Configs.EnemySpawner;
 using Assets.Scripts.Data.Configs.Game;
 using Assets.Scripts.Data.Configs.Player;
 using Assets.Scripts.Data.Configs.Ship;
@@ -17,6 +18,7 @@ namespace Assets.Scripts.Data
         [field: SerializeField] public PlayerData PlayerData { get; private set; }
         [field: SerializeField] public GameData GameData { get; private set; }
         [field: SerializeField] public EnemyData EnemyData { get; private set; }
+        [field: SerializeField] public EnemySpawnerData EnemySpawnerData { get; private set; }
         [field: SerializeField] public WeaponData WeaponData { get; private set; }
         [field: SerializeField] public BulletData BulletData { get; private set; }
         [field: SerializeField] public WorldBoundsData WorldBoundsData { get; private set; }

@@ -79,7 +79,7 @@ namespace Assets.Scripts.Gameplay.Physics
             }
         }
 
-        private static bool CheckCollision(PhysicsBody a, PhysicsBody b)
+        private bool CheckCollision(PhysicsBody a, PhysicsBody b)
         {
             if ((a.CollidesWith & b.Layer) == 0 || (b.CollidesWith & a.Layer) == 0)
                 return false;

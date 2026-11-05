@@ -15,6 +15,6 @@ MonoBehaviour:
   <WeaponId>k__BackingField: 100
   <IsSplit>k__BackingField: 1
   <Damage>k__BackingField: 0
-  <CD>k__BackingField: 1
+  <CD>k__BackingField: 0.4
   <BulletSpeedLimit>k__BackingField: 15
   <ForwardSpawnPointOffset>k__BackingField: 1.5

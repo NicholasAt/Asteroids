@@ -46,6 +46,7 @@ namespace Assets.Scripts.Gameplay.Services.Factories
                 Drag = _shipData.Drag,
                 Mass = _shipData.Mass,
                 Force = _shipData.Force,
+                AngularDrag=_shipData.AngularDrag,
                 SpeedLimit = _shipData.SpeedLimit,
             };
 

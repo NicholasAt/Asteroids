@@ -34,16 +34,17 @@ namespace Assets.Scripts.Gameplay.Services.Factories
                 Radius = _bulletData.BulleRadius,
                 Drag = 0,
                 SpeedLimit = speedLimit,
-                Position = position,
                 Rotation = rotate,
-                Direction = direction,
                 Velocity = direction * speedLimit,
             };
-            _physicsWorld.Add(body);
             GameObject instance = _diContainer.InstantiatePrefab(_bulletData.BulletPrefab);
             instance.ToMoveToActiveScene();
-            instance.GetComponent<BulletView>().Init(body);
+
+            Bullet.Bullet bullet = new Bullet.Bullet(_physicsWorld, body, _bulletData.IsSplit);
+
+            instance.GetComponent<BulletView>().Init(body, bullet);
             instance.GetComponent<TransformView>().Init(body);
+            bullet.Show(position, direction);
             return body;
         }
     }
