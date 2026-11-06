@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc7dfc64087dc4a4292fcf31324d6a7e, type: 3}
   m_Name: WindowsData
   m_EditorClassIdentifier: 
-  <HUDPrefab>k__BackingField: {fileID: 7825763182626680355, guid: 6e244bc6629e75646a43ec251c22c972, type: 3}
+  <HUDPrefab>k__BackingField: {fileID: 8396103157675401593, guid: 6e244bc6629e75646a43ec251c22c972, type: 3}
   <MobileInputPrefab>k__BackingField: {fileID: 8750659697481995672, guid: d78e1664cc81d7f46a54f629670f653f, type: 3}

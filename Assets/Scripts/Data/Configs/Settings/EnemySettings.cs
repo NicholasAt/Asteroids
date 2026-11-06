@@ -56,6 +56,8 @@ namespace Assets.Scripts.Data.Configs.Settings
         public float Mass = 1f;
         public float SpeedLimit = 2f;
         public float Drag = 0f;
+        public float AngularVelocity = 0;
+        public float AngularDrag = 0;
     }
 
     [Serializable]

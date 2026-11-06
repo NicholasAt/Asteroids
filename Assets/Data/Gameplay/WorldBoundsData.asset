@@ -12,8 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 787515bcfc7cd204ab249d48e6bc5d15, type: 3}
   m_Name: WorldBoundsData
   m_EditorClassIdentifier: 
-  <MapSize>k__BackingField: {x: 28, y: 28}
-  <OutMapSize>k__BackingField: {x: 50, y: 36}
   <VisualData>k__BackingField:
-    <LineWidth>k__BackingField: 0.3
+    <LineWidth>k__BackingField: 0.2
     <LineMaterial>k__BackingField: {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}

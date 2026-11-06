@@ -28,14 +28,12 @@ namespace Assets.Scripts.Gameplay.UI.Views
         private void Start()
         {
             Bind(_vm.Score, v => _scoreText.text = $"Score: {v}");
+            Bind(_vm.CurrentHealth, v => _healthText.text = $"Health {_vm.CurrentHealth.Value}");
 
-            Bind(_vm.MaxHealth, v => RefreshHealth(_vm.CurrentHealth.Value, _vm.MaxHealth.Value));
-            Bind(_vm.CurrentHealth, v => RefreshHealth(_vm.CurrentHealth.Value, _vm.MaxHealth.Value));
+            Bind(_vm.LaserCharges, v => _laserChargesText.text = $"Laser charges: {v}/{_vm.MaxLaserCharges.Value}");
+            Bind(_vm.LaserCooldown, v => _laserCooldownText.text = _vm.LaserCharges.Value < _vm.MaxLaserCharges.Value ? $"Laser cooldown: {v:F1}" : "Laser cooldown: ready");
 
-            Bind(_vm.LaserCharges, v => _laserChargesText.text = v.ToString());
-            Bind(_vm.LaserCooldown, v => _laserCooldownText.text = $"{v:F1}");
-
-            Bind(_vm.Position, v => _positionText.text = $"X: {v.x:F1} Y: {v.y:F1}");
+            Bind(_vm.Position, v => _positionText.text = $"Position: {v.x:F0}, {v.y:F0}");
             Bind(_vm.Rotate, v => _rotationText.text = $"Angle: {v:F0}");
             Bind(_vm.Speed, v => _currentSpeed.text = $"Speed: {v:F1}");
         }
@@ -52,11 +50,6 @@ namespace Assets.Scripts.Gameplay.UI.Views
             apply(property.Value);
             property.Changed += apply;
             _unsubscribe.Add(() => property.Changed -= apply);
-        }
-
-        private void RefreshHealth(int current, int max)
-        {
-            _healthText.text = $"Health: {current}/{max}";
         }
     }
 }

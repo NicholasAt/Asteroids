@@ -20,6 +20,7 @@ namespace Assets.Scripts.Data.Configs.Settings
         public float SpeedLimit = 5f;
         public float Mass = 1f;
         public float Drag = 0.5f;
+        public float Size = 0.5f;
         public float AngularDrag = 3f;
     }
 

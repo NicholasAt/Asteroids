@@ -48,6 +48,7 @@ namespace Assets.Scripts.Gameplay.Services.Factories
                 Layer = CollisionLayer.Player,
                 CollidesWith = CollisionLayer.Enemy,
 
+                Radius = _playerSettings.Ship.Size,
                 Drag = _playerSettings.Ship.Drag,
                 Mass = _playerSettings.Ship.Mass,
                 Force = _playerSettings.Ship.Force,

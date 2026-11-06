@@ -6,7 +6,7 @@ namespace Assets.Scripts.Gameplay.Ship
     public class ShipView : MonoBehaviour
     {
         private float CD = 0.1f;
-        [SerializeField] private SpriteRenderer _body;
+        [SerializeField] private GameObject _body;
         [SerializeField] private ParticleSystem _ps;
 
         private ShipProgress _shipProgress;
@@ -30,11 +30,11 @@ namespace Assets.Scripts.Gameplay.Ship
                 if (_currentCD >= CD)
                 {
                     _currentCD -= CD;
-                    _body.enabled = !_body.enabled;
+                    _body.SetActive(!_body.activeInHierarchy);
                 }
             }
             else
-                _body.enabled = true;
+                _body.SetActive(true);
 
             if (isPlay && !_ps.isPlaying)
                 _ps.Play();

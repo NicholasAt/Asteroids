@@ -8,7 +8,7 @@ namespace Assets.Scripts.Data.Configs.Enemy
     public class EnemyData : ScriptableObject
     {
         [SerializeField] private List<EnemyConfig> _configs;
-       public IReadOnlyList<EnemyConfig> Configs=>_configs;
+        public IReadOnlyList<EnemyConfig> Configs => _configs;
         public EnemyConfig GetConfig(EnemyType enemyType)
         {
             foreach (EnemyConfig cfg in _configs)

@@ -4,10 +4,11 @@
 
   "Ship": {
     "Force": 6.0,
-    "SpeedRotate": 17.0,
+    "SpeedRotate": 25.0,
     "SpeedLimit": 8.0,
     "Mass": 1.0,
     "Drag": 0.5,
+    "Size": 0.5,
     "AngularDrag": 10.0
   },
 
@@ -29,8 +30,8 @@
     "MaxCharges": 3,
     "ChargeCooldown": 5.0,
     "RayWidth": 0.3,
-    "RayLength": 15.0,
-    "EffectDuration": 0.1,
+    "RayLength": 25.0,
+    "EffectDuration": 0.05,
     "IsSplit": false
   }
 }

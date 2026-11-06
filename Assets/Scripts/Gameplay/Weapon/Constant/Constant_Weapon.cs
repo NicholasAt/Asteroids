@@ -24,7 +24,8 @@ namespace Assets.Scripts.Gameplay.Weapon.Constant
             _model = model;
             _weaponEffect = weaponEffect;
             _body = body;
-            model.SetCharges(config.MaxCharges);
+            model.SetCharges(config.MaxCharges, config.MaxCharges);
+            model.SetCD(config.ChargeCooldown);
         }
 
         public override void Update(bool isPress, float deltaTime)
@@ -39,7 +40,7 @@ namespace Assets.Scripts.Gameplay.Weapon.Constant
 
                 if (_model.CurrentCharges > 0)
                 {
-                    _model.SetCharges(_model.CurrentCharges - 1);
+                    _model.SetCharges(_model.CurrentCharges - 1, _config.MaxCharges);
                     _weaponEffect.Start(_config.RayWidth, _config.EffectDuration);
                     Fire(_body, direction, _config.RayLength, _config.RayWidth);
                 }
@@ -75,13 +76,25 @@ namespace Assets.Scripts.Gameplay.Weapon.Constant
         {
             if (_model.CurrentCharges < _config.MaxCharges)
             {
-                _model.SetCD(_model.CurrentCD + deltaTime);
-                if (_model.CurrentCD >= _config.ChargeCooldown)
+                _model.SetCD(_model.CurrentCD - deltaTime);
+                if (_model.CurrentCD <= 0)
                 {
-                    _model.SetCharges(_model.CurrentCharges + 1);
-                    _model.SetCD(_model.CurrentCD - _config.ChargeCooldown);
+                    _model.SetCharges(_model.CurrentCharges + 1, _config.MaxCharges);
+                    _model.SetCD(_model.CurrentCD + _config.ChargeCooldown);
                 }
             }
         }
+        //private void UpdateColldown(float deltaTime)
+        //{
+        //    if (_model.CurrentCharges < _config.MaxCharges)
+        //    {
+        //        _model.SetCD(_model.CurrentCD + deltaTime);
+        //        if (_model.CurrentCD >= _config.ChargeCooldown)
+        //        {
+        //            _model.SetCharges(_model.CurrentCharges + 1, _config.MaxCharges);
+        //            _model.SetCD(_model.CurrentCD - _config.ChargeCooldown);
+        //        }
+        //    }
+        //}
     }
 }

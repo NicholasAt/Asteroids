@@ -22,6 +22,7 @@ namespace Assets.Scripts.Gameplay.UI.ViewModels
         public readonly ReactiveProperty<float> Speed = new ReactiveProperty<float>();
 
         public readonly ReactiveProperty<int> LaserCharges = new ReactiveProperty<int>();
+        public readonly ReactiveProperty<int> MaxLaserCharges = new ReactiveProperty<int>();
         public readonly ReactiveProperty<float> LaserCooldown = new ReactiveProperty<float>();
 
         private readonly IProgressService _progressService;
@@ -70,8 +71,9 @@ namespace Assets.Scripts.Gameplay.UI.ViewModels
 
             if (_constantModel != null)
             {
-                LaserCooldown.Value = _constantModel.CurrentCD;
+                MaxLaserCharges.Value = _constantModel.MaxCharges;
                 LaserCharges.Value = _constantModel.CurrentCharges;
+                LaserCooldown.Value = _constantModel.CurrentCD;
             }
         }
 
