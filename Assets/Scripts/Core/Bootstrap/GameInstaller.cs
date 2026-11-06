@@ -21,6 +21,7 @@ using Assets.Scripts.Gameplay.Services.Register;
 using Assets.Scripts.Gameplay.Signals;
 using Assets.Scripts.Gameplay.UI.Services;
 using Assets.Scripts.Gameplay.UI.ViewModels;
+using Assets.Scripts.Services.Advertisement;
 using Assets.Scripts.Services.Analytics;
 using UnityEngine;
 using Zenject;
@@ -72,6 +73,7 @@ namespace Assets.Scripts.Core
         private void BindServices()
         {
             Container.BindInterfacesAndSelfTo<AnalyticsService>().AsSingle();
+            Container.BindInterfacesAndSelfTo<AdvertisementService>().AsSingle();
         }
         private void BindPools()
         {

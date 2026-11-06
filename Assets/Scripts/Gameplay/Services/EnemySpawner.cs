@@ -48,12 +48,11 @@ namespace Assets.Scripts.Gameplay.Services
             int count = _spawnerData.Fragments;
             for (int i = 0; i < count; i++)
             {
-                float rad = i * (Mathf.PI * 2) / count;
-                rad += Mathf.PI * 0.5f;
-                Vector2 direction = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
+                Vector2 direction = UnityEngine.Random.insideUnitCircle.normalized;
                 _enemyPool.Get(EnemyType.Fragment, pos, direction);
             }
         }
+
         private void SpawnSaucer(Vector2 pos, Vector2 _)
         {
             _enemyPool.Get(EnemyType.Saucer, pos, _);

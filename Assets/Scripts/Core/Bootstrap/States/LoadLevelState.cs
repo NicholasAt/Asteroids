@@ -9,6 +9,7 @@ using Assets.Scripts.Gameplay.Interfaces.Services;
 using Assets.Scripts.Gameplay.Interfaces.Services.Factory;
 using Assets.Scripts.Gameplay.Interfaces.UI.Services;
 using Assets.Scripts.Gameplay.UI.ViewModels;
+using Assets.Scripts.Services.Advertisement;
 using Assets.Scripts.Services.Analytics;
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
@@ -28,8 +29,9 @@ namespace Assets.Scripts.Core.Bootstrap.States
         private readonly IUIFactory _uIFactory;
         private readonly IWorldFrame _worldFrame;
         private readonly IAnalyticsService _analytics;
+        private readonly IAdvertisementService _advertisement;
 
-        public LoadLevelState(SceneLoader sceneLoader, IShipBuilder shipBuilder, PlayerData playerData, GameData gameData, HUDViewModel hUDViewModel, IEnemyFactory enemyFactory, IEnemySpawner enemySpawner, IProgressService progressService, IUIFactory uIFactory, IWorldFrame worldFrame,IAnalyticsService analyticsService)
+        public LoadLevelState(SceneLoader sceneLoader, IShipBuilder shipBuilder, PlayerData playerData, GameData gameData, HUDViewModel hUDViewModel, IEnemyFactory enemyFactory, IEnemySpawner enemySpawner, IProgressService progressService, IUIFactory uIFactory, IWorldFrame worldFrame,IAnalyticsService analyticsService,IAdvertisementService advertisement)
         {
             _sceneLoader = sceneLoader;
             _shipBuilder = shipBuilder;
@@ -42,6 +44,7 @@ namespace Assets.Scripts.Core.Bootstrap.States
             _uIFactory = uIFactory;
             _worldFrame = worldFrame;
             _analytics = analyticsService;
+            _advertisement = advertisement;
         }
 
         public void Enter(string payload)
@@ -61,6 +64,7 @@ namespace Assets.Scripts.Core.Bootstrap.States
 
             _worldFrame.Draw();
             _analytics.SendStartGame();
+            _advertisement.ShowBanner();
         }
 
         private void InitProgress()
