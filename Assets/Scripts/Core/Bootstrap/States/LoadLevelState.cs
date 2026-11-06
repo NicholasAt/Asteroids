@@ -31,7 +31,7 @@ namespace Assets.Scripts.Core.Bootstrap.States
         private readonly IAnalyticsService _analytics;
         private readonly IAdvertisementService _advertisement;
 
-        public LoadLevelState(SceneLoader sceneLoader, IShipBuilder shipBuilder, PlayerSettings playerSettings, GameData gameData, HUDViewModel hUDViewModel, IEnemyFactory enemyFactory, IEnemySpawner enemySpawner, IProgressService progressService, IUIFactory uIFactory, IWorldFrame worldFrame,IAnalyticsService analyticsService,IAdvertisementService advertisement)
+        public LoadLevelState(SceneLoader sceneLoader, IShipBuilder shipBuilder, PlayerSettings playerSettings, GameData gameData, HUDViewModel hUDViewModel, IEnemyFactory enemyFactory, IEnemySpawner enemySpawner, IProgressService progressService, IUIFactory uIFactory, IWorldFrame worldFrame, IAnalyticsService analyticsService, IAdvertisementService advertisement)
         {
             _sceneLoader = sceneLoader;
             _shipBuilder = shipBuilder;

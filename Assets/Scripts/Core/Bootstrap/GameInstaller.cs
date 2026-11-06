@@ -62,6 +62,7 @@ namespace Assets.Scripts.Core
         {
             SignalBusInstaller.Install(Container);
             Container.DeclareSignal<EnemyDeathSignal>();
+            Container.DeclareSignal<PlayerDeathSignal>();
         }
         private void BindInput()
         {

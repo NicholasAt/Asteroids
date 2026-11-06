@@ -8,6 +8,7 @@ using Assets.Scripts.Gameplay.Physics;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 namespace Assets.Scripts.Gameplay.Ship
 {
@@ -26,7 +27,7 @@ namespace Assets.Scripts.Gameplay.Ship
         private bool _invulnerableToggle;
 
         public event Action OnDie;
-
+        private bool _dead;
         public Ship(ShipData shipData, ShipMove move, PhysicsBody physicsBody, ShipProgress shipProgress, IApplyDamage applyDamage, IInput input)
         {
             PhysicsBody = physicsBody;
@@ -35,7 +36,7 @@ namespace Assets.Scripts.Gameplay.Ship
             _move = move;
             _input = input;
             _applyDamage = applyDamage;
-            _applyDamage.OnDie += Dispose;
+            _applyDamage.OnDie += Die;
         }
 
         public void SetWeapon(IReadOnlyList<IWeapon> weapons)
@@ -78,10 +79,19 @@ namespace Assets.Scripts.Gameplay.Ship
 
         public void Dispose()
         {
-            OnDie?.Invoke();
-            _applyDamage.OnDie -= Dispose;
+            OnDie = null;
+            _applyDamage.OnDie -= Die;
         }
+        private void Die()
+        {
+            if (_dead)
+                return;
 
+            _dead = true;
+            OnDie?.Invoke();
+
+            Dispose();
+        }
         private void UpdateInvulnerability(float deltaTime)
         {
             if (_shipProgress.IsInvulnerable)

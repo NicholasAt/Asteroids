@@ -10,6 +10,7 @@ using Assets.Scripts.Gameplay.Interfaces.Services.Tick;
 using Assets.Scripts.Gameplay.Move;
 using Assets.Scripts.Gameplay.Physics;
 using Assets.Scripts.Gameplay.Ship;
+using Assets.Scripts.Gameplay.Signals;
 using UnityEngine;
 using Zenject;
 
@@ -21,17 +22,19 @@ namespace Assets.Scripts.Gameplay.Services.Factories
         private readonly PhysicsWorld _physicsWorld;
         private readonly ShipData _shipData;
         private readonly PlayerSettings _playerSettings;
+        private readonly SignalBus _signalBus;
         private readonly IProgressService _progressService;
         private readonly IWorldBounds _worldBounds;
         private readonly IInput _inputService;
         private readonly ITickService _tickService;
 
-        public ShipFactory(DiContainer diContainer, PhysicsWorld physicsWorld, ShipData shipData, PlayerSettings playerSettings, IProgressService progressService, IWorldBounds worldBounds, IInput inputService, ITickService tickService)
+        public ShipFactory(DiContainer diContainer, PhysicsWorld physicsWorld, ShipData shipData, PlayerSettings playerSettings, SignalBus signalBus, IProgressService progressService, IWorldBounds worldBounds, IInput inputService, ITickService tickService)
         {
             _diContainer = diContainer;
             _physicsWorld = physicsWorld;
             _shipData = shipData;
             _playerSettings = playerSettings;
+            _signalBus = signalBus;
             _progressService = progressService;
             _worldBounds = worldBounds;
             _inputService = inputService;
@@ -70,6 +73,7 @@ namespace Assets.Scripts.Gameplay.Services.Factories
                 _physicsWorld.Remove(physicsBody);
                 _worldBounds.Remove(ship);
                 _tickService.Remove(ship);
+                _signalBus.Fire<PlayerDeathSignal>();
             };
 
             ShipView view = instance.GetComponent<ShipView>();

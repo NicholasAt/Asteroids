@@ -15,4 +15,8 @@ namespace Assets.Scripts.Gameplay.Signals
             IsSplit = isSplit;
         }
     }
+    public readonly struct PlayerDeathSignal
+    {
+
+    }
 }

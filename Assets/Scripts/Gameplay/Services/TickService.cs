@@ -1,6 +1,7 @@
 using Assets.Scripts.Core.Common;
 using Assets.Scripts.Gameplay.Interfaces.Services.Tick;
 using Assets.Scripts.Gameplay.Physics;
+using Assets.Scripts.Gameplay.Signals;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
@@ -12,12 +13,16 @@ namespace Assets.Scripts.Gameplay.Services
         private readonly List<ICustomTick> _tickables = new List<ICustomTick>(1000);
         private PhysicsWorld _physicsWorld;
         private List<ICustomTick> _initTickables;
+        private SignalBus _signalBus;
+        private bool _pause;
 
         [Inject]
-        private void Construct(PhysicsWorld physicsWorld, List<ICustomTick> initTickables)
+        private void Construct(PhysicsWorld physicsWorld, SignalBus signalBus, List<ICustomTick> initTickables)
         {
             _physicsWorld = physicsWorld;
             _initTickables = initTickables;
+            _signalBus = signalBus;
+            _signalBus.Subscribe<PlayerDeathSignal>(SetPause);
         }
 
         public void Initialize()
@@ -33,8 +38,16 @@ namespace Assets.Scripts.Gameplay.Services
         {
             CollectionExtension.RemoveFrom(_tickables, tickable);
         }
+        private void SetPause()
+        {
+            _pause = true;
+        }
+
         private void Update()
         {
+            if (_pause)
+                return;
+
             float deltaTime = Time.deltaTime;
 
             _physicsWorld.Update(deltaTime);
@@ -42,6 +55,10 @@ namespace Assets.Scripts.Gameplay.Services
             {
                 _tickables[i].Tick(deltaTime);
             }
+        }
+        private void OnDestroy()
+        {
+            _signalBus.Unsubscribe<PlayerDeathSignal>(SetPause);
         }
     }
 }
