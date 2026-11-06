@@ -1,5 +1,5 @@
 using Assets.Scripts.Core.Common;
-using Assets.Scripts.Data.Configs.Player;
+using Assets.Scripts.Data.Configs.Settings;
 using Assets.Scripts.Data.Models;
 using Assets.Scripts.Data.Models.ShipProgress;
 using Assets.Scripts.Data.Models.Weapon;
@@ -25,16 +25,16 @@ namespace Assets.Scripts.Gameplay.UI.ViewModels
         public readonly ReactiveProperty<float> LaserCooldown = new ReactiveProperty<float>();
 
         private readonly IProgressService _progressService;
-        private readonly PlayerData _playerData;
+        private readonly PlayerSettings _playerSettings;
 
         private ShipProgress _shipProgress;
         private ScoreProgress _scoreProgress;
         private Constant_WeaponModel _constantModel;
 
-        public HUDViewModel(IProgressService progressService, PlayerData playerData)
+        public HUDViewModel(IProgressService progressService, PlayerSettings playerSettings)
         {
             _progressService = progressService;
-            _playerData = playerData;
+            _playerSettings = playerSettings;
         }
 
         public void Preparation()
@@ -45,7 +45,7 @@ namespace Assets.Scripts.Gameplay.UI.ViewModels
             _scoreProgress.OnScoreChange += RefreshScore;
             _shipProgress.OnWeaponChanged += RefreshWeapons;
 
-            MaxHealth.Value = _playerData.StartHealth;
+            MaxHealth.Value = _playerSettings.StartHealth;
             RefreshWeapons();
         }
 

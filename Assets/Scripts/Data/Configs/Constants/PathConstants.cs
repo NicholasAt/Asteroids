@@ -1,10 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace Assets.Scripts.Data.Configs.Constants
 {
-    public class PathConstants
+    public static class PathConstants
     {
+        public const string PlayerConfig = "Configs/Player";
+        public const string EnemiesConfig = "Configs/Enemies";
+        public const string WorldConfig = "Configs/World";
     }
 }

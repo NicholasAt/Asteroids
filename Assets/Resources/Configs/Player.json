@@ -1,0 +1,36 @@
+{
+  "StartHealth": 3,
+  "InvulnerabilitySeconds": 2.0,
+
+  "Ship": {
+    "Force": 6.0,
+    "SpeedRotate": 17.0,
+    "SpeedLimit": 8.0,
+    "Mass": 1.0,
+    "Drag": 0.5,
+    "AngularDrag": 10.0
+  },
+
+  "Gun": {
+    "FireRate": 4.0,
+    "BulletForce": 15.0,
+    "BulletSpeedLimit": 15.0,
+    "ForwardSpawnPointOffset": 0.5,
+    "IsSplit": true,
+    "Bullet": {
+      "Mass": 0.5,
+      "Radius": 0.5,
+      "LifeTime": 3.0
+    }
+  },
+
+  "Laser": {
+    "Damage": 1,
+    "MaxCharges": 3,
+    "ChargeCooldown": 5.0,
+    "RayWidth": 0.3,
+    "RayLength": 15.0,
+    "EffectDuration": 0.1,
+    "IsSplit": false
+  }
+}

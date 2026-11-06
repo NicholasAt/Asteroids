@@ -1,3 +1,4 @@
+using Assets.Scripts.Data.Configs.Settings;
 using Assets.Scripts.Data.Configs.WorldBounds;
 using Assets.Scripts.Gameplay.Interfaces.Services;
 using UnityEngine;
@@ -7,16 +8,18 @@ namespace Assets.Scripts.Gameplay.Services
     public class WorldFrame : IWorldFrame
     {
         private readonly WorldBoundsData _worldBoundsData;
+        private readonly WorldSettings _worldSettings;
 
-        public WorldFrame(WorldBoundsData worldBoundsData)
+        public WorldFrame(WorldBoundsData worldBoundsData, WorldSettings worldSettings)
         {
             _worldBoundsData = worldBoundsData;
+            _worldSettings = worldSettings;
         }
 
         public void Draw()
         {
-            float halfX = _worldBoundsData.MapSize.x * 0.5f;
-            float halfY = _worldBoundsData.MapSize.y * 0.5f;
+            float halfX = _worldSettings.MapSize.x * 0.5f;
+            float halfY = _worldSettings.MapSize.y * 0.5f;
             GameObject root = new GameObject("World Frame");
             LineRenderer line = root.AddComponent<LineRenderer>();
 

@@ -11,6 +11,7 @@ namespace Assets.Scripts.Gameplay.Services.Register
         private readonly List<IEnemyBehaviour> _pursuing = new();
         private readonly List<IEnemyBehaviour> _notPursuing = new();
         public IReadOnlyList<IEnemyBehaviour> NotPursuing => _notPursuing;
+        public int Count => _pursuing.Count + _notPursuing.Count;
 
         public void Add(bool isPursuing, IEnemyBehaviour enemy)
         {

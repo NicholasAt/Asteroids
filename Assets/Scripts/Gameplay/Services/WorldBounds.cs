@@ -1,4 +1,4 @@
-using Assets.Scripts.Data.Configs.WorldBounds;
+using Assets.Scripts.Data.Configs.Settings;
 using Assets.Scripts.Gameplay.Interfaces.Common;
 using Assets.Scripts.Gameplay.Interfaces.Services;
 using Assets.Scripts.Gameplay.Interfaces.Services.Tick;
@@ -12,14 +12,12 @@ namespace Assets.Scripts.Gameplay.Services
     {
         private readonly List<IWrapped> _outMap = new();
         private readonly List<IWrapped> _inMap = new();
-        private readonly WorldBoundsData _worldBoundsData;
         private Vector2 _inMapHalfSize, _outMapHalfSize;
 
-        public WorldBounds(WorldBoundsData worldBoundsData)
+        public WorldBounds(WorldSettings worldSettings)
         {
-            _worldBoundsData = worldBoundsData;
-            _inMapHalfSize = worldBoundsData.MapSize / 2;
-            _outMapHalfSize = worldBoundsData.OutMapSize / 2;
+            _inMapHalfSize = worldSettings.MapSize / 2;
+            _outMapHalfSize = worldSettings.OutMapSize / 2;
         }
 
         public void AddOutMap(IWrapped wrapped)
@@ -53,7 +51,7 @@ namespace Assets.Scripts.Gameplay.Services
         public void CalculateRandomPositions(int randomAngle, int count, Action<Vector2, Vector2> onCalculate)
         {
             int halfRandomAngle = randomAngle / 2;
-            Vector2 halfMap = _worldBoundsData.OutMapSize / 2;
+            Vector2 halfMap = _outMapHalfSize;
 
             for (int i = 0; i < count; i++)
             {

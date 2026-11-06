@@ -1,4 +1,5 @@
 using Assets.Scripts.Data.Configs.Bullet;
+using Assets.Scripts.Data.Configs.Settings;
 using Assets.Scripts.Gameplay.Bullets;
 using Assets.Scripts.Gameplay.Common;
 using Assets.Scripts.Gameplay.Extensions;
@@ -16,13 +17,15 @@ namespace Assets.Scripts.Gameplay.Services.Factories
         private readonly DiContainer _diContainer;
         private readonly PhysicsWorld _physicsWorld;
         private readonly BulletData _bulletData;
+        private readonly BulletSettings _bulletSettings;
         private readonly ITickService _tickService;
 
-        public BulletFactory(DiContainer diContainer, PhysicsWorld physicsWorld, BulletData bulletData, ITickService tickService)
+        public BulletFactory(DiContainer diContainer, PhysicsWorld physicsWorld, BulletData bulletData, PlayerSettings playerSettings, ITickService tickService)
         {
             _diContainer = diContainer;
             _physicsWorld = physicsWorld;
             _bulletData = bulletData;
+            _bulletSettings = playerSettings.Gun.Bullet;
             _tickService = tickService;
         }
 
@@ -33,14 +36,14 @@ namespace Assets.Scripts.Gameplay.Services.Factories
                 Layer = CollisionLayer.Bullet,
                 CollidesWith = CollisionLayer.Enemy,
 
-                Mass = _bulletData.BulletMass,
-                Radius = _bulletData.BulleRadius,
+                Mass = _bulletSettings.Mass,
+                Radius = _bulletSettings.Radius,
                 Drag = 0,
             };
             GameObject instance = _diContainer.InstantiatePrefab(_bulletData.BulletPrefab);
             instance.ToMoveToActiveScene();
 
-            Bullet bullet = new Bullet(_physicsWorld, body, _tickService, _bulletData.LifeTime);
+            Bullet bullet = new Bullet(_physicsWorld, body, _tickService, _bulletSettings.LifeTime);
 
             instance.GetComponent<BulletView>().Init(body, bullet);
             instance.GetComponent<TransformView>().Init(body);

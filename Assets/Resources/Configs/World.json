@@ -1,0 +1,5 @@
+{
+  "MapSize":    { "x": 28.0, "y": 28.0 },
+  "OutMapSize": { "x": 50.0, "y": 36.0 },
+  "MaxEnemies": 12
+}

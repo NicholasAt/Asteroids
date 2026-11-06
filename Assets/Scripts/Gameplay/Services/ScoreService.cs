@@ -1,8 +1,8 @@
 using Assets.Scripts.Data.Configs.Enemy;
+using Assets.Scripts.Data.Configs.Settings;
 using Assets.Scripts.Gameplay.Interfaces.Services;
 using Assets.Scripts.Gameplay.Signals;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using Zenject;
 
@@ -10,17 +10,22 @@ namespace Assets.Scripts.Gameplay.Services
 {
     public class ScoreService : IScoreService
     {
-        private readonly EnemyData _enemyData;
+        private readonly EnemySettings _enemySettings;
         private readonly SignalBus _signalBus;
         private readonly IProgressService _progressService;
         private readonly Dictionary<EnemyType, int> _rewards;
 
-        public ScoreService(EnemyData enemyData, SignalBus signalBus, IProgressService progressService)
+        public ScoreService(EnemySettings enemySettings, SignalBus signalBus, IProgressService progressService)
         {
-            _enemyData = enemyData;
+            _enemySettings = enemySettings;
             _signalBus = signalBus;
             _progressService = progressService;
-            _rewards = _enemyData.Configs.ToDictionary(x => x.EnemyType, x => x.Reward);
+            _rewards = new Dictionary<EnemyType, int>();
+            foreach (EnemyType type in System.Enum.GetValues(typeof(EnemyType)))
+            {
+                if (type != EnemyType.None)
+                    _rewards[type] = _enemySettings.Get(type).Reward;
+            }
             _signalBus.Subscribe<EnemyDeathSignal>(EnemyDie);
         }
 

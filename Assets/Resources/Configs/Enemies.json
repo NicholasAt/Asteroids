@@ -1,0 +1,14 @@
+{
+  "Enemies": [
+    { "Type": "Asteroid", "Reward": 10, "Force": 5.0, "Mass": 5.0, "SpeedLimit": 4.0, "Drag": 0.0 },
+    { "Type": "Fragment", "Reward": 5,  "Force": 7.0, "Mass": 1.0, "SpeedLimit": 6.0, "Drag": 0.0 },
+    { "Type": "Saucer",   "Reward": 50, "Force": 5.0, "Mass": 1.0, "SpeedLimit": 3.0, "Drag": 2.0 }
+  ],
+
+  "Spawner": {
+    "MaxAsteroids": 10,
+    "MaxSaucers": 2,
+    "FragmentsCount": 3,
+    "SpawnRandomAngle": 160
+  }
+}

@@ -1,5 +1,5 @@
+using Assets.Scripts.Data.Configs.Settings;
 using Assets.Scripts.Data.Configs.Weapon;
-using Assets.Scripts.Data.Configs.Weapon.Configs;
 using Assets.Scripts.Data.Models.Weapon;
 using Assets.Scripts.Gameplay.Interfaces.Common;
 using Assets.Scripts.Gameplay.Interfaces.Services.Pool;
@@ -11,21 +11,20 @@ namespace Assets.Scripts.Gameplay.Services.Factories.Weapon
 {
     public class GunCreator : IWeaponCreator
     {
-        private readonly WeaponData _weaponData;
+        private readonly PlayerSettings _playerSettings;
         private readonly IBulletPool _bulletPool;
 
         public WeaponId[] WeaponIds => new WeaponId[1] { WeaponId.Gun_Gun };
 
-        public GunCreator(WeaponData weaponData, IBulletPool bulletPool)
+        public GunCreator(PlayerSettings playerSettings, IBulletPool bulletPool)
         {
-            _weaponData = weaponData;
+            _playerSettings = playerSettings;
             _bulletPool = bulletPool;
         }
 
         (IWeapon, IWeaponModel) IWeaponCreator.Create(WeaponId weaponId, Transform parent, PhysicsBody physicsBody)
         {
-            Gun_WeaponConfig config = _weaponData.GetWeaponConfig<Gun_WeaponConfig>(weaponId);
-            Gun_Weapon weapon = new Gun_Weapon(config, physicsBody, _bulletPool);
+            Gun_Weapon weapon = new Gun_Weapon(_playerSettings.Gun, physicsBody, _bulletPool);
 
             return (weapon, null);
         }

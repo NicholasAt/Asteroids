@@ -13,13 +13,13 @@ namespace Assets.Scripts.Data.Configs.Weapon
         public T GetWeaponConfig<T>(WeaponId id) where T : BaseWeaponConfig
         {
             LazyInit();
-            return _caheConfigs[id] as T;
+            return _caheConfigs.TryGetValue(id, out BaseWeaponConfig config) ? config as T : null;
         }
         public BaseWeaponConfig GetWeaponConfig(WeaponId id)
         {
             foreach (BaseWeaponConfig cfg in _weaponConfigs)
             {
-                if (cfg.WeaponId == id)
+                if (cfg != null && cfg.WeaponId == id)
                     return cfg;
             }
             Debug.LogError($"no cfg [{id}]");
@@ -32,6 +32,9 @@ namespace Assets.Scripts.Data.Configs.Weapon
 
             foreach (BaseWeaponConfig config in _weaponConfigs)
             {
+                if (config == null)
+                    continue;
+
                 _caheConfigs.Add(config.WeaponId, config);
             }
         }

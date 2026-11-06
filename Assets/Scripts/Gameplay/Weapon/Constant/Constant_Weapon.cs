@@ -1,4 +1,4 @@
-using Assets.Scripts.Data.Configs.Weapon.Configs;
+using Assets.Scripts.Data.Configs.Settings;
 using Assets.Scripts.Data.Models.Weapon;
 using Assets.Scripts.Gameplay.Extensions;
 using Assets.Scripts.Gameplay.Interfaces.Common;
@@ -10,7 +10,7 @@ namespace Assets.Scripts.Gameplay.Weapon.Constant
 {
     public class Constant_Weapon : BaseWeapon
     {
-        private readonly Constant_WeaponConfig _config;
+        private readonly LaserSettings _config;
         private readonly Constant_WeaponModel _model;
         private readonly Constant_WeaponEffect _weaponEffect;
         private readonly PhysicsBody _body;
@@ -18,7 +18,7 @@ namespace Assets.Scripts.Gameplay.Weapon.Constant
         private bool _attackToggle;
         private List<PhysicsBody> _currentTargets = new();
 
-        public Constant_Weapon(Constant_WeaponConfig config, Constant_WeaponModel model, Constant_WeaponEffect weaponEffect, PhysicsBody body)
+        public Constant_Weapon(LaserSettings config, Constant_WeaponModel model, Constant_WeaponEffect weaponEffect, PhysicsBody body)
         {
             _config = config;
             _model = model;
@@ -76,10 +76,10 @@ namespace Assets.Scripts.Gameplay.Weapon.Constant
             if (_model.CurrentCharges < _config.MaxCharges)
             {
                 _model.SetCD(_model.CurrentCD + deltaTime);
-                if (_model.CurrentCD >= _config.CDCharge)
+                if (_model.CurrentCD >= _config.ChargeCooldown)
                 {
                     _model.SetCharges(_model.CurrentCharges + 1);
-                    _model.SetCD(_model.CurrentCD - _config.CDCharge);
+                    _model.SetCD(_model.CurrentCD - _config.ChargeCooldown);
                 }
             }
         }

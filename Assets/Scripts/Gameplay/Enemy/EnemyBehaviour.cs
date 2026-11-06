@@ -15,6 +15,7 @@ namespace Assets.Scripts.Gameplay.Enemy
 
         private readonly EnemyType _enemyId;
         private readonly bool _isSplit;
+        private readonly float _force;
         private readonly PhysicsWorld _physicsWorld;
         private readonly SignalBus _signalBus;
         private readonly IEnemyRegistry _enemyRegistry;
@@ -27,10 +28,11 @@ namespace Assets.Scripts.Gameplay.Enemy
 
         private bool _active;
 
-        public EnemyBehaviour(EnemyType enemyId, bool isSplit, PhysicsWorld physicsWorld, PhysicsBody physicsBody, SignalBus signalBus, IEnemyRegistry enemyRegistry, IWorldBounds worldBounds)
+        public EnemyBehaviour(EnemyType enemyId, bool isSplit, float force, PhysicsWorld physicsWorld, PhysicsBody physicsBody, SignalBus signalBus, IEnemyRegistry enemyRegistry, IWorldBounds worldBounds)
         {
             _enemyId = enemyId;
             _isSplit = isSplit;
+            _force = force;
             _physicsWorld = physicsWorld;
             PhysicsBody = physicsBody;
             _signalBus = signalBus;
@@ -52,6 +54,7 @@ namespace Assets.Scripts.Gameplay.Enemy
 
             PhysicsBody.Position = position;
             PhysicsBody.Direction = direction;
+            PhysicsBody.Velocity = direction * _force;
             PhysicsBody.OnCollision += OnCollision;
             _enemyRegistry.Add(_isSplit, this);
             _physicsWorld.Add(PhysicsBody);

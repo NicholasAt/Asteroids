@@ -1,7 +1,7 @@
-﻿using Assets.Scripts.Core.Interfaces.States;
+using Assets.Scripts.Core.Interfaces.States;
 using Assets.Scripts.Core.Services;
 using Assets.Scripts.Data.Configs.Game;
-using Assets.Scripts.Data.Configs.Player;
+using Assets.Scripts.Data.Configs.Settings;
 using Assets.Scripts.Data.Configs.Weapon;
 using Assets.Scripts.Data.Models;
 using Assets.Scripts.Data.Models.ShipProgress;
@@ -19,7 +19,7 @@ namespace Assets.Scripts.Core.Bootstrap.States
     public class LoadLevelState : IPayloadedState<string>
     {
         private readonly SceneLoader _sceneLoader;
-        private readonly PlayerData _playerData;
+        private readonly PlayerSettings _playerSettings;
         private readonly GameData _gameData;
         private readonly HUDViewModel _hUDViewModel;
         private readonly IShipBuilder _shipBuilder;
@@ -31,11 +31,11 @@ namespace Assets.Scripts.Core.Bootstrap.States
         private readonly IAnalyticsService _analytics;
         private readonly IAdvertisementService _advertisement;
 
-        public LoadLevelState(SceneLoader sceneLoader, IShipBuilder shipBuilder, PlayerData playerData, GameData gameData, HUDViewModel hUDViewModel, IEnemyFactory enemyFactory, IEnemySpawner enemySpawner, IProgressService progressService, IUIFactory uIFactory, IWorldFrame worldFrame,IAnalyticsService analyticsService,IAdvertisementService advertisement)
+        public LoadLevelState(SceneLoader sceneLoader, IShipBuilder shipBuilder, PlayerSettings playerSettings, GameData gameData, HUDViewModel hUDViewModel, IEnemyFactory enemyFactory, IEnemySpawner enemySpawner, IProgressService progressService, IUIFactory uIFactory, IWorldFrame worldFrame,IAnalyticsService analyticsService,IAdvertisementService advertisement)
         {
             _sceneLoader = sceneLoader;
             _shipBuilder = shipBuilder;
-            _playerData = playerData;
+            _playerSettings = playerSettings;
             _gameData = gameData;
             _hUDViewModel = hUDViewModel;
             _enemyFactory = enemyFactory;
@@ -76,14 +76,14 @@ namespace Assets.Scripts.Core.Bootstrap.States
 
         private List<WeaponId> GetWeaponInds()
         {
-            return new List<WeaponId>() { WeaponId.Constant_Laser, WeaponId.Gun_Gun };
+            return new List<WeaponId>() { WeaponId.Gun_Gun, WeaponId.Constant_Laser };
         }
 
         private ShipProgress CreateProgress()
         {
             _progressService.ShipProgress?.Dispose();
 
-            Health health = new(_playerData.StartHealth);
+            Health health = new(_playerSettings.StartHealth);
             ShipProgress progress = new ShipProgress(health);
             return progress;
         }

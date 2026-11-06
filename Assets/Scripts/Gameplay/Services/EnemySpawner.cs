@@ -1,5 +1,5 @@
 using Assets.Scripts.Data.Configs.Enemy;
-using Assets.Scripts.Data.Configs.EnemySpawner;
+using Assets.Scripts.Data.Configs.Settings;
 using Assets.Scripts.Gameplay.Interfaces.Services;
 using Assets.Scripts.Gameplay.Interfaces.Services.Pool;
 using Assets.Scripts.Gameplay.Signals;
@@ -12,15 +12,19 @@ namespace Assets.Scripts.Gameplay.Services
     public class EnemySpawner : IEnemySpawner, IDisposable
     {
         private readonly SignalBus _signalBus;
-        private readonly EnemySpawnerData _spawnerData;
+        private readonly EnemySpawnerSettings _spawnerSettings;
+        private readonly int _maxEnemies;
         private readonly IEnemyPool _enemyPool;
         private readonly IWorldBounds _worldBounds;
         private readonly IEnemyRegistry _enemyRegistry;
 
-        public EnemySpawner(SignalBus signalBus, EnemySpawnerData enemySpawnerData, IEnemyPool enemyPool, IWorldBounds worldBounds, IEnemyRegistry enemyRegistry)
+        private int _dyingEnemies;
+
+        public EnemySpawner(SignalBus signalBus, EnemySettings enemySettings, WorldSettings worldSettings, IEnemyPool enemyPool, IWorldBounds worldBounds, IEnemyRegistry enemyRegistry)
         {
             _signalBus = signalBus;
-            _spawnerData = enemySpawnerData;
+            _spawnerSettings = enemySettings.Spawner;
+            _maxEnemies = worldSettings.MaxEnemies;
             _enemyPool = enemyPool;
             _worldBounds = worldBounds;
             _enemyRegistry = enemyRegistry;
@@ -30,6 +34,10 @@ namespace Assets.Scripts.Gameplay.Services
         {
             _signalBus.TryUnsubscribe<EnemyDeathSignal>(OnEnemyDeath);
             _signalBus.Subscribe<EnemyDeathSignal>(OnEnemyDeath);
+
+            if (_spawnerSettings.MaxAsteroids + _spawnerSettings.MaxSaucers > _maxEnemies)
+                Debug.LogWarning($"Spawner wants {_spawnerSettings.MaxAsteroids + _spawnerSettings.MaxSaucers} enemies, but world.json maxEnemies = {_maxEnemies}");
+
             Spawn();
         }
 
@@ -37,17 +45,26 @@ namespace Assets.Scripts.Gameplay.Services
         {
             _signalBus.TryUnsubscribe<EnemyDeathSignal>(OnEnemyDeath);
         }
+
+        private bool HasFreeSlot()
+        {
+            return _enemyRegistry.Count - _dyingEnemies < _maxEnemies;
+        }
+
         private void Spawn()
         {
-            _worldBounds.CalculateRandomPositions(_spawnerData.RandomAngle, _spawnerData.Asteroids, SpawnAsteroid);
-            _worldBounds.CalculateRandomPositions(_spawnerData.RandomAngle, _spawnerData.Saucers, SpawnSaucer);
+            _worldBounds.CalculateRandomPositions(_spawnerSettings.SpawnRandomAngle, _spawnerSettings.MaxAsteroids, SpawnAsteroid);
+            _worldBounds.CalculateRandomPositions(_spawnerSettings.SpawnRandomAngle, _spawnerSettings.MaxSaucers, SpawnSaucer);
         }
 
         private void SpawnFragments(Vector2 pos)
         {
-            int count = _spawnerData.Fragments;
+            int count = _spawnerSettings.FragmentsCount;
             for (int i = 0; i < count; i++)
             {
+                if (HasFreeSlot() == false)
+                    return;
+
                 Vector2 direction = UnityEngine.Random.insideUnitCircle.normalized;
                 _enemyPool.Get(EnemyType.Fragment, pos, direction);
             }
@@ -55,21 +72,31 @@ namespace Assets.Scripts.Gameplay.Services
 
         private void SpawnSaucer(Vector2 pos, Vector2 _)
         {
+            if (HasFreeSlot() == false)
+                return;
+
             _enemyPool.Get(EnemyType.Saucer, pos, _);
         }
+
         private void SpawnAsteroid(Vector2 pos, Vector2 direction)
         {
+            if (HasFreeSlot() == false)
+                return;
+
             _enemyPool.Get(EnemyType.Asteroid, pos, direction);
         }
+
         private void CalculateAndSpawnAsteroinds()
         {
-            int difference = _spawnerData.Asteroids - _enemyRegistry.NotPursuing.Count;
+            int difference = _spawnerSettings.MaxAsteroids - _enemyRegistry.NotPursuing.Count;
             if (difference > 0)
-                _worldBounds.CalculateRandomPositions(_spawnerData.RandomAngle, difference, SpawnAsteroid);
+                _worldBounds.CalculateRandomPositions(_spawnerSettings.SpawnRandomAngle, difference, SpawnAsteroid);
         }
 
         private void OnEnemyDeath(EnemyDeathSignal signal)
         {
+            _dyingEnemies = 1;
+
             switch (signal.EnemyType)
             {
                 case EnemyType.Fragment:
@@ -86,7 +113,7 @@ namespace Assets.Scripts.Gameplay.Services
                     break;
 
                 case EnemyType.Saucer:
-                    _worldBounds.CalculateRandomPositions(_spawnerData.RandomAngle, 1, SpawnSaucer);
+                    _worldBounds.CalculateRandomPositions(_spawnerSettings.SpawnRandomAngle, 1, SpawnSaucer);
                     break;
 
                 case EnemyType.None:
@@ -94,6 +121,7 @@ namespace Assets.Scripts.Gameplay.Services
                     Debug.LogError($"no id [{signal.EnemyType}]");
                     break;
             }
+            _dyingEnemies = 0;
         }
     }
 }

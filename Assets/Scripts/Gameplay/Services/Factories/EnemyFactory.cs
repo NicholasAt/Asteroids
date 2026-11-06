@@ -1,4 +1,5 @@
 using Assets.Scripts.Data.Configs.Enemy;
+using Assets.Scripts.Data.Configs.Settings;
 using Assets.Scripts.Gameplay.Common;
 using Assets.Scripts.Gameplay.Enemy;
 using Assets.Scripts.Gameplay.Extensions;
@@ -14,16 +15,18 @@ namespace Assets.Scripts.Gameplay.Services.Factories
     {
         private readonly DiContainer _diContainer;
         private readonly EnemyData _enemyData;
+        private readonly EnemySettings _enemySettings;
         private readonly SignalBus _signalBus;
         private readonly PhysicsWorld _physicsWorld;
         private readonly IProgressService _progressService;
         private readonly IEnemyRegistry _enemyRegistry;
         private readonly IWorldBounds _worldBounds;
 
-        public EnemyFactory(DiContainer diContainer, EnemyData enemyData, SignalBus signalBus, PhysicsWorld physicsWorld, IProgressService progressService, IEnemyRegistry enemyRegistry, IWorldBounds worldBounds)
+        public EnemyFactory(DiContainer diContainer, EnemyData enemyData, EnemySettings enemySettings, SignalBus signalBus, PhysicsWorld physicsWorld, IProgressService progressService, IEnemyRegistry enemyRegistry, IWorldBounds worldBounds)
         {
             _diContainer = diContainer;
             _enemyData = enemyData;
+            _enemySettings = enemySettings;
             _signalBus = signalBus;
             _physicsWorld = physicsWorld;
             _progressService = progressService;
@@ -34,15 +37,16 @@ namespace Assets.Scripts.Gameplay.Services.Factories
         public IEnemyBehaviour Create(EnemyType enemyType)
         {
             EnemyConfig config = _enemyData.GetConfig(enemyType);
+            EnemyParams p = _enemySettings.Get(enemyType);
             switch (enemyType)
             {
                 case EnemyType.Asteroid:
                 case EnemyType.Fragment:
-                    return CreateEnemy(false, enemyType, config.EnemyPrefab, config.Force, config.Mass, config.SpeedLimit, config.Drag);
+                    return CreateEnemy(false, enemyType, config.EnemyPrefab, p.Force, p.Mass, p.SpeedLimit, p.Drag);
 
 
                 case EnemyType.Saucer:
-                    return CreateSaucer(enemyType, config.EnemyPrefab, config.Force, config.Mass, config.SpeedLimit, config.Drag);
+                    return CreateSaucer(enemyType, config.EnemyPrefab, p.Force, p.Mass, p.SpeedLimit, p.Drag);
 
                 case EnemyType.None:
                 default:
@@ -53,9 +57,9 @@ namespace Assets.Scripts.Gameplay.Services.Factories
 
         private IEnemyBehaviour CreateSaucer(EnemyType enemyType, GameObject prefab, float force, float mass, float speedLimit, float drag)
         {
-            (GameObject instance, PhysicsBody physicsBody) = Instantiate(prefab, force, mass, speedLimit, drag);
+            (GameObject instance, PhysicsBody physicsBody) = Instantiate(prefab, mass, speedLimit, drag);
 
-            Saucer enemy = new Saucer(_progressService, enemyType, false, _physicsWorld, physicsBody, _signalBus, _enemyRegistry, _worldBounds);
+            Saucer enemy = new Saucer(_progressService, enemyType, false, force, _physicsWorld, physicsBody, _signalBus, _enemyRegistry, _worldBounds);
             physicsBody.Force = force;
             instance.GetComponent<EnemyView>().Init(enemy);
             return enemy;
@@ -63,14 +67,14 @@ namespace Assets.Scripts.Gameplay.Services.Factories
 
         private IEnemyBehaviour CreateEnemy(bool isPursuing, EnemyType enemyId, GameObject prefab, float force, float mass, float speedLimit, float drag)
         {
-            (GameObject instance, PhysicsBody physicsBody) = Instantiate(prefab, force, mass, speedLimit, drag);
+            (GameObject instance, PhysicsBody physicsBody) = Instantiate(prefab, mass, speedLimit, drag);
 
-            IEnemyBehaviour enemy = new EnemyBehaviour(enemyId, isPursuing, _physicsWorld, physicsBody, _signalBus, _enemyRegistry, _worldBounds);
+            IEnemyBehaviour enemy = new EnemyBehaviour(enemyId, isPursuing, force, _physicsWorld, physicsBody, _signalBus, _enemyRegistry, _worldBounds);
             instance.GetComponent<EnemyView>().Init(enemy);
             return enemy;
         }
 
-        private (GameObject, PhysicsBody) Instantiate(GameObject prefab, float force, float mass, float speedLimit, float drag)
+        private (GameObject, PhysicsBody) Instantiate(GameObject prefab, float mass, float speedLimit, float drag)
         {
             GameObject instance = _diContainer.InstantiatePrefab(prefab);
             instance.ToMoveToActiveScene();
@@ -80,7 +84,6 @@ namespace Assets.Scripts.Gameplay.Services.Factories
                 Layer = CollisionLayer.Enemy,
                 CollidesWith = CollisionLayer.Player | CollisionLayer.Bullet,
 
-                Force = force,
                 SpeedLimit = speedLimit,
                 Mass = mass,
                 Drag = drag,

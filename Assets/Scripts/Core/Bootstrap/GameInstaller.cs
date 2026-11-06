@@ -2,10 +2,10 @@ using Assets.Scripts.Core.Bootstrap.States;
 using Assets.Scripts.Core.Services;
 using Assets.Scripts.Data;
 using Assets.Scripts.Data.Configs.Bullet;
+using Assets.Scripts.Data.Configs.Constants;
 using Assets.Scripts.Data.Configs.Enemy;
-using Assets.Scripts.Data.Configs.EnemySpawner;
 using Assets.Scripts.Data.Configs.Game;
-using Assets.Scripts.Data.Configs.Player;
+using Assets.Scripts.Data.Configs.Settings;
 using Assets.Scripts.Data.Configs.Ship;
 using Assets.Scripts.Data.Configs.UI;
 using Assets.Scripts.Data.Configs.Weapon;
@@ -44,8 +44,6 @@ namespace Assets.Scripts.Core
             BindUI();
             BindInput();
 
-            BindServices();
-
             Container.Bind<SceneLoader>().AsSingle();
             Container.Bind<PhysicsWorld>().AsSingle();
 
@@ -57,6 +55,8 @@ namespace Assets.Scripts.Core
             Container.BindInterfacesAndSelfTo<WorldFrame>().AsSingle();
 
             Container.BindInterfacesAndSelfTo<TickService>().FromNewComponentOn(gameObject).AsSingle();
+
+            BindServices();
         }
         private void BindSignals()
         {
@@ -96,14 +96,16 @@ namespace Assets.Scripts.Core
         private void BindData()
         {
             Container.Bind<ShipData>().FromInstance(_allData.ShipData).AsSingle();
-            Container.Bind<PlayerData>().FromInstance(_allData.PlayerData).AsSingle();
             Container.Bind<GameData>().FromInstance(_allData.GameData).AsSingle();
             Container.Bind<EnemyData>().FromInstance(_allData.EnemyData).AsSingle();
-            Container.Bind<EnemySpawnerData>().FromInstance(_allData.EnemySpawnerData).AsSingle();
             Container.Bind<WeaponData>().FromInstance(_allData.WeaponData).AsSingle();
             Container.Bind<BulletData>().FromInstance(_allData.BulletData).AsSingle();
             Container.Bind<WorldBoundsData>().FromInstance(_allData.WorldBoundsData).AsSingle();
             Container.Bind<WindowsData>().FromInstance(_allData.WindowsData).AsSingle();
+
+            Container.Bind<PlayerSettings>().FromInstance(JsonConfigLoader.Load<PlayerSettings>(PathConstants.PlayerConfig)).AsSingle();
+            Container.Bind<EnemySettings>().FromInstance(JsonConfigLoader.Load<EnemySettings>(PathConstants.EnemiesConfig)).AsSingle();
+            Container.Bind<WorldSettings>().FromInstance(JsonConfigLoader.Load<WorldSettings>(PathConstants.WorldConfig)).AsSingle();
         }
 
         private void BindStates()

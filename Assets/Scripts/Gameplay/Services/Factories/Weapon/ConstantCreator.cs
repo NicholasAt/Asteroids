@@ -1,3 +1,4 @@
+using Assets.Scripts.Data.Configs.Settings;
 using Assets.Scripts.Data.Configs.Weapon;
 using Assets.Scripts.Data.Configs.Weapon.Configs;
 using Assets.Scripts.Data.Models.Weapon;
@@ -13,10 +14,12 @@ namespace Assets.Scripts.Gameplay.Services.Factories.Weapon
         public WeaponId[] WeaponIds => new WeaponId[1] { WeaponId.Constant_Laser };
 
         private readonly WeaponData _weaponData;
+        private readonly PlayerSettings _playerSettings;
 
-        public ConstantCreator(WeaponData weaponData)
+        public ConstantCreator(WeaponData weaponData, PlayerSettings playerSettings)
         {
             _weaponData = weaponData;
+            _playerSettings = playerSettings;
         }
 
         (IWeapon, IWeaponModel) IWeaponCreator.Create(WeaponId weaponId, Transform parent, PhysicsBody physicsBody)
@@ -29,7 +32,7 @@ namespace Assets.Scripts.Gameplay.Services.Factories.Weapon
             LineRenderer lineRenderer = instance.GetComponent<LineRenderer>();
 
             Constant_WeaponEffect laserEffect = new Constant_WeaponEffect(physicsBody, lineRenderer);
-            Constant_Weapon weapon = new Constant_Weapon(config, model, laserEffect, physicsBody);
+            Constant_Weapon weapon = new Constant_Weapon(_playerSettings.Laser, model, laserEffect, physicsBody);
 
             return (weapon, model);
         }
