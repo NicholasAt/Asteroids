@@ -21,6 +21,7 @@ using Assets.Scripts.Gameplay.Services.Register;
 using Assets.Scripts.Gameplay.Signals;
 using Assets.Scripts.Gameplay.UI.Services;
 using Assets.Scripts.Gameplay.UI.ViewModels;
+using Assets.Scripts.Services.Analytics;
 using UnityEngine;
 using Zenject;
 
@@ -41,6 +42,8 @@ namespace Assets.Scripts.Core
 
             BindUI();
             BindInput();
+
+            BindServices();
 
             Container.Bind<SceneLoader>().AsSingle();
             Container.Bind<PhysicsWorld>().AsSingle();
@@ -66,7 +69,10 @@ namespace Assets.Scripts.Core
             else
                 Container.BindInterfacesAndSelfTo<PCInputService>().AsSingle();
         }
-
+        private void BindServices()
+        {
+            Container.BindInterfacesAndSelfTo<AnalyticsService>().AsSingle();
+        }
         private void BindPools()
         {
             Container.BindInterfacesAndSelfTo<BulletPool>().AsSingle();
