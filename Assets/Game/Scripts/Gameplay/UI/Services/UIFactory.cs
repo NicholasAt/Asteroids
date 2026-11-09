@@ -1,0 +1,31 @@
+using Assets.Game.Scripts.Data.Configs.UI;
+using Assets.Game.Scripts.Gameplay.Extensions;
+using Assets.Game.Scripts.Gameplay.Interfaces.UI.Services;
+using Zenject;
+
+namespace Assets.Game.Scripts.Gameplay.UI.Services
+{
+    public class UIFactory: IUIFactory
+    {
+        private readonly DiContainer _diContainer;
+        private readonly WindowsData _windowsData;
+
+        public UIFactory(DiContainer diContainer, WindowsData windowsData)
+        {
+            _diContainer = diContainer;
+            _windowsData = windowsData;
+        }
+
+        public void CreateHUD()
+        {
+            UnityEngine.GameObject instance = _diContainer.InstantiatePrefab(_windowsData.HUDPrefab);
+            instance.ToMoveToActiveScene();
+        }
+
+        public void CreateMobileInput()
+        {
+            UnityEngine.GameObject instance = _diContainer.InstantiatePrefab(_windowsData.MobileInputPrefab);
+            instance.ToMoveToActiveScene();
+        }
+    }
+}
