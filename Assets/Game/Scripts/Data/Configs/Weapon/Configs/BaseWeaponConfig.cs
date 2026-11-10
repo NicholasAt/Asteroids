@@ -1,4 +1,3 @@
-using Assets.Game.Scripts.Data.Configs.Weapon;
 using UnityEngine;
 
 namespace Assets.Game.Scripts.Data.Configs.Weapon.Configs

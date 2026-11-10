@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Assets.Game.Scripts.Data.Configs.Settings
 {
     [Serializable]
-    public class EnemySettings
+    public class EnemySettings : IValidatableSettings
     {
         public List<EnemyParams> Enemies = new List<EnemyParams>();
         public EnemySpawnerSettings Spawner = new EnemySpawnerSettings();
@@ -23,6 +23,51 @@ namespace Assets.Game.Scripts.Data.Configs.Settings
 
             Debug.LogError($"enemies.json: no entry for [{type}], using defaults");
             return new EnemyParams();
+        }
+
+        public bool TryValidate(out string error)
+        {
+            if (Enemies == null)
+            {
+                error = "Enemies is null";
+                return false;
+            }
+
+            foreach (EnemyParams entry in Enemies)
+            {
+                if (entry == null)
+                {
+                    error = "Enemies contains null entry";
+                    return false;
+                }
+
+                if (entry.Mass <= 0f)
+                {
+                    error = $"Enemies[{entry.Type}].Mass must be greater than 0";
+                    return false;
+                }
+
+                if (entry.CollisionDamage < 0)
+                {
+                    error = $"Enemies[{entry.Type}].CollisionDamage must not be negative";
+                    return false;
+                }
+            }
+
+            if (Spawner == null)
+            {
+                error = "Spawner is null";
+                return false;
+            }
+
+            if (Spawner.MaxAsteroids < 0 || Spawner.MaxSaucers < 0 || Spawner.FragmentsCount < 0)
+            {
+                error = "Spawner counts must not be negative";
+                return false;
+            }
+
+            error = null;
+            return true;
         }
 
         private void Build()
@@ -58,6 +103,7 @@ namespace Assets.Game.Scripts.Data.Configs.Settings
         public float Drag = 0f;
         public float AngularVelocity = 0;
         public float AngularDrag = 0;
+        public int CollisionDamage = 1;
     }
 
     [Serializable]

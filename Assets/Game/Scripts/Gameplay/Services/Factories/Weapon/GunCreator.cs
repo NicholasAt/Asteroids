@@ -24,7 +24,7 @@ namespace Assets.Game.Scripts.Gameplay.Services.Factories.Weapon
 
         (IWeapon, IWeaponModel) IWeaponCreator.Create(WeaponId weaponId, Transform parent, PhysicsBody physicsBody)
         {
-            Gun_Weapon weapon = new Gun_Weapon(_playerSettings.Gun, physicsBody, _bulletPool);
+            Gun weapon = new Gun(_playerSettings.Gun, physicsBody, _bulletPool);
 
             return (weapon, null);
         }

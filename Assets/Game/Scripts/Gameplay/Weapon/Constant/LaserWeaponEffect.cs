@@ -1,11 +1,9 @@
-using Assets.Game.Scripts.Gameplay.Physics;
 using UnityEngine;
 
 namespace Assets.Game.Scripts.Gameplay.Weapon.Constant
 {
-    public class Constant_WeaponEffect
+    public class LaserWeaponEffect
     {
-        private readonly PhysicsBody _body;
         private readonly LineRenderer _lineRenderer;
         private float _width;
         private float _duration;
@@ -13,9 +11,8 @@ namespace Assets.Game.Scripts.Gameplay.Weapon.Constant
         private bool _isStart;
         private float _currentDuration;
 
-        public Constant_WeaponEffect(PhysicsBody body, LineRenderer lineRenderer)
+        public LaserWeaponEffect(LineRenderer lineRenderer)
         {
-            _body = body;
             _lineRenderer = lineRenderer;
         }
 

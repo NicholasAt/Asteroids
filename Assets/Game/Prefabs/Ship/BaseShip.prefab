@@ -47,8 +47,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 742f0b4689819ae44a315d39dbac5c87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _blinkInterval: 0.1
   _body: {fileID: 2255565627874001602}
-  _ps: {fileID: 6622400032881005724}
+  _invulnerabilityParticles: {fileID: 6622400032881005724}
 --- !u!114 &3570916721585051839
 MonoBehaviour:
   m_ObjectHideFlags: 0

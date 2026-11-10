@@ -65,31 +65,13 @@ namespace Assets.Game.Scripts.Gameplay.Services
                 {
                     pos.y = forward ? halfMap.y : -halfMap.y;
                     pos.x = UnityEngine.Random.Range(-halfMap.x, halfMap.x);
-                    if (forward)
-                    {
-                        pos.y = halfMap.y;
-                        rawDirection = Vector2.down;
-                    }
-                    else
-                    {
-                        pos.y = -halfMap.y;
-                        rawDirection = Vector2.up;
-                    }
+                    rawDirection = forward ? Vector2.down : Vector2.up;
                 }
                 else
                 {
                     pos.x = forward ? halfMap.x : -halfMap.x;
                     pos.y = UnityEngine.Random.Range(-halfMap.y, halfMap.y);
-                    if (forward)
-                    {
-                        pos.x = halfMap.x;
-                        rawDirection = Vector2.right;
-                    }
-                    else
-                    {
-                        pos.x = -halfMap.x;
-                        rawDirection = Vector2.left;
-                    }
+                    rawDirection = forward ? Vector2.right : Vector2.left;
                 }
                 float offset = Mathf.Atan2(rawDirection.x, rawDirection.y);
                 float randomRad = UnityEngine.Random.Range(-halfRandomAngle, halfRandomAngle) * Mathf.Deg2Rad;

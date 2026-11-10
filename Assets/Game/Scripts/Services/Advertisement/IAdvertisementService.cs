@@ -6,5 +6,6 @@ namespace Assets.Game.Scripts.Services.Advertisement
     {
         UniTask Init();
         void ShowBanner();
+        void HideBanner();
     }
 }

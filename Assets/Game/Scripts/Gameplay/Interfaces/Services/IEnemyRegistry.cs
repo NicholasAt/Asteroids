@@ -1,14 +1,13 @@
+using Assets.Game.Scripts.Data.Configs.Enemy;
 using Assets.Game.Scripts.Gameplay.Interfaces.Common;
-using System.Collections.Generic;
-using Zenject;
 
 namespace Assets.Game.Scripts.Gameplay.Interfaces.Services
 {
-    public interface IEnemyRegistry : ITickable
+    public interface IEnemyRegistry
     {
-        IReadOnlyList<IEnemyBehaviour> NotPursuing { get; }
         int Count { get; }
-        void Add(bool isPursuing, IEnemyBehaviour enemy);
+        int GetCount(EnemyType enemyType);
+        void Add(IEnemyBehaviour enemy);
         void Remove(IEnemyBehaviour enemy);
     }
 }

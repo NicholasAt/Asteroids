@@ -10,7 +10,9 @@ namespace Assets.Game.Scripts.Gameplay.Services
 {
     public class TickService : MonoBehaviour, IInitializable, ITickService
     {
-        private readonly List<ICustomTick> _tickables = new List<ICustomTick>(1000);
+        private const int InitialTickablesCapacity = 32;
+
+        private readonly List<ICustomTick> _tickables = new List<ICustomTick>(InitialTickablesCapacity);
         private PhysicsWorld _physicsWorld;
         private List<ICustomTick> _initTickables;
         private SignalBus _signalBus;

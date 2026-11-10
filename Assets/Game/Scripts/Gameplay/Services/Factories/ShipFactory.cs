@@ -61,7 +61,7 @@ namespace Assets.Game.Scripts.Gameplay.Services.Factories
 
             ShipApplyDamage applyDamage = new ShipApplyDamage(_progressService.ShipProgress, _playerSettings.InvulnerabilitySeconds);
             ShipMove move = new ShipMove(physicsBody, _inputService, _playerSettings.Ship.SpeedRotate, _playerSettings.Ship.Force);
-            Ship.Ship ship = new(_shipData, move, physicsBody, _progressService.ShipProgress, applyDamage, _inputService);
+            Ship.Ship ship = new(move, physicsBody, _progressService.ShipProgress, applyDamage, _inputService);
             physicsBody.Owner = ship;
 
             _physicsWorld.Add(physicsBody);

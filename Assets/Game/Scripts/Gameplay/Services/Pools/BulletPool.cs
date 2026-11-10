@@ -17,10 +17,10 @@ namespace Assets.Game.Scripts.Gameplay.Services.Pools
             _pool = new(NewBullet);
         }
 
-        public ILaunched Get(Vector2 position, float rotate, bool isSplit, float force, float speedLimit)
+        public ILaunched Get(Vector2 position, float rotate, float force, float speedLimit)
         {
             ILaunched bullet = _pool.Pop();
-            bullet.Launch(position, rotate, isSplit, force, speedLimit);
+            bullet.Launch(position, rotate, force, speedLimit);
             return bullet;
         }
 

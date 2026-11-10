@@ -24,15 +24,15 @@ namespace Assets.Game.Scripts.Gameplay.Services.Factories.Weapon
 
         (IWeapon, IWeaponModel) IWeaponCreator.Create(WeaponId weaponId, Transform parent, PhysicsBody physicsBody)
         {
-            Constant_WeaponConfig config = _weaponData.GetWeaponConfig<Constant_WeaponConfig>(weaponId);
-            Constant_WeaponModel model = new Constant_WeaponModel();
+            ConstantWeaponConfig config = _weaponData.GetWeaponConfig<ConstantWeaponConfig>(weaponId);
+            ConstantWeaponModel model = new ConstantWeaponModel();
 
             GameObject instance = Object.Instantiate(config.VisualPrefab);
             instance.transform.SetParent(parent);
             LineRenderer lineRenderer = instance.GetComponent<LineRenderer>();
 
-            Constant_WeaponEffect laserEffect = new Constant_WeaponEffect(physicsBody, lineRenderer);
-            Constant_Weapon weapon = new Constant_Weapon(_playerSettings.Laser, model, laserEffect, physicsBody);
+            LaserWeaponEffect laserEffect = new LaserWeaponEffect(lineRenderer);
+            LaserWeapon weapon = new LaserWeapon(_playerSettings.Laser, model, laserEffect, physicsBody);
 
             return (weapon, model);
         }

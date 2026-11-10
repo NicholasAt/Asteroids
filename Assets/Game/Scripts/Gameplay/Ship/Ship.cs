@@ -1,4 +1,4 @@
-using Assets.Game.Scripts.Data.Configs.Ship;
+using Assets.Game.Scripts.Data;
 using Assets.Game.Scripts.Data.Models.ShipProgress;
 using Assets.Game.Scripts.Gameplay.Interfaces.Common;
 using Assets.Game.Scripts.Gameplay.Interfaces.Services;
@@ -17,7 +17,6 @@ namespace Assets.Game.Scripts.Gameplay.Ship
         private readonly ShipProgress _shipProgress;
         private readonly IApplyDamage _applyDamage;
         private readonly IInput _input;
-        private readonly ShipData _shipData;
         private readonly ShipMove _move;
 
         private IWeapon _weapon1;
@@ -27,11 +26,10 @@ namespace Assets.Game.Scripts.Gameplay.Ship
 
         public event Action OnDie;
         private bool _dead;
-        public Ship(ShipData shipData, ShipMove move, PhysicsBody physicsBody, ShipProgress shipProgress, IApplyDamage applyDamage, IInput input)
+        public Ship(ShipMove move, PhysicsBody physicsBody, ShipProgress shipProgress, IApplyDamage applyDamage, IInput input)
         {
             PhysicsBody = physicsBody;
             _shipProgress = shipProgress;
-            _shipData = shipData;
             _move = move;
             _input = input;
             _applyDamage = applyDamage;
@@ -65,9 +63,9 @@ namespace Assets.Game.Scripts.Gameplay.Ship
             _shipProgress.SetSpeed(PhysicsBody.Velocity.magnitude);
         }
 
-        public void TakeDamage(float damage, bool isSplit)
+        public void TakeDamage(float damage, HitType hitType)
         {
-            _applyDamage.TakeDamage(damage, isSplit);
+            _applyDamage.TakeDamage(damage, hitType);
         }
 
         public void Wrap(Vector2 newPosition)

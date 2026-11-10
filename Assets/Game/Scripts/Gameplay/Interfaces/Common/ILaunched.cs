@@ -7,7 +7,7 @@ namespace Assets.Game.Scripts.Gameplay.Interfaces.Common
     {
         event Action OnShow;
         event Action OnHide;
-        void Launch(Vector2 position, float rotate, bool isSplit, float force, float speedLimit);
+        void Launch(Vector2 position, float rotate, float force, float speedLimit);
         void Hide();
     }
 }

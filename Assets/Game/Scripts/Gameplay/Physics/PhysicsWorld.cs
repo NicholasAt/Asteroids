@@ -6,8 +6,11 @@ namespace Assets.Game.Scripts.Gameplay.Physics
     public class PhysicsWorld
     {
         private const float MinImpulseMagnitude = 15;
+        private const float DefaultRestitution = 0.8f;
+        private const float MinCollisionDistance = 0.0001f;
+        private const int InitialBodiesCapacity = 32;
 
-        private readonly static List<PhysicsBody> _physics = new(1000);
+        private readonly static List<PhysicsBody> _physics = new(InitialBodiesCapacity);
         private readonly HashSet<PhysicsBody> _candidates = new();
 
         public void Update(float deltaTime)
@@ -93,7 +96,7 @@ namespace Assets.Game.Scripts.Gameplay.Physics
             return distanceSquared <= radiusSum * radiusSum;
         }
 
-        private void ResolveCollision(PhysicsBody a, PhysicsBody b, float restitution = 0.8f)
+        private void ResolveCollision(PhysicsBody a, PhysicsBody b, float restitution = DefaultRestitution)
         {
             Vector2 difference = b.Position - a.Position;
             float distance = difference.magnitude;
@@ -101,7 +104,7 @@ namespace Assets.Game.Scripts.Gameplay.Physics
             if (distance >= a.Radius + b.Radius)
                 return;
 
-            Vector2 normal = distance > 0.0001f ? difference / distance : Vector2.right;
+            Vector2 normal = distance > MinCollisionDistance ? difference / distance : Vector2.right;
 
             Vector2 relativeVelocity = b.Velocity - a.Velocity;
 

@@ -1,39 +1,35 @@
 using Assets.Game.Scripts.Core.Common;
+using Assets.Game.Scripts.Data.Configs.Enemy;
 using Assets.Game.Scripts.Gameplay.Interfaces.Common;
 using Assets.Game.Scripts.Gameplay.Interfaces.Services;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Assets.Game.Scripts.Gameplay.Services.Register
 {
     public class EnemyRegistry : IEnemyRegistry
     {
-        private readonly List<IEnemyBehaviour> _pursuing = new();
-        private readonly List<IEnemyBehaviour> _notPursuing = new();
-        public IReadOnlyList<IEnemyBehaviour> NotPursuing => _notPursuing;
-        public int Count => _pursuing.Count + _notPursuing.Count;
+        private const int InitialCapacity = 16;
 
-        public void Add(bool isPursuing, IEnemyBehaviour enemy)
+        private readonly List<IEnemyBehaviour> _enemies = new(InitialCapacity);
+        private readonly Dictionary<EnemyType, int> _countByType = new();
+
+        public int Count => _enemies.Count;
+
+        public int GetCount(EnemyType enemyType)
         {
-            (isPursuing ? _pursuing : _notPursuing).Add(enemy);
+            return _countByType.TryGetValue(enemyType, out int count) ? count : 0;
+        }
+
+        public void Add(IEnemyBehaviour enemy)
+        {
+            _enemies.Add(enemy);
+            _countByType[enemy.EnemyType] = GetCount(enemy.EnemyType) + 1;
         }
 
         public void Remove(IEnemyBehaviour enemy)
         {
-            if (CollectionExtension.RemoveFrom(_pursuing, enemy))
-                return;
-            CollectionExtension.RemoveFrom(_notPursuing, enemy);
-        }
-        public void Tick()
-        {
-            UpdateTick(_pursuing);
-            UpdateTick(_notPursuing);
-        }
-
-        private void UpdateTick(List<IEnemyBehaviour> list)
-        {
-            for (int i = list.Count - 1; i >= 0; i--)
-                list[i].Update(Time.deltaTime);
+            if (CollectionExtension.RemoveFrom(_enemies, enemy))
+                _countByType[enemy.EnemyType] = GetCount(enemy.EnemyType) - 1;
         }
     }
 }

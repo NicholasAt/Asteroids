@@ -16,8 +16,7 @@
     "FireRate": 4.0,
     "BulletForce": 15.0,
     "BulletSpeedLimit": 15.0,
-    "ForwardSpawnPointOffset": 0.5,
-    "IsSplit": true,
+    "ForwardSpawnPointOffset": 0.5,   
     "Bullet": {
       "Mass": 0.5,
       "Radius": 0.5,
@@ -31,7 +30,11 @@
     "ChargeCooldown": 5.0,
     "RayWidth": 0.3,
     "RayLength": 25.0,
-    "EffectDuration": 0.05,
-    "IsSplit": false
-  }
+    "EffectDuration": 0.05    
+  },
+
+  "StartingWeaponIds": [
+    "Gun_Gun",
+    "Constant_Laser"
+  ]
 }

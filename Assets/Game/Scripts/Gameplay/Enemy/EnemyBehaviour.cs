@@ -1,4 +1,6 @@
+using Assets.Game.Scripts.Data;
 using Assets.Game.Scripts.Data.Configs.Enemy;
+using Assets.Game.Scripts.Data.Configs.Settings;
 using Assets.Game.Scripts.Gameplay.Interfaces.Common;
 using Assets.Game.Scripts.Gameplay.Interfaces.Services;
 using Assets.Game.Scripts.Gameplay.Physics;
@@ -13,14 +15,15 @@ namespace Assets.Game.Scripts.Gameplay.Enemy
     {
         protected readonly PhysicsBody PhysicsBody;
 
-        private readonly EnemyType _enemyId;
-        private readonly bool _isSplit;
+        private readonly bool _canSplit;
         private readonly float _force;
+        private readonly float _collisionDamage;
         private readonly PhysicsWorld _physicsWorld;
         private readonly SignalBus _signalBus;
         private readonly IEnemyRegistry _enemyRegistry;
         private readonly IWorldBounds _worldBounds;
 
+        public EnemyType EnemyType { get; }
         public Vector2 Position => PhysicsBody.Position;
 
         public event Action OnShow;
@@ -28,11 +31,12 @@ namespace Assets.Game.Scripts.Gameplay.Enemy
 
         private bool _active;
 
-        public EnemyBehaviour(EnemyType enemyId, bool isSplit, float force, PhysicsWorld physicsWorld, PhysicsBody physicsBody, SignalBus signalBus, IEnemyRegistry enemyRegistry, IWorldBounds worldBounds)
+        public EnemyBehaviour(EnemyType enemyType, EnemyParams parameters, bool canSplit, PhysicsWorld physicsWorld, PhysicsBody physicsBody, SignalBus signalBus, IEnemyRegistry enemyRegistry, IWorldBounds worldBounds)
         {
-            _enemyId = enemyId;
-            _isSplit = isSplit;
-            _force = force;
+            EnemyType = enemyType;
+            _canSplit = canSplit;
+            _force = parameters.Force;
+            _collisionDamage = parameters.CollisionDamage;
             _physicsWorld = physicsWorld;
             PhysicsBody = physicsBody;
             _signalBus = signalBus;
@@ -41,9 +45,12 @@ namespace Assets.Game.Scripts.Gameplay.Enemy
             PhysicsBody.Owner = this;
         }
 
-        public void TakeDamage(float damage, bool isSplit)
+        public void TakeDamage(float damage, HitType hitType)
         {
-            _signalBus.Fire(new EnemyDeathSignal(_enemyId, PhysicsBody.Position, isSplit));
+            bool spawnFragments = _canSplit && hitType == HitType.Bullet;
+
+            _enemyRegistry.Remove(this);
+            _signalBus.Fire(new EnemyDeathSignal(EnemyType, PhysicsBody.Position, spawnFragments));
             Hide();
         }
         public void Show(Vector2 position, Vector2 direction)
@@ -56,9 +63,10 @@ namespace Assets.Game.Scripts.Gameplay.Enemy
             PhysicsBody.Direction = direction;
             PhysicsBody.Velocity = direction * _force;
             PhysicsBody.OnCollision += OnCollision;
-            _enemyRegistry.Add(_isSplit, this);
+            _enemyRegistry.Add(this);
             _physicsWorld.Add(PhysicsBody);
             _worldBounds.AddOutMap(this);
+            OnShown();
             OnShow?.Invoke();
         }
         public void Hide()
@@ -71,20 +79,25 @@ namespace Assets.Game.Scripts.Gameplay.Enemy
             _enemyRegistry.Remove(this);
             _physicsWorld.Remove(PhysicsBody);
             _worldBounds.Remove(this);
+            OnHidden();
             OnDie?.Invoke();
         }
-        public virtual void Update(float deltaTime)
-        { }
 
         public virtual void Wrap(Vector2 newPosition)
         {
             PhysicsBody.Position = newPosition;
         }
 
+        protected virtual void OnShown()
+        { }
+
+        protected virtual void OnHidden()
+        { }
+
         private void OnCollision(object obj)
         {
             if (obj != null && obj is IApplyDamage damage)
-                damage.TakeDamage(1, false);//default values
+                damage.TakeDamage(_collisionDamage, HitType.Collision);
         }
     }
 }

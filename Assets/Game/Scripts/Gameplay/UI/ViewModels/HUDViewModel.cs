@@ -30,7 +30,7 @@ namespace Assets.Game.Scripts.Gameplay.UI.ViewModels
 
         private ShipProgress _shipProgress;
         private ScoreProgress _scoreProgress;
-        private Constant_WeaponModel _constantModel;
+        private ConstantWeaponModel _constantModel;
 
         public HUDViewModel(IProgressService progressService, PlayerSettings playerSettings)
         {
@@ -73,7 +73,7 @@ namespace Assets.Game.Scripts.Gameplay.UI.ViewModels
             {
                 MaxLaserCharges.Value = _constantModel.MaxCharges;
                 LaserCharges.Value = _constantModel.CurrentCharges;
-                LaserCooldown.Value = _constantModel.CurrentCD;
+                LaserCooldown.Value = _constantModel.CooldownRemaining;
             }
         }
 
@@ -90,7 +90,7 @@ namespace Assets.Game.Scripts.Gameplay.UI.ViewModels
                 {
                     switch (weaponModel)
                     {
-                        case Constant_WeaponModel constantModel:
+                        case ConstantWeaponModel constantModel:
                             _constantModel = constantModel;
                             break;
 

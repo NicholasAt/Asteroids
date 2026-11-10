@@ -5,6 +5,6 @@ namespace Assets.Game.Scripts.Gameplay.Interfaces.Services.Pool
 {
     public interface IBulletPool
     {
-        ILaunched Get(Vector2 position, float rotate, bool isSplit, float force, float speedLimit);
+        ILaunched Get(Vector2 position, float rotate, float force, float speedLimit);
     }
 }

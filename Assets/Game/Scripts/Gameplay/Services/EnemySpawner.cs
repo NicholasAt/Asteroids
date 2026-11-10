@@ -18,8 +18,6 @@ namespace Assets.Game.Scripts.Gameplay.Services
         private readonly IWorldBounds _worldBounds;
         private readonly IEnemyRegistry _enemyRegistry;
 
-        private int _dyingEnemies;
-
         public EnemySpawner(SignalBus signalBus, EnemySettings enemySettings, WorldSettings worldSettings, IEnemyPool enemyPool, IWorldBounds worldBounds, IEnemyRegistry enemyRegistry)
         {
             _signalBus = signalBus;
@@ -48,7 +46,7 @@ namespace Assets.Game.Scripts.Gameplay.Services
 
         private bool HasFreeSlot()
         {
-            return _enemyRegistry.Count - _dyingEnemies < _maxEnemies;
+            return _enemyRegistry.Count < _maxEnemies;
         }
 
         private void Spawn()
@@ -86,34 +84,32 @@ namespace Assets.Game.Scripts.Gameplay.Services
             _enemyPool.Get(EnemyType.Asteroid, pos, direction);
         }
 
-        private void CalculateAndSpawnAsteroinds()
+        private void CalculateAndSpawnAsteroids()
         {
-            int difference = _spawnerSettings.MaxAsteroids - _enemyRegistry.NotPursuing.Count;
+            int difference = _spawnerSettings.MaxAsteroids - _enemyRegistry.GetCount(EnemyType.Asteroid);
             if (difference > 0)
                 _worldBounds.CalculateRandomPositions(_spawnerSettings.SpawnRandomAngle, difference, SpawnAsteroid);
         }
 
         private void OnEnemyDeath(EnemyDeathSignal signal)
         {
-            _dyingEnemies = 1;
-
             switch (signal.EnemyType)
             {
                 case EnemyType.Fragment:
-                    CalculateAndSpawnAsteroinds();
+                    CalculateAndSpawnAsteroids();
                     break;
 
                 case EnemyType.Asteroid:
 
-                    if (signal.IsSplit)
+                    if (signal.SpawnFragments)
                         SpawnFragments(signal.Position);
                     else
-                        CalculateAndSpawnAsteroinds();
+                        CalculateAndSpawnAsteroids();
 
                     break;
 
                 case EnemyType.Saucer:
-                    _worldBounds.CalculateRandomPositions(_spawnerSettings.SpawnRandomAngle, 1, SpawnSaucer);
+                    _worldBounds.CalculateRandomPositions(_spawnerSettings.SpawnRandomAngle, 1, SpawnSaucer);//respawn of a single enemy
                     break;
 
                 case EnemyType.None:
@@ -121,7 +117,6 @@ namespace Assets.Game.Scripts.Gameplay.Services
                     Debug.LogError($"no id [{signal.EnemyType}]");
                     break;
             }
-            _dyingEnemies = 0;
         }
     }
 }

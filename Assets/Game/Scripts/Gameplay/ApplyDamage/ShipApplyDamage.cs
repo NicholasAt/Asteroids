@@ -1,6 +1,8 @@
+using Assets.Game.Scripts.Data;
 using Assets.Game.Scripts.Data.Models.ShipProgress;
 using Assets.Game.Scripts.Gameplay.Interfaces.Common;
 using System;
+using UnityEngine;
 
 namespace Assets.Game.Scripts.Gameplay.ApplyDamage
 {
@@ -16,7 +18,7 @@ namespace Assets.Game.Scripts.Gameplay.ApplyDamage
             _shipProgress = shipProgress;
             _invulnerabilitySeconds = invulnerabilitySeconds;
         }
-        public void TakeDamage(float damage, bool isSplit)
+        public void TakeDamage(float damage, HitType hitType)
         {
             if (_dead)
                 return;
@@ -24,7 +26,11 @@ namespace Assets.Game.Scripts.Gameplay.ApplyDamage
             if (_shipProgress.IsInvulnerable)
                 return;
 
-            _shipProgress.Health.ChangeHealth(_shipProgress.Health.CurrentHealth - 1);
+            int damageAmount = Mathf.CeilToInt(damage);
+            if (damageAmount <= 0)
+                return;
+
+            _shipProgress.Health.ChangeHealth(_shipProgress.Health.CurrentHealth - damageAmount);
             if (_shipProgress.Health.CurrentHealth < 1)
             {
                 _shipProgress.SetSpeed(0);

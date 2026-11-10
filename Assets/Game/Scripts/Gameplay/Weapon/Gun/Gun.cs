@@ -1,12 +1,13 @@
 using Assets.Game.Scripts.Data.Configs.Settings;
 using Assets.Game.Scripts.Gameplay.Extensions;
+using Assets.Game.Scripts.Gameplay.Interfaces.Common;
 using Assets.Game.Scripts.Gameplay.Interfaces.Services.Pool;
 using Assets.Game.Scripts.Gameplay.Physics;
 using UnityEngine;
 
 namespace Assets.Game.Scripts.Gameplay.Weapon.Gun
 {
-    public class Gun_Weapon : BaseWeapon
+    public class Gun : IWeapon
     {
         private readonly GunSettings _config;
         private readonly float _cooldown;
@@ -14,7 +15,7 @@ namespace Assets.Game.Scripts.Gameplay.Weapon.Gun
         private readonly IBulletPool _bulletPool;
         private float _current;
 
-        public Gun_Weapon(GunSettings config, PhysicsBody physicsBody, IBulletPool bulletPool)
+        public Gun(GunSettings config, PhysicsBody physicsBody, IBulletPool bulletPool)
         {
             _config = config;
             _physicsBody = physicsBody;
@@ -23,7 +24,7 @@ namespace Assets.Game.Scripts.Gameplay.Weapon.Gun
             _current = _cooldown;
         }
 
-        public override void Update(bool isPress, float deltaTime)
+        public void Update(bool isPress, float deltaTime)
         {
             if (_current < _cooldown)
             {
@@ -34,7 +35,7 @@ namespace Assets.Game.Scripts.Gameplay.Weapon.Gun
                 _current -= _cooldown;
                 Vector2 direction = _physicsBody.Rotation.ToRotateToDirection();
                 Vector2 from = _physicsBody.Position + direction * _config.ForwardSpawnPointOffset;
-                _bulletPool.Get(from, _physicsBody.Rotation, false, _config.BulletForce, _config.BulletSpeedLimit);
+                _bulletPool.Get(from, _physicsBody.Rotation, _config.BulletForce, _config.BulletSpeedLimit);
             }
         }
     }

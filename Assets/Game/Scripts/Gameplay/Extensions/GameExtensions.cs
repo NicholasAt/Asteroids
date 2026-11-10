@@ -10,6 +10,7 @@ namespace Assets.Game.Scripts.Gameplay.Extensions
             target.transform.parent = null;
             SceneManager.MoveGameObjectToScene(target, SceneManager.GetActiveScene());
         }
+
         public static Vector2 ToRotateToDirection(this float radian)
         {
             return new(-Mathf.Sin(radian), Mathf.Cos(radian));

@@ -1,3 +1,4 @@
+using Assets.Game.Scripts.Data;
 using Assets.Game.Scripts.Gameplay.Extensions;
 using Assets.Game.Scripts.Gameplay.Interfaces.Common;
 using Assets.Game.Scripts.Gameplay.Interfaces.Services.Tick;
@@ -9,35 +10,33 @@ namespace Assets.Game.Scripts.Gameplay.Bullets
 {
     public class Bullet : ILaunched, ICustomTick
     {
-        private const int Damage = 1;
-
         public readonly PhysicsBody PhysicsBody;
         private readonly ITickService _tickService;
         private readonly PhysicsWorld _physicsWorld;
         private readonly float _lifeTime;
-        private bool _isSplit;
+        private readonly float _damage;
 
         public event Action OnShow;
         public event Action OnHide;
         private bool _active;
         private float _currentLifeTime;
-        public Bullet(PhysicsWorld physicsWorld, PhysicsBody physicsBody, ITickService tickService, float lifeTime)
+        public Bullet(PhysicsWorld physicsWorld, PhysicsBody physicsBody, ITickService tickService, float lifeTime, float damage)
         {
             _physicsWorld = physicsWorld;
             PhysicsBody = physicsBody;
             _tickService = tickService;
             _lifeTime = lifeTime;
+            _damage = damage;
             PhysicsBody.Owner = this;
         }
 
-        public void Launch(Vector2 position, float rotate, bool isSplit, float force, float speedLimit)
+        public void Launch(Vector2 position, float rotate, float force, float speedLimit)
         {
             if (_active)
                 return;
             _active = true;
 
             _currentLifeTime = _lifeTime;
-            _isSplit = isSplit;
 
             Vector2 direction = rotate.ToRotateToDirection();
             PhysicsBody.Rotation = rotate;
@@ -70,13 +69,12 @@ namespace Assets.Game.Scripts.Gameplay.Bullets
             _tickService.Remove(this);
             OnHide?.Invoke();
         }
-
         private void OnCollistion(object owner)
         {
             if (owner != null && owner is IApplyDamage applyDamage)
             {
                 PhysicsBody.IsInvulnerable = true;
-                applyDamage.TakeDamage(Damage, _isSplit);
+                applyDamage.TakeDamage(_damage, HitType.Bullet);
             }
             Hide();
         }

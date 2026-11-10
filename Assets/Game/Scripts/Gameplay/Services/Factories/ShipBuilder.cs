@@ -1,4 +1,3 @@
-using Assets.Game.Scripts.Data.Configs.Ship;
 using Assets.Game.Scripts.Data.Configs.Weapon;
 using Assets.Game.Scripts.Data.Models.Weapon;
 using Assets.Game.Scripts.Gameplay.Interfaces.Common;
@@ -14,14 +13,12 @@ namespace Assets.Game.Scripts.Gameplay.Services.Factories
         private readonly IShipFactory _shipFactory;
         private readonly IWeaponFactory _weaponFactory;
         private readonly IProgressService _progressService;
-        private readonly ShipData _shipData;
 
-        public ShipBuilder(IShipFactory shipFactory, IWeaponFactory weaponFactory, IProgressService progressService, ShipData shipData)
+        public ShipBuilder(IShipFactory shipFactory, IWeaponFactory weaponFactory, IProgressService progressService)
         {
             _shipFactory = shipFactory;
             _weaponFactory = weaponFactory;
             _progressService = progressService;
-            _shipData = shipData;
         }
 
         public void CreateShip(IReadOnlyList<WeaponId> weaponIds)

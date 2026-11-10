@@ -1,7 +1,4 @@
 namespace Assets.Game.Scripts.Gameplay.Signals
 {
-    public readonly struct PlayerDeathSignal
-    {
-
-    }
+    public readonly struct PlayerDeathSignal { }
 }

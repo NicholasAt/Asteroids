@@ -6,7 +6,7 @@ using Zenject;
 
 namespace Assets.Game.Scripts.Gameplay.UI.Services
 {
-    public class UIFactory : IUIFactory
+    public class UIFactory: IUIFactory
     {
         private readonly DiContainer _diContainer;
         private readonly WindowsData _windowsData;

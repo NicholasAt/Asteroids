@@ -43,9 +43,9 @@ namespace Assets.Game.Scripts.Gameplay.Services.Factories
             GameObject instance = _diContainer.InstantiatePrefab(_bulletData.BulletPrefab);
             instance.ToMoveToActiveScene();
 
-            Bullet bullet = new Bullet(_physicsWorld, body, _tickService, _bulletSettings.LifeTime);
+            Bullet bullet = new Bullet(_physicsWorld, body, _tickService, _bulletSettings.LifeTime, _bulletSettings.Damage);
 
-            instance.GetComponent<BulletView>().Init(body, bullet);
+            instance.GetComponent<BulletView>().Init(bullet);
             instance.GetComponent<TransformView>().Init(body);
             return bullet;
         }

@@ -9,15 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 867311d219cefe04ca528f43ed3744fb, type: 3}
-  m_Name: Laser_WeaponConfig
+  m_Script: {fileID: 11500000, guid: 2cc91be714b7fa349a001b1af2c01fbb, type: 3}
+  m_Name: LaserWeaponConfig
   m_EditorClassIdentifier: 
   <WeaponId>k__BackingField: 10
-  <IsSplit>k__BackingField: 0
-  <Damage>k__BackingField: 0
-  <MaxCharges>k__BackingField: 3
-  <CDCharge>k__BackingField: 5
-  <RayWidth>k__BackingField: 0.5
-  <RayLength>k__BackingField: 50
-  <EffectDuration>k__BackingField: 0.1
   <VisualPrefab>k__BackingField: {fileID: 2252408688278698569, guid: 0c97079878a9f854a8db2289f69af43c, type: 3}
