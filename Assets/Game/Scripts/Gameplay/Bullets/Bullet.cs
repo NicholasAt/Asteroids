@@ -29,7 +29,6 @@ namespace Assets.Game.Scripts.Gameplay.Bullets
             _damage = damage;
             PhysicsBody.Owner = this;
         }
-
         public void Launch(Vector2 position, float rotate, float force, float speedLimit)
         {
             if (_active)
@@ -47,7 +46,7 @@ namespace Assets.Game.Scripts.Gameplay.Bullets
             PhysicsBody.Force = force;
 
             PhysicsBody.IsInvulnerable = false;
-            PhysicsBody.OnCollision += OnCollistion;
+            PhysicsBody.OnCollision += OnCollision;
             _physicsWorld.Add(PhysicsBody);
             _tickService.Add(this);
             OnShow?.Invoke();
@@ -64,12 +63,12 @@ namespace Assets.Game.Scripts.Gameplay.Bullets
                 return;
             _active = false;
 
-            PhysicsBody.OnCollision -= OnCollistion;
+            PhysicsBody.OnCollision -= OnCollision;
             _physicsWorld.Remove(PhysicsBody);
             _tickService.Remove(this);
             OnHide?.Invoke();
         }
-        private void OnCollistion(object owner)
+        private void OnCollision(object owner)
         {
             if (owner != null && owner is IApplyDamage applyDamage)
             {

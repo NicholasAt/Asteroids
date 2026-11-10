@@ -56,10 +56,9 @@ namespace Assets.Game.Scripts.Gameplay.Services.Factories
             switch (enemyType)
             {
                 case EnemyType.Asteroid:
-                    return new EnemyBehaviour(enemyType, parameters, true, _physicsWorld, physicsBody, _signalBus, _enemyRegistry, _worldBounds);
-
                 case EnemyType.Fragment:
-                    return new EnemyBehaviour(enemyType, parameters, false, _physicsWorld, physicsBody, _signalBus, _enemyRegistry, _worldBounds);
+                    bool canSplit = enemyType == EnemyType.Asteroid;
+                    return new EnemyBehaviour(enemyType, parameters, canSplit, _physicsWorld, physicsBody, _signalBus, _enemyRegistry, _worldBounds);
 
                 case EnemyType.Saucer:
                     physicsBody.Force = parameters.Force;

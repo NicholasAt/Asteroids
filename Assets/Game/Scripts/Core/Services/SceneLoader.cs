@@ -17,6 +17,7 @@ namespace Assets.Game.Scripts.Core.Services
             catch (Exception e)
             {
                 Debug.LogException(e);
+                throw;
             }
         }
     }

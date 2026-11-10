@@ -49,9 +49,8 @@ namespace Assets.Game.Scripts.Gameplay.Enemy
         {
             bool spawnFragments = _canSplit && hitType == HitType.Bullet;
 
-            _enemyRegistry.Remove(this);
-            _signalBus.Fire(new EnemyDeathSignal(EnemyType, PhysicsBody.Position, spawnFragments));
             Hide();
+            _signalBus.Fire(new EnemyDeathSignal(EnemyType, PhysicsBody.Position, spawnFragments));
         }
         public void Show(Vector2 position, Vector2 direction)
         {

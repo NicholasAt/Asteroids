@@ -24,6 +24,11 @@ namespace Assets.Game.Scripts.Gameplay.UI.Views
             UpdateInput();
         }
 
+        private void OnDisable()
+        {
+            ResetInput();
+        }
+
         private void UpdateInput()
         {
             float horizontal = _moveLeftButton.IsPress ? -1 : _moveRightButton.IsPress ? 1 : 0;
@@ -32,6 +37,13 @@ namespace Assets.Game.Scripts.Gameplay.UI.Views
             _mobileInputViewModel.UpdateMoveAxis(axis);
             _mobileInputViewModel.SetAttack1(_attack1Button.IsPress);
             _mobileInputViewModel.SetAttack2(_attack2Button.IsPress);
+        }
+
+        private void ResetInput()
+        {
+            _mobileInputViewModel.UpdateMoveAxis(Vector2.zero);
+            _mobileInputViewModel.SetAttack1(false);
+            _mobileInputViewModel.SetAttack2(false);
         }
     }
 }

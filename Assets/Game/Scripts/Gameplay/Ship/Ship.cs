@@ -13,7 +13,7 @@ namespace Assets.Game.Scripts.Gameplay.Ship
 {
     public class Ship : IWrapped, IApplyDamage, ICustomTick, IDisposable, IWeaponKeeper
     {
-        public readonly PhysicsBody PhysicsBody;
+        private readonly PhysicsBody _physicsBody;
         private readonly ShipProgress _shipProgress;
         private readonly IApplyDamage _applyDamage;
         private readonly IInput _input;
@@ -21,21 +21,20 @@ namespace Assets.Game.Scripts.Gameplay.Ship
 
         private IWeapon _weapon1;
         private IWeapon _weapon2;
-        public Vector2 Position => PhysicsBody.Position;
-        private bool _invulnerableToggle;
+        public Vector2 Position => _physicsBody.Position;
 
         public event Action OnDie;
         private bool _dead;
+
         public Ship(ShipMove move, PhysicsBody physicsBody, ShipProgress shipProgress, IApplyDamage applyDamage, IInput input)
         {
-            PhysicsBody = physicsBody;
+            _physicsBody = physicsBody;
             _shipProgress = shipProgress;
             _move = move;
             _input = input;
             _applyDamage = applyDamage;
             _applyDamage.OnDie += Die;
         }
-
         public void SetWeapon(IReadOnlyList<IWeapon> weapons)
         {
             for (int i = 0; i < weapons.Count; i++)
@@ -49,7 +48,6 @@ namespace Assets.Game.Scripts.Gameplay.Ship
                     Debug.LogError("too weapons");
             }
         }
-
         public void Tick(float deltaTime)
         {
             bool canMove = !_shipProgress.IsInvulnerable;
@@ -58,22 +56,19 @@ namespace Assets.Game.Scripts.Gameplay.Ship
             _weapon1?.Update(_input.IsAttack1 && canMove, deltaTime);
             _weapon2?.Update(_input.IsAttack2 && canMove, deltaTime);
 
-            _shipProgress.SetPositionAndRotate(Position, PhysicsBody.Rotation);
+            _shipProgress.SetPositionAndRotate(Position, _physicsBody.Rotation);
             UpdateInvulnerability(deltaTime);
-            _shipProgress.SetSpeed(PhysicsBody.Velocity.magnitude);
+            _shipProgress.SetSpeed(_physicsBody.Velocity.magnitude);
         }
-
         public void TakeDamage(float damage, HitType hitType)
         {
             _applyDamage.TakeDamage(damage, hitType);
         }
-
         public void Wrap(Vector2 newPosition)
         {
-            PhysicsBody.Position = newPosition;
-            _shipProgress.SetPositionAndRotate(Position, PhysicsBody.Rotation);
+            _physicsBody.Position = newPosition;
+            _shipProgress.SetPositionAndRotate(Position, _physicsBody.Rotation);
         }
-
         public void Dispose()
         {
             OnDie = null;
@@ -97,15 +92,7 @@ namespace Assets.Game.Scripts.Gameplay.Ship
                 _shipProgress.SetInvulnerableLeft(newValue);
             }
 
-            if (_shipProgress.IsInvulnerable && _invulnerableToggle == false)
-            {
-                _invulnerableToggle = true;
-            }
-            else if (_shipProgress.IsInvulnerable == false && _invulnerableToggle)
-            {
-                _invulnerableToggle = false;
-            }
-            PhysicsBody.IsInvulnerable = _shipProgress.IsInvulnerable;
+            _physicsBody.IsInvulnerable = _shipProgress.IsInvulnerable;
         }
     }
 }

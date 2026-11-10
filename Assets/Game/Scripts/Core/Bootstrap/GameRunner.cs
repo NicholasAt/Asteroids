@@ -13,6 +13,9 @@ namespace Assets.Game.Scripts.Core.Bootstrap
 {
     public class GameRunner : MonoBehaviour
     {
+        private const string AnalyticsServiceLogName = "Analytics";
+        private const string AdvertisementServiceLogName = "Advertisement";
+
         [SerializeField] private List<GameObject> _dontDestroyOnLoad;
         private IGameStateMachine _gameStateMachine;
         private IAnalyticsService _analyticsService;
@@ -53,8 +56,8 @@ namespace Assets.Game.Scripts.Core.Bootstrap
         private async UniTask InitServicesAsync()
         {
             await UniTask.WhenAll(
-                InitServiceAsync("Analytics", _analyticsService.Init),
-                InitServiceAsync("Advertisement", _advertisement.Init));
+                InitServiceAsync(AnalyticsServiceLogName, _analyticsService.Init),
+                InitServiceAsync(AdvertisementServiceLogName, _advertisement.Init));
         }
 
         private async UniTask InitServiceAsync(string serviceName, Func<UniTask> init)

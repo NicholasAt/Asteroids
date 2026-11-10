@@ -8,6 +8,8 @@ namespace Assets.Game.Scripts.Services.Advertisement
     public class AdvertisementService : IAdvertisementService, IDisposable
     {
         private const string AndroidId = "AD_UNIT_ID";
+        private const int InitTimeoutSeconds = 10;
+
         private bool _inited;
         private bool _bannerRequested;
         private BannerView _bannerView;
@@ -21,7 +23,7 @@ namespace Assets.Game.Scripts.Services.Advertisement
                     _inited = true;
                     Debug.Log("Advertisement initialized.");
                 });
-                await UniTask.WaitUntil(() => _inited).Timeout(TimeSpan.FromSeconds(10));
+                await UniTask.WaitUntil(() => _inited).Timeout(TimeSpan.FromSeconds(InitTimeoutSeconds));
 
                 if (_bannerRequested)
                     ShowBanner();
