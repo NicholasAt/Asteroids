@@ -1237,5 +1237,5 @@ MonoBehaviour:
   _attack1Button: {fileID: 8007638302368944637}
   _attack2Button: {fileID: 587462354641660259}
   _moveLeftButton: {fileID: 8067458227070301402}
-  _moveRightBuuton: {fileID: 6349886618497157581}
+  _moveRightButton: {fileID: 6349886618497157581}
   _thrustButton: {fileID: 7316943327152507327}

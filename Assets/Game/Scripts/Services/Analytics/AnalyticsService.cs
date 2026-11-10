@@ -2,7 +2,8 @@ using Cysharp.Threading.Tasks;
 using Firebase;
 using Firebase.Analytics;
 using UnityEngine;
-namespace Assets.Scripts.Services.Analytics
+
+namespace Assets.Game.Scripts.Services.Analytics
 {
     public class AnalyticsService : IAnalyticsService
     {
@@ -21,7 +22,7 @@ namespace Assets.Scripts.Services.Analytics
                 }
                 else
                 {
-                    Debug.LogError(System.String.Format("Could not resolve all Firebase dependencies: {0}", dependencyStatus));
+                    Debug.LogError(string.Format("Could not resolve all Firebase dependencies: {0}", dependencyStatus));
                 }
             }
 

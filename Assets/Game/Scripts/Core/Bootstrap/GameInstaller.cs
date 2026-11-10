@@ -21,8 +21,8 @@ using Assets.Game.Scripts.Gameplay.Services.Register;
 using Assets.Game.Scripts.Gameplay.Signals;
 using Assets.Game.Scripts.Gameplay.UI.Services;
 using Assets.Game.Scripts.Gameplay.UI.ViewModels;
-using Assets.Scripts.Services.Advertisement;
-using Assets.Scripts.Services.Analytics;
+using Assets.Game.Scripts.Services.Advertisement;
+using Assets.Game.Scripts.Services.Analytics;
 using UnityEngine;
 using Zenject;
 

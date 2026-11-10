@@ -1,7 +1,9 @@
-﻿namespace Assets.Game.Scripts.Core.Interfaces.States
+﻿using Cysharp.Threading.Tasks;
+
+namespace Assets.Game.Scripts.Core.Interfaces.States
 {
     public interface IPayloadedState<TPayload>
     {
-        void Enter(TPayload payload);
+        UniTask Enter(TPayload payload);
     }
 }

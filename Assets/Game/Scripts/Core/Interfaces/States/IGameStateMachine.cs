@@ -1,7 +1,9 @@
+using Cysharp.Threading.Tasks;
+
 namespace Assets.Game.Scripts.Core.Interfaces.States
 {
     public interface IGameStateMachine
     {
-        void Enter<TState, TPayload>(TPayload payload) where TState : class, IPayloadedState<TPayload>;
+        UniTask Enter<TState, TPayload>(TPayload payload) where TState : class, IPayloadedState<TPayload>;
     }
 }

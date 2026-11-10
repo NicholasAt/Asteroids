@@ -1,6 +1,6 @@
 using Cysharp.Threading.Tasks;
 
-namespace Assets.Scripts.Services.Advertisement
+namespace Assets.Game.Scripts.Services.Advertisement
 {
     public interface IAdvertisementService
     {

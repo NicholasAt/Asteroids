@@ -8,26 +8,16 @@ namespace Assets.Game.Scripts.Data.Configs.Weapon
     public class WeaponData : ScriptableObject
     {
         [SerializeField] private List<BaseWeaponConfig> _weaponConfigs;
-        private readonly Dictionary<WeaponId, BaseWeaponConfig> _caheConfigs = new();
+        private readonly Dictionary<WeaponId, BaseWeaponConfig> _cachedConfigs = new();
 
         public T GetWeaponConfig<T>(WeaponId id) where T : BaseWeaponConfig
         {
             LazyInit();
-            return _caheConfigs.TryGetValue(id, out BaseWeaponConfig config) ? config as T : null;
-        }
-        public BaseWeaponConfig GetWeaponConfig(WeaponId id)
-        {
-            foreach (BaseWeaponConfig cfg in _weaponConfigs)
-            {
-                if (cfg != null && cfg.WeaponId == id)
-                    return cfg;
-            }
-            Debug.LogError($"no cfg [{id}]");
-            return null;
+            return _cachedConfigs.TryGetValue(id, out BaseWeaponConfig config) ? config as T : null;
         }
         private void LazyInit()
         {
-            if (_caheConfigs.Count != 0)
+            if (_cachedConfigs.Count != 0)
                 return;
 
             foreach (BaseWeaponConfig config in _weaponConfigs)
@@ -35,7 +25,7 @@ namespace Assets.Game.Scripts.Data.Configs.Weapon
                 if (config == null)
                     continue;
 
-                _caheConfigs.Add(config.WeaponId, config);
+                _cachedConfigs.Add(config.WeaponId, config);
             }
         }
     }

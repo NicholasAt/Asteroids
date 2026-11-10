@@ -3,7 +3,7 @@ using GoogleMobileAds.Api;
 using System;
 using UnityEngine;
 
-namespace Assets.Scripts.Services.Advertisement
+namespace Assets.Game.Scripts.Services.Advertisement
 {
     public class AdvertisementService : IAdvertisementService
     {

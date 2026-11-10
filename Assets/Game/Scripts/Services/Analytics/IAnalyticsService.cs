@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
-namespace Assets.Scripts.Services.Analytics
+
+namespace Assets.Game.Scripts.Services.Analytics
 {
     public interface IAnalyticsService
     {

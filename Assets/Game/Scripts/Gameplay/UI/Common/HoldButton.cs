@@ -16,5 +16,10 @@ namespace Assets.Game.Scripts.Gameplay.UI.Common
         {
             IsPress = false;
         }
+
+        private void OnDisable()
+        {
+            IsPress = false;
+        }
     }
 }

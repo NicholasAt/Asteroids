@@ -1,8 +1,10 @@
 using Assets.Game.Scripts.Core.Bootstrap.States;
 using Assets.Game.Scripts.Core.Interfaces.States;
 using Assets.Game.Scripts.Data.Configs.Constants;
-using Assets.Scripts.Services.Advertisement;
-using Assets.Scripts.Services.Analytics;
+using Assets.Game.Scripts.Services.Advertisement;
+using Assets.Game.Scripts.Services.Analytics;
+using Cysharp.Threading.Tasks;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
@@ -23,16 +25,48 @@ namespace Assets.Game.Scripts.Core.Bootstrap
             _analyticsService = analyticsService;
             _advertisement = advertisement;
         }
-        private async void Start()
+
+        private void Start()
         {
             foreach (GameObject target in _dontDestroyOnLoad)
             {
                 target.transform.parent = null;
                 DontDestroyOnLoad(target);
             }
-            await _analyticsService.Init();
-            await _advertisement.Init();
-            _gameStateMachine.Enter<LoadLevelState, string>(SceneConstants.LevelSceneKey);
+
+            LoadLevelAsync().Forget();
+            InitServicesAsync().Forget();
+        }
+
+        private async UniTask LoadLevelAsync()
+        {
+            try
+            {
+                await _gameStateMachine.Enter<LoadLevelState, string>(SceneConstants.LevelSceneKey);
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
+        }
+
+        private async UniTask InitServicesAsync()
+        {
+            await UniTask.WhenAll(
+                InitServiceAsync("Analytics", _analyticsService.Init),
+                InitServiceAsync("Advertisement", _advertisement.Init));
+        }
+
+        private async UniTask InitServiceAsync(string serviceName, Func<UniTask> init)
+        {
+            try
+            {
+                await init();
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"{serviceName} initialization failed, the game continues without it: {e}");
+            }
         }
     }
 }

@@ -17,25 +17,25 @@ namespace Assets.Game.Scripts.Gameplay.UI.Views
         [SerializeField] private TMP_Text _currentSpeed;
 
         private readonly List<Action> _unsubscribe = new List<Action>();
-        private HUDViewModel _vm;
+        private HUDViewModel _hudViewModel;
 
         [Inject]
-        private void Construct(HUDViewModel hUDViewModel)
+        private void Construct(HUDViewModel hudViewModel)
         {
-            _vm = hUDViewModel;
+            _hudViewModel = hudViewModel;
         }
 
         private void Start()
         {
-            Bind(_vm.Score, v => _scoreText.text = $"Score: {v}");
-            Bind(_vm.CurrentHealth, v => _healthText.text = $"Health {_vm.CurrentHealth.Value}");
+            Bind(_hudViewModel.Score, v => _scoreText.text = $"Score: {v}");
+            Bind(_hudViewModel.CurrentHealth, v => _healthText.text = $"Health {_hudViewModel.CurrentHealth.Value}");
 
-            Bind(_vm.LaserCharges, v => _laserChargesText.text = $"Laser charges: {v}/{_vm.MaxLaserCharges.Value}");
-            Bind(_vm.LaserCooldown, v => _laserCooldownText.text = _vm.LaserCharges.Value < _vm.MaxLaserCharges.Value ? $"Laser cooldown: {v:F1}" : "Laser cooldown: ready");
+            Bind(_hudViewModel.LaserCharges, v => _laserChargesText.text = $"Laser charges: {v}/{_hudViewModel.MaxLaserCharges.Value}");
+            Bind(_hudViewModel.LaserCooldown, v => _laserCooldownText.text = _hudViewModel.LaserCharges.Value < _hudViewModel.MaxLaserCharges.Value ? $"Laser cooldown: {v:F1}" : "Laser cooldown: ready");
 
-            Bind(_vm.Position, v => _positionText.text = $"Position: {v.x:F0}, {v.y:F0}");
-            Bind(_vm.Rotate, v => _rotationText.text = $"Angle: {v:F0}");
-            Bind(_vm.Speed, v => _currentSpeed.text = $"Speed: {v:F1}");
+            Bind(_hudViewModel.Position, v => _positionText.text = $"Position: {v.x:F0}, {v.y:F0}");
+            Bind(_hudViewModel.Rotate, v => _rotationText.text = $"Angle: {v:F0}");
+            Bind(_hudViewModel.Speed, v => _currentSpeed.text = $"Speed: {v:F1}");
         }
 
         private void OnDestroy()

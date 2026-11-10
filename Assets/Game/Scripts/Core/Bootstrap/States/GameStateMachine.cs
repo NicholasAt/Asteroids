@@ -1,4 +1,5 @@
 ﻿using Assets.Game.Scripts.Core.Interfaces.States;
+using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 
@@ -16,10 +17,10 @@ namespace Assets.Game.Scripts.Core.Bootstrap.States
             };
         }
 
-        public void Enter<TState, TPayload>(TPayload payload) where TState : class, IPayloadedState<TPayload>
+        public UniTask Enter<TState, TPayload>(TPayload payload) where TState : class, IPayloadedState<TPayload>
         {
             TState state = ChangeState<TState>();
-            state.Enter(payload);
+            return state.Enter(payload);
         }
 
         private TState ChangeState<TState>() where TState : class

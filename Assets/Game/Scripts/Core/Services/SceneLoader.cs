@@ -7,18 +7,16 @@ namespace Assets.Game.Scripts.Core.Services
 {
     public class SceneLoader
     {
-        public async UniTask Load(string sceneKey, Action onLoaded)
+        public async UniTask Load(string sceneKey)
         {
             try
             {
                 AsyncOperation operation = SceneManager.LoadSceneAsync(sceneKey);
                 await operation.ToUniTask();
-                onLoaded?.Invoke();
             }
             catch (Exception e)
             {
                 Debug.LogException(e);
-                throw;
             }
         }
     }

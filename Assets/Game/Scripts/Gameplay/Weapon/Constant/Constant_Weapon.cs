@@ -67,7 +67,7 @@ namespace Assets.Game.Scripts.Gameplay.Weapon.Constant
 
                 if (body.Owner != null && body.Owner is IApplyDamage applyDamage)
                 {
-                    applyDamage.TakeDamage(_config.Damage, _config.IsSplit);
+                    applyDamage.TakeDamage(_config.Damage, false);
                 }
             }
         }

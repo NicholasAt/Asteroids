@@ -34,7 +34,7 @@ namespace Assets.Game.Scripts.Gameplay.Weapon.Gun
                 _current -= _cooldown;
                 Vector2 direction = _physicsBody.Rotation.ToRotateToDirection();
                 Vector2 from = _physicsBody.Position + direction * _config.ForwardSpawnPointOffset;
-                _bulletPool.Get(from, _physicsBody.Rotation, _config.IsSplit, _config.BulletForce, _config.BulletSpeedLimit);
+                _bulletPool.Get(from, _physicsBody.Rotation, false, _config.BulletForce, _config.BulletSpeedLimit);
             }
         }
     }
